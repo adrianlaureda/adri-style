@@ -1,0 +1,387 @@
+/*
+ * Adri Style v5 — Base CSS inyectable
+ *
+ * INSTRUCCIONES PARA SUBAGENTES:
+ * 1. Copiar este archivo completo al proyecto
+ * 2. Sobreescribir las variables :root con las del preset elegido (style-presets.md)
+ * 3. Copiar los <link> de fuentes del preset al <head>
+ * 4. NO inventar variables nuevas — usar las definidas aqui
+ *
+ * Este CSS usa el preset "Minimalista Adri" como default.
+ * Sobreescribe las variables para cambiar de preset.
+ */
+
+/* === VARIABLES (default: Minimalista Adri) === */
+:root {
+  /* Fontes — sobreescribir con las del preset */
+  --font-display: 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'JetBrains Mono', monospace;
+
+  /* Escala tipografica fluida — ratio 1.25 (Major Third) */
+  --step--2: clamp(0.64rem, 0.59rem + 0.24vw, 0.80rem);
+  --step--1: clamp(0.80rem, 0.74rem + 0.30vw, 1.00rem);
+  --step-0:  clamp(1.00rem, 0.93rem + 0.37vw, 1.25rem);
+  --step-1:  clamp(1.25rem, 1.16rem + 0.47vw, 1.56rem);
+  --step-2:  clamp(1.56rem, 1.44rem + 0.61vw, 1.95rem);
+  --step-3:  clamp(1.95rem, 1.79rem + 0.82vw, 2.44rem);
+  --step-4:  clamp(2.44rem, 2.22rem + 1.10vw, 3.05rem);
+  --step-5:  clamp(3.05rem, 2.76rem + 1.46vw, 3.81rem);
+
+  /* Espaciado fluido (Utopia) */
+  --space-3xs: clamp(0.25rem, 0.23rem + 0.12vw, 0.31rem);
+  --space-2xs: clamp(0.50rem, 0.46rem + 0.19vw, 0.63rem);
+  --space-xs:  clamp(0.75rem, 0.70rem + 0.25vw, 0.94rem);
+  --space-s:   clamp(1.00rem, 0.93rem + 0.37vw, 1.25rem);
+  --space-m:   clamp(1.50rem, 1.39rem + 0.56vw, 1.88rem);
+  --space-l:   clamp(2.00rem, 1.85rem + 0.74vw, 2.50rem);
+  --space-xl:  clamp(3.00rem, 2.78rem + 1.11vw, 3.75rem);
+  --space-2xl: clamp(4.00rem, 3.70rem + 1.48vw, 5.00rem);
+
+  /* Line heights */
+  --lh-display: 1.05;
+  --lh-body: 1.55;
+
+  /* Letter spacing */
+  --ls-tight: -0.04em;
+  --ls-normal: normal;
+  --ls-wide: 0.08em;
+
+  /* Colores — Modo oscuro (default) — sobreescribir con las del preset */
+  --bg: #050505;
+  --bg-surface: #0e0e0e;
+  --bg-elevated: #171717;
+  --border: hsl(0 0% 100% / 0.08);
+  --text: #E8E8E8;
+  --text-secondary: hsl(0 0% 100% / 0.6);
+  --text-muted: hsl(0 0% 100% / 0.35);
+
+  /* Acento — sobreescribir con las del preset */
+  --accent: #3b82f6;
+  --accent-surface: color-mix(in srgb, var(--accent) 8%, var(--bg-surface));
+
+  /* Utilidades */
+  --transition: 0.2s ease;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius: 12px;
+}
+
+/* Tema claro */
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-surface: #fafafa;
+  --bg-elevated: #f5f5f5;
+  --border: #e5e5e5;
+  --text: #1a1a1a;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --lh-body: 1.5;
+  --ls-tight: -0.03em;
+}
+
+/* === RESET === */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  background: var(--bg);
+  color: var(--text);
+  line-height: var(--lh-body);
+  min-height: 100vh;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+img, svg { display: block; max-width: 100%; }
+
+/* === TIPOGRAFIA === */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-wrap: balance;
+  line-height: var(--lh-display);
+}
+
+h1 {
+  font-size: var(--step-4);
+  letter-spacing: var(--ls-tight);
+  margin-bottom: var(--space-m);
+}
+
+h2 {
+  font-size: var(--step-3);
+  letter-spacing: var(--ls-tight);
+  margin-top: var(--space-l);
+  margin-bottom: var(--space-s);
+}
+
+h3 {
+  font-size: var(--step-2);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-top: var(--space-m);
+  margin-bottom: var(--space-xs);
+}
+
+h4 {
+  font-size: var(--step-1);
+  font-weight: 500;
+  line-height: 1.25;
+  margin-top: var(--space-s);
+  margin-bottom: var(--space-xs);
+}
+
+small, .text-small { font-size: var(--step--1); }
+
+.text-caption {
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+}
+
+.text-label {
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.text-hero {
+  font-size: var(--step-5);
+  font-weight: 600;
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-tight);
+}
+
+/* === DATOS === */
+.data-value, .grade, .metric, code {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+code {
+  font-size: var(--step--1);
+  background: var(--bg-elevated);
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+}
+
+/* === LAYOUT === */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 var(--space-m);
+}
+
+.prose {
+  max-width: 65ch;
+  line-height: var(--lh-body);
+  margin: 0 auto;
+}
+
+.prose p + p { margin-top: 1em; }
+
+/* === COMPONENTES BASE === */
+
+/* Cards */
+.card {
+  padding: var(--space-m);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.card:hover {
+  border-color: var(--text-secondary);
+  transform: translateY(-2px);
+}
+
+/* Botones */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-xs) var(--space-m);
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 500;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all var(--transition);
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--text);
+  color: var(--bg);
+  border: 1px solid var(--text);
+}
+
+.btn-primary:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+  border-color: var(--text-secondary);
+  color: var(--text);
+}
+
+.btn:active { transform: scale(0.97); }
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: var(--space-3xs) var(--space-xs);
+  font-size: var(--step--2);
+  font-weight: 500;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.badge-success {
+  color: #22c55e;
+  background: color-mix(in srgb, #22c55e 12%, var(--bg-surface));
+  border: 1px solid color-mix(in srgb, #22c55e 25%, transparent);
+}
+
+.badge-warning {
+  color: #eab308;
+  background: color-mix(in srgb, #eab308 12%, var(--bg-surface));
+  border: 1px solid color-mix(in srgb, #eab308 25%, transparent);
+}
+
+.badge-danger {
+  color: #ef4444;
+  background: color-mix(in srgb, #ef4444 12%, var(--bg-surface));
+  border: 1px solid color-mix(in srgb, #ef4444 25%, transparent);
+}
+
+/* Acento */
+.accent { color: var(--accent); }
+
+/* === PREMIUM DARK MODE === */
+
+/* Glow de fondo para hero sections */
+.hero-glow {
+  background-color: var(--bg);
+  background-image: radial-gradient(
+    ellipse 80% 50% at 50% -10%,
+    color-mix(in srgb, var(--accent) 12%, transparent),
+    transparent
+  );
+}
+
+/* Glassmorphism header */
+.header-glass {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Glow en titulos hero (solo dark mode) */
+.title-glow {
+  text-shadow: 0 0 80px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+[data-theme="light"] .title-glow {
+  text-shadow: none;
+}
+
+/* Card premium con specular highlights (Linear-style) */
+.card-premium {
+  background: var(--bg-surface);
+  border-radius: var(--radius);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  border: none;
+}
+
+[data-theme="light"] .card-premium {
+  box-shadow: none;
+  border: 1px solid var(--border);
+}
+
+/* === ANIMACIONES === */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s var(--ease-out) forwards;
+}
+
+.animate-delay-1 { animation-delay: 0.1s; }
+.animate-delay-2 { animation-delay: 0.2s; }
+.animate-delay-3 { animation-delay: 0.3s; }
+
+/* === ACCESIBILIDAD === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  .container { padding: 0 var(--space-s); }
+}
+
+/* === TOGGLE DE TEMA === */
+/*
+  Incluir en el HTML:
+  <button class="theme-toggle" aria-label="Cambiar tema" onclick="toggleTheme()">
+    <!-- luna (lucide:moon) en oscuro, sol (lucide:sun) en claro -->
+  </button>
+
+  <script>
+  const theme = localStorage.getItem('theme') || 'dark';
+  if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  }
+  </script>
+*/

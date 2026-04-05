@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>adri-style — Catálogo de Presets</title>
+
+  <!-- Fonts -->
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=switzer@100,300,400,500,700,900&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ui-font: 'Satoshi', system-ui, sans-serif;
+    }
+
+    body {
+      background: #050505;
+      color: #e8e8e8;
+      font-family: var(--ui-font);
+    }
+
+    /* --- HEADER --- */
+    .page-header {
+      padding: clamp(80px, 12vw, 160px) clamp(40px, 6vw, 100px) clamp(40px, 6vw, 80px);
+    }
+    .page-header .label {
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 24px;
+    }
+    .page-header h1 {
+      font-family: var(--ui-font);
+      font-weight: 900;
+      font-size: clamp(48px, 6vw, 100px);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .page-header p {
+      font-weight: 300;
+      font-size: clamp(15px, 1.2vw, 18px);
+      line-height: 1.6;
+      color: rgba(255,255,255,0.4);
+      max-width: 50ch;
+      margin-top: 24px;
+    }
+
+    /* --- PRESET CARD (full-width section) --- */
+    .preset {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 80vh;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.3s ease;
+      cursor: default;
+    }
+
+    /* Left side: preview */
+    .preset-preview {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(48px, 6vw, 100px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preset-preview .deco {
+      position: absolute;
+      bottom: 24px;
+      right: 40px;
+      font-weight: 200;
+      font-size: clamp(80px, 12vw, 200px);
+      line-height: 1;
+      opacity: 0.04;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .preset-preview .preview-label {
+      font-weight: 300;
+      font-size: clamp(10px, 0.8vw, 12px);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .preset-preview .preview-title {
+      font-weight: 900;
+      font-size: clamp(36px, 5vw, 80px);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .preset-preview .preview-body {
+      font-weight: 300;
+      font-size: clamp(13px, 1vw, 16px);
+      line-height: 1.65;
+      max-width: 36ch;
+    }
+
+    .preset-preview .preview-quote {
+      margin-top: 24px;
+      padding-left: 20px;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(12px, 0.9vw, 14px);
+      line-height: 1.7;
+      max-width: 40ch;
+    }
+
+    /* Right side: info */
+    .preset-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(48px, 5vw, 80px);
+      background: rgba(255,255,255,0.02);
+      border-left: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .preset-info .preset-name {
+      font-family: var(--ui-font);
+      font-weight: 900;
+      font-size: clamp(20px, 2vw, 32px);
+      letter-spacing: -0.01em;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .preset-info .preset-mood {
+      font-family: var(--ui-font);
+      font-weight: 300;
+      font-size: 14px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 32px;
+    }
+
+    .preset-info .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .meta-item .meta-label {
+      font-family: var(--ui-font);
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 6px;
+    }
+    .meta-item .meta-value {
+      font-family: var(--ui-font);
+      font-weight: 500;
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* Color swatches */
+    .swatches {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+    .swatch {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Use cases */
+    .use-cases {
+      list-style: none;
+    }
+    .use-cases li {
+      font-family: var(--ui-font);
+      font-weight: 300;
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .use-cases li::before {
+      content: '→';
+      margin-right: 10px;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* Number badge */
+    .preset-number {
+      font-family: var(--ui-font);
+      font-weight: 200;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .preset { grid-template-columns: 1fr; }
+      .preset-preview { min-height: 60vh; }
+      .preset-info { border-left: none; border-top: 1px solid rgba(255,255,255,0.06); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="label">adri-style v5.1 &middot; Sistema de Diseño</div>
+    <h1>Elige tu<br>preset</h1>
+    <p>15 estilos visuales. Cada uno con personalidad tipográfica, paleta y composición propias. Scroll para explorar.</p>
+  </header>
+
+  <!-- 1. BOLD SIGNAL -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #050505; color: #ffffff;">
+      <div class="preview-label" style="color: rgba(255,255,255,0.5); font-family: 'Satoshi';">High Impact</div>
+      <div class="preview-title" style="font-family: 'Satoshi'; color: #ffffff;">Visceral<br>Design</div>
+      <div class="preview-body" style="font-family: 'Inter'; color: rgba(255,255,255,0.4);">
+        Máximo contraste tipográfico. Negro profundo con blanco como único acento.
+      </div>
+      <div class="deco" style="font-family: 'Satoshi'; color: rgba(255,255,255,0.04);">01</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 01</div>
+      <div class="preset-name">Bold Signal</div>
+      <div class="preset-mood">High impact, keynote</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Satoshi 900</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#050505</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#ffffff</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #050505;"></div>
+        <div class="swatch" style="background: #0e0e0e;"></div>
+        <div class="swatch" style="background: #ffffff;"></div>
+        <div class="swatch" style="background: rgba(255,255,255,0.1);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Landing pages</li>
+        <li>Portfolios</li>
+        <li>Presentaciones keynote</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. ELECTRIC STUDIO -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #0a1628;">
+      <div class="preview-label" style="color: #3b82f6; font-family: 'Geist';">Professional Tech</div>
+      <div class="preview-title" style="font-family: 'Geist'; color: #ffffff;">Build<br>Better</div>
+      <div class="preview-body" style="font-family: 'Inter'; color: rgba(255,255,255,0.4);">
+        Profesional y técnico. Azul eléctrico como acento sobre fondo deep navy.
+      </div>
+      <div class="deco" style="font-family: 'Geist'; color: rgba(59,130,246,0.06);">02</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 02</div>
+      <div class="preset-name">Electric Studio</div>
+      <div class="preset-mood">Professional tech</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Geist 800</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#0a1628</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#3b82f6</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #0a1628;"></div>
+        <div class="swatch" style="background: #0f2040;"></div>
+        <div class="swatch" style="background: #3b82f6;"></div>
+        <div class="swatch" style="background: rgba(59,130,246,0.15);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Dashboards</li>
+        <li>Documentación técnica</li>
+        <li>SaaS tools</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. CREATIVE VOLTAGE -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #1a0a2e;">
+      <div class="preview-label" style="color: #f59e0b; font-family: 'Clash Display';">Retro Modern</div>
+      <div class="preview-title" style="font-family: 'Clash Display'; color: #ffffff;">Creative<br>Energy</div>
+      <div class="preview-body" style="font-family: 'Satoshi'; color: rgba(255,255,255,0.4);">
+        Retro-moderno con ámbar vibrante. Personalidad artística sobre fondo deep purple.
+      </div>
+      <div class="deco" style="font-family: 'Clash Display'; color: rgba(245,158,11,0.06);">03</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 03</div>
+      <div class="preset-name">Creative Voltage</div>
+      <div class="preset-mood">Retro-modern</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Clash Display 700</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Satoshi 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#1a0a2e</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#f59e0b</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #1a0a2e;"></div>
+        <div class="swatch" style="background: #2a1248;"></div>
+        <div class="swatch" style="background: #f59e0b;"></div>
+        <div class="swatch" style="background: rgba(245,158,11,0.15);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Portfolios creativos</li>
+        <li>Eventos</li>
+        <li>Proyectos artísticos</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. DARK BOTANICAL -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #0a0f0a;">
+      <div class="preview-label" style="color: #4ade80; font-family: 'Cormorant Garamond';">Elegant Organic</div>
+      <div class="preview-title" style="font-family: 'Cormorant Garamond'; color: #ffffff; letter-spacing: 0.01em;">Natural<br>Beauty</div>
+      <div class="preview-body" style="font-family: 'DM Sans'; color: rgba(255,255,255,0.4);">
+        Elegancia orgánica. Serif clásica con verde suave sobre fondo bosque nocturno.
+      </div>
+      <div class="deco" style="font-family: 'Cormorant Garamond'; color: rgba(74,222,128,0.05);">04</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 04</div>
+      <div class="preset-name">Dark Botanical</div>
+      <div class="preset-mood">Elegant organic</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Cormorant Garamond</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">DM Sans 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#0a0f0a</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#4ade80</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #0a0f0a;"></div>
+        <div class="swatch" style="background: #141f14;"></div>
+        <div class="swatch" style="background: #4ade80;"></div>
+        <div class="swatch" style="background: rgba(74,222,128,0.1);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Productos naturales</li>
+        <li>Webs elegantes</li>
+        <li>Galerías</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. NOTEBOOK TABS -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #f5f0e8;">
+      <div class="preview-label" style="color: #2563eb; font-family: 'Newsreader';">Editorial Paper</div>
+      <div class="preview-title" style="font-family: 'Newsreader'; color: #1a1a1a; letter-spacing: 0;">Words<br>Matter</div>
+      <div class="preview-body" style="font-family: 'Source Serif 4'; color: rgba(0,0,0,0.5);">
+        Estética de cuaderno editorial. Serif elegante sobre fondo papel cálido.
+      </div>
+      <div class="deco" style="font-family: 'Newsreader'; color: rgba(0,0,0,0.04);">05</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 05</div>
+      <div class="preset-name">Notebook Tabs</div>
+      <div class="preset-mood">Editorial paper</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Newsreader</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Source Serif 4</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#f5f0e8</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#2563eb</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #f5f0e8;"></div>
+        <div class="swatch" style="background: #ebe5d8;"></div>
+        <div class="swatch" style="background: #2563eb;"></div>
+        <div class="swatch" style="background: #1a1a1a;"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Blogs</li>
+        <li>Apuntes de clase</li>
+        <li>Documentación editorial</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6. PASTEL GEOMETRY -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #faf5ff;">
+      <div class="preview-label" style="color: #8b5cf6; font-family: 'Satoshi';">Friendly Pastel</div>
+      <div class="preview-title" style="font-family: 'Satoshi'; font-weight: 700; color: #1a1a1a;">Learn &<br>Play</div>
+      <div class="preview-body" style="font-family: 'Inter'; color: rgba(0,0,0,0.45);">
+        Amigable y educativo. Violeta suave con geometrías pastel.
+      </div>
+      <div class="deco" style="font-family: 'Satoshi'; color: rgba(139,92,246,0.06);">06</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 06</div>
+      <div class="preset-name">Pastel Geometry</div>
+      <div class="preset-mood">Friendly pastel</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Satoshi 700</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#faf5ff</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#8b5cf6</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #faf5ff;"></div>
+        <div class="swatch" style="background: #f3e8ff;"></div>
+        <div class="swatch" style="background: #8b5cf6;"></div>
+        <div class="swatch" style="background: #1a1a1a;"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Ejercicios interactivos</li>
+        <li>Apps educativas</li>
+        <li>Onboarding</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7. SPLIT PASTEL -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #fff1f2;">
+      <div class="preview-label" style="color: #e11d48; font-family: 'Space Grotesk';">Juicy Bicolor</div>
+      <div class="preview-title" style="font-family: 'Space Grotesk'; color: #1a1a1a;">Fresh<br>Split</div>
+      <div class="preview-body" style="font-family: 'Inter'; color: rgba(0,0,0,0.45);">
+        Bicolor jugoso. Rosa y rojo cereza con composiciones divididas.
+      </div>
+      <div class="deco" style="font-family: 'Space Grotesk'; color: rgba(225,29,72,0.06);">07</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 07</div>
+      <div class="preset-name">Split Pastel</div>
+      <div class="preset-mood">Juicy bicolor</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Space Grotesk 700</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#fff1f2</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#e11d48</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #fff1f2;"></div>
+        <div class="swatch" style="background: #ffe4e6;"></div>
+        <div class="swatch" style="background: #e11d48;"></div>
+        <div class="swatch" style="background: #1a1a1a;"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Landing pages jugosas</li>
+        <li>Campañas</li>
+        <li>Redes sociales</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 8. VINTAGE EDITORIAL -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #faf8f5;">
+      <div class="preview-label" style="color: #92400e; font-family: 'Playfair Display';">Literary Classic</div>
+      <div class="preview-title" style="font-family: 'Playfair Display'; color: #1a1a1a; letter-spacing: 0; text-transform: none; font-style: italic;">Once Upon<br>a Time</div>
+      <div class="preview-body" style="font-family: 'Lora'; color: rgba(0,0,0,0.5);">
+        Literario y clásico. Serif display con calidez editorial sobre pergamino.
+      </div>
+      <div class="deco" style="font-family: 'Playfair Display'; color: rgba(0,0,0,0.04);">08</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 08</div>
+      <div class="preset-name">Vintage Editorial</div>
+      <div class="preset-mood">Literary classic</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Playfair Display</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Lora 400</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#faf8f5</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#92400e</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #faf8f5;"></div>
+        <div class="swatch" style="background: #f0ece5;"></div>
+        <div class="swatch" style="background: #92400e;"></div>
+        <div class="swatch" style="background: #1a1a1a;"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Contenido literario</li>
+        <li>Revistas</li>
+        <li>Textos largos</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 9. NEON CYBER -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #030712;">
+      <div class="preview-label" style="color: #06ffa5; font-family: 'Orbitron';">Futuristic Neon</div>
+      <div class="preview-title" style="font-family: 'Orbitron'; color: #ffffff; font-size: clamp(28px, 4vw, 64px);">Neon<br>Future</div>
+      <div class="preview-body" style="font-family: 'Inter'; color: rgba(255,255,255,0.4);">
+        Futurista neón. Verde brillante sobre negro profundo, estética cyberpunk.
+      </div>
+      <div class="deco" style="font-family: 'Orbitron'; color: rgba(6,255,165,0.05);">09</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 09</div>
+      <div class="preset-name">Neon Cyber</div>
+      <div class="preset-mood">Futuristic neon</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Orbitron 900</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#030712</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#06ffa5</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #030712;"></div>
+        <div class="swatch" style="background: #0a1020;"></div>
+        <div class="swatch" style="background: #06ffa5;"></div>
+        <div class="swatch" style="background: rgba(6,255,165,0.1);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Gaming</li>
+        <li>Futurismo</li>
+        <li>Eventos tech</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 10. TERMINAL GREEN -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #0a0a0a;">
+      <div class="preview-label" style="color: #22c55e; font-family: 'JetBrains Mono';">Developer</div>
+      <div class="preview-title" style="font-family: 'JetBrains Mono'; color: #22c55e; font-size: clamp(28px, 4vw, 56px); text-transform: none;">$ sudo<br>make dev</div>
+      <div class="preview-body" style="font-family: 'JetBrains Mono'; color: rgba(34,197,94,0.4); font-size: 13px;">
+        100% monospace. Estética terminal para herramientas de desarrollador.
+      </div>
+      <div class="deco" style="font-family: 'JetBrains Mono'; color: rgba(34,197,94,0.04);">10</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 10</div>
+      <div class="preset-name">Terminal Green</div>
+      <div class="preset-mood">Developer</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">JetBrains Mono 700</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">JetBrains Mono 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#0a0a0a</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#22c55e</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #0a0a0a;"></div>
+        <div class="swatch" style="background: #141414;"></div>
+        <div class="swatch" style="background: #22c55e;"></div>
+        <div class="swatch" style="background: rgba(34,197,94,0.1);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Docs de librerías</li>
+        <li>Developer tools</li>
+        <li>CLIs</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 11. SWISS MODERN -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #ffffff;">
+      <div class="preview-label" style="color: #000000; font-family: 'Switzer';">Corporate Precise</div>
+      <div class="preview-title" style="font-family: 'Switzer'; color: #000000;">Clean<br>System</div>
+      <div class="preview-body" style="font-family: 'Inter'; color: rgba(0,0,0,0.45);">
+        Precisión suiza. Blanco puro, negro absoluto, cero decoración.
+      </div>
+      <div class="deco" style="font-family: 'Switzer'; color: rgba(0,0,0,0.04);">11</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 11</div>
+      <div class="preset-name">Swiss Modern</div>
+      <div class="preset-mood">Corporate precise</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Switzer 900</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#ffffff</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#000000</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #ffffff;"></div>
+        <div class="swatch" style="background: #f5f5f5;"></div>
+        <div class="swatch" style="background: #000000;"></div>
+        <div class="swatch" style="background: rgba(0,0,0,0.06);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Corporativo</li>
+        <li>Informes</li>
+        <li>Herramientas internas</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 12. PAPER & INK -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #1c1917;">
+      <div class="preview-label" style="color: #d4a574; font-family: 'Instrument Serif';">Literary Reflective</div>
+      <div class="preview-title" style="font-family: 'Instrument Serif'; color: #ffffff; letter-spacing: 0; text-transform: none; font-style: italic;">Paper<br>& Ink</div>
+      <div class="preview-body" style="font-family: 'Inter'; color: rgba(255,255,255,0.4);">
+        Literario y reflexivo. Serif elegante con tonos cálidos de tinta sobre papel oscuro.
+      </div>
+      <div class="deco" style="font-family: 'Instrument Serif'; color: rgba(212,165,116,0.05);">12</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 12</div>
+      <div class="preset-name">Paper & Ink</div>
+      <div class="preset-mood">Literary reflective</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Instrument Serif</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#1c1917</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#d4a574</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #1c1917;"></div>
+        <div class="swatch" style="background: #292524;"></div>
+        <div class="swatch" style="background: #d4a574;"></div>
+        <div class="swatch" style="background: rgba(212,165,116,0.1);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Apuntes de clase</li>
+        <li>Contenido literario</li>
+        <li>Lectura larga</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 13. MINIMALISTA ADRI -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #050505;">
+      <div class="preview-label" style="color: rgba(255,255,255,0.5); font-family: 'Geist';">Educational Default</div>
+      <div class="preview-title" style="font-family: 'Geist'; color: #ffffff;">Data<br>Driven</div>
+      <div class="preview-body" style="font-family: 'Inter'; color: rgba(255,255,255,0.4);">
+        El default educativo. Limpio, funcional, con acentos multi-sección.
+      </div>
+      <div class="deco" style="font-family: 'Geist'; color: rgba(255,255,255,0.04);">13</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 13</div>
+      <div class="preset-name">Minimalista Adri</div>
+      <div class="preset-mood">Educational default</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Geist 700</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#050505</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">multi-sección</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #050505;"></div>
+        <div class="swatch" style="background: #111111;"></div>
+        <div class="swatch" style="background: #3b82f6;"></div>
+        <div class="swatch" style="background: #22c55e;"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Dashboards educativos</li>
+        <li>Herramientas de clase</li>
+        <li>Ejercicios</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 14. SOFFIA WARM -->
+  <section class="preset">
+    <div class="preset-preview" style="background: hsl(220 15% 8%);">
+      <div class="preview-label" style="color: #c9a96e; font-family: 'Satoshi';">Warm Premium</div>
+      <div class="preview-title" style="font-family: 'Satoshi'; color: #ffffff;">Soffia<br>Warm</div>
+      <div class="preview-body" style="font-family: 'Inter'; color: rgba(255,255,255,0.4);">
+        Cálido y premium. Dorado suave con profundidad visual. El más cercano a Present/Faces.
+      </div>
+      <div class="preview-quote" style="font-family: 'Inter'; border-left: 2px solid rgba(201,169,110,0.3); color: rgba(255,255,255,0.45);">
+        "El diseño es cómo funciona, no cómo se ve."
+      </div>
+      <div class="deco" style="font-family: 'Satoshi'; color: rgba(201,169,110,0.05);">14</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 14</div>
+      <div class="preset-name">Soffia Warm</div>
+      <div class="preset-mood">Warm premium</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Satoshi 900</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">hsl(220 15% 8%)</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#c9a96e</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: hsl(220 15% 8%);"></div>
+        <div class="swatch" style="background: hsl(220 12% 14%);"></div>
+        <div class="swatch" style="background: #c9a96e;"></div>
+        <div class="swatch" style="background: rgba(201,169,110,0.1);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Landing pages premium</li>
+        <li>Portfolios</li>
+        <li>Presentaciones</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 15. SIGNAL HARDWARE -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #050505; color: #f5f5f0;">
+      <div class="preview-label" style="color: #f04d23; font-family: 'Space Mono';">Monochrome Industrial</div>
+      <div class="preview-title" style="font-family: 'Space Grotesk'; color: #f5f5f0;">Signal<br>Hardware</div>
+      <div class="preview-body" style="font-family: 'Space Mono'; color: rgba(245,245,240,0.55);">
+        Paneles instrumentales, tipografía extrema y un único acento naranja para tooling, agentes y monitorización.
+      </div>
+      <div class="preview-quote" style="font-family: 'Space Mono'; border-left: 2px solid rgba(240,77,35,0.35); color: rgba(245,245,240,0.48);">
+        "State first. Decoration later."
+      </div>
+      <div class="deco" style="font-family: 'Space Grotesk'; color: rgba(255,255,255,0.04);">15</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 15</div>
+      <div class="preset-name">Signal Hardware</div>
+      <div class="preset-mood">Monochrome industrial</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Space Grotesk 700</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Space Mono 400</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#050505</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#f04d23</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #050505;"></div>
+        <div class="swatch" style="background: #0d0d0d;"></div>
+        <div class="swatch" style="background: #f04d23;"></div>
+        <div class="swatch" style="background: rgba(240,77,35,0.12);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Dashboards de agentes</li>
+        <li>Paneles internos</li>
+        <li>Interfaces de monitorización</li>
+      </ul>
+    </div>
+  </section>
+
+</body>
+</html>
