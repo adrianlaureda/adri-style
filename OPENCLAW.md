@@ -15,7 +15,7 @@
 ## Dónde guardar los materiales generados
 
 ```
-~/clawd/output/
+~/Library/Mobile Documents/com~apple~CloudDocs/Downloads/Materiales-Educativos/
 ├── lecciones/          # HTML interactivos
 ├── presentaciones/     # Slides HTML
 ├── cuestionarios/      # Archivos .gift
@@ -29,7 +29,7 @@
 ## Restricciones de seguridad (solo para estos skills)
 
 Al generar materiales:
-- Guardar output SOLO en `~/clawd/output/` o `~/clawd/obsidian-vault/`
+- Guardar output SOLO en `~/Library/Mobile Documents/com~apple~CloudDocs/Downloads/Materiales-Educativos/` o `~/clawd/obsidian-vault/`
 - No instalar dependencias del sistema sin permiso
 - No acceder a servicios web con credenciales (Edixgal, ABALAR, XADE)
 - No borrar archivos fuera de `~/clawd/`
@@ -70,7 +70,7 @@ Al generar materiales:
 
 **Cuándo:** Adri pide lección, material interactivo, o actividad sobre un texto literario.
 
-**Output:** HTML autocontenido → `output/lecciones/leccion-[texto]-YYYY-MM-DD.html`
+**Output:** HTML autocontenido → `Materiales-Educativos/lecciones/leccion-[texto]-YYYY-MM-DD.html`
 
 **Referencia principal:** `~/clawd/skills/contenido-a-leccion/SKILL.md`
 
@@ -91,7 +91,7 @@ Al generar materiales:
 
 **Cuándo:** Adri pide presentación, slides, diapositivas, charla.
 
-**Output:** HTML autocontenido → `output/presentaciones/presentacion-[tema]-YYYY-MM-DD.html`
+**Output:** HTML autocontenido → `Materiales-Educativos/presentaciones/presentacion-[tema]-YYYY-MM-DD.html`
 
 **Referencia principal:** `~/clawd/skills/presentacion-html/SKILL.md`
 
@@ -112,7 +112,7 @@ Al generar materiales:
 
 **Cuándo:** Adri pide cuestionario, quiz, test, preguntas para Moodle/Edixgal.
 
-**Output:** `.gift` → `output/cuestionarios/[tema]-cuestionario-YYYY-MM-DD.gift`
+**Output:** `.gift` → `Materiales-Educativos/cuestionarios/[tema]-cuestionario-YYYY-MM-DD.gift`
 
 **Referencia principal:** `~/clawd/skills/crear-cuestionario/SKILL.md`
 
@@ -132,7 +132,7 @@ Al generar materiales:
 
 **Cuándo:** Adri pide planificar clase, sesión, actividad, dinámica de aula.
 
-**Output:** Markdown → `output/sesiones/sesion-[tema]-YYYY-MM-DD.md`
+**Output:** Markdown → `Materiales-Educativos/sesiones/sesion-[tema]-YYYY-MM-DD.md`
 
 **Referencia principal:** `~/clawd/skills/sesion-interactiva/SKILL.md`
 
@@ -149,7 +149,7 @@ Al generar materiales:
 
 **Cuándo:** Adri pide contenido H5P, actividad para Edixgal, paquete SCORM.
 
-**Output:** `.h5p` o `.zip` → `output/h5p/`
+**Output:** `.h5p` o `.zip` → `Materiales-Educativos/h5p/`
 
 **Referencia principal:** `~/clawd/skills/cmd-crear-h5p/SKILL.md`
 
@@ -194,7 +194,7 @@ Al generar materiales:
 
 **Cuándo:** Adri pide informe de un alumno para tutoría o seguimiento.
 
-**Output:** Texto en gallego normativo → `output/informes/informe-[alumno]-YYYY-MM-DD.txt`
+**Output:** Texto en gallego normativo → `Materiales-Educativos/informes/informe-[alumno]-YYYY-MM-DD.txt`
 
 **Referencia principal:** `~/clawd/skills/informe-alumnos/SKILL.md`
 
@@ -210,7 +210,7 @@ Al generar materiales:
 
 **Cuándo:** Adri prepara reunión de tutoría con info de varios profes.
 
-**Output:** Dos versiones → `output/informes/agregado-[alumno]-{gl,es}-YYYY-MM-DD.txt`
+**Output:** Dos versiones → `Materiales-Educativos/informes/agregado-[alumno]-{gl,es}-YYYY-MM-DD.txt`
 
 **Referencia principal:** `~/clawd/skills/agregador-informes/SKILL.md`
 
@@ -237,7 +237,7 @@ Al generar materiales:
 
 **Cuándo:** Adri pide gráfico, chart, distribución de notas, comparativa visual.
 
-**Output:** SVG + script Python → `output/graficos/`
+**Output:** SVG + script Python → `Materiales-Educativos/graficos/`
 
 **Referencia principal:** `~/clawd/skills/dataviz-educativa/SKILL.md`
 
@@ -255,7 +255,7 @@ Al generar materiales:
 
 **Cuándo:** Adri pide sketch, dibujo pizarra, diagrama esquemático, ilustración hand-drawn.
 
-**Output:** PNG → `output/ilustraciones/ilustracion-[tema]-YYYY-MM-DD.png`
+**Output:** PNG → `Materiales-Educativos/ilustraciones/ilustracion-[tema]-YYYY-MM-DD.png`
 
 **Referencia principal:** `~/clawd/skills/excalidraw-illustrations/SKILL.md`
 
@@ -290,7 +290,8 @@ Al generar materiales:
 ```bash
 # 1. Clonar skills al workspace
 cd ~/clawd
-mkdir -p skills output/{lecciones,presentaciones,cuestionarios,h5p,sesiones,informes,graficos,ilustraciones}
+mkdir -p skills
+mkdir -p ~/Library/Mobile\ Documents/com~apple~CloudDocs/Downloads/Materiales-Educativos/{lecciones,presentaciones,cuestionarios,h5p,sesiones,informes,graficos,ilustraciones}
 git clone git@github.com:adrianlaureda/adri-style.git skills/adri-style
 
 # 2. Copiar el resto de skills desde la máquina principal (via SSH o rsync)

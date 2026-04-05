@@ -11,7 +11,7 @@ set -euo pipefail
 
 CLAWD="$HOME/clawd"
 SKILLS_DIR="$CLAWD/skills"
-OUTPUT_DIR="$CLAWD/output"
+OUTPUT_DIR="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Downloads/Materiales-Educativos"
 MAC_PRINCIPAL="adrianlauredaleon@mbp-adri.local"
 
 echo "=== Setup de skills educativos para Cora ==="

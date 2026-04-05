@@ -36,8 +36,9 @@ Cuando Adri pida crear, generar o revisar materiales educativos. Para todo lo de
 
 ## Dónde guardar output
 
-Todo material generado va a `~/clawd/output/` en la subcarpeta correspondiente:
-lecciones/, presentaciones/, cuestionarios/, h5p/, sesiones/, informes/, graficos/, ilustraciones/
+Todo material generado va a iCloud Drive para sincronización automática entre dispositivos:
+`~/Library/Mobile Documents/com~apple~CloudDocs/Downloads/Materiales-Educativos/`
+Subcarpetas: lecciones/, presentaciones/, cuestionarios/, h5p/, sesiones/, informes/, graficos/, ilustraciones/
 
 ## Reglas de formato
 
@@ -48,7 +49,7 @@ lecciones/, presentaciones/, cuestionarios/, h5p/, sesiones/, informes/, grafico
 
 ## Restricciones para estos skills
 
-- Guardar output SOLO en `~/clawd/output/` o `~/clawd/obsidian-vault/`
+- Guardar output SOLO en `~/Library/Mobile Documents/com~apple~CloudDocs/Downloads/Materiales-Educativos/` o `~/clawd/obsidian-vault/`
 - NO subir nada a Edixgal, XADE ni ningún servicio web con credenciales
 - NO enviar emails ni mensajes a terceros
 - NO instalar dependencias sin permiso
