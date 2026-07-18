@@ -6,13 +6,16 @@ imperceptibles — si el usuario nota la animación, es demasiado.
 ## Reglas
 
 - **Always** usar ≤300ms para interacciones de UI
-- **Always** animar solo transform y opacity (propiedades composited)
+- **Always** animar solo `transform` y `opacity` (propiedades composited)
 - **Always** usar ease-out para elementos que entran, ease-in para los que salen
 - **Always** definir transform-origin desde el punto de activación, no desde el centro
-- **Never** animar padding, margin, width, height, border (causan reflow/layout shift)
+- **Always** para barras de progreso usar `transform: scaleX/scaleY` con `transform-origin`, NO `transition: width/height` (ver `components.md §14`)
+- **Always** respetar `prefers-reduced-motion: reduce` desactivando animaciones no esenciales
+- **Never** animar `padding`, `margin`, `width`, `height`, `border`, `top`, `left` (causan reflow/layout shift; detectado en producción 2026-05-08 en 2 sites)
 - **Never** animar desde scale(0) — mínimo 0.9 para mantener contexto
 - **Never** usar animaciones >600ms (parecen lentas)
-- **Consider** custom cubic-bezier sobre ease genérico para más personalidad
+- **Never** usar `cubic-bezier(...> 1.0...)` (overshoot/bounce/elastic) por defecto. Solo si el preset lo justifica como decisión documentada (ej. preset Micro-interactions con bounce intencional). Detectado en producción como anti-pattern AI-tell en `branding-adri` y `adri-app`.
+- **Consider** custom cubic-bezier sobre ease genérico para más personalidad — preferir curvas de salida natural (`cubic-bezier(0.16, 1, 0.3, 1)`) sobre overshoot
 - **Consider** blur(2px) como fallback sutil cuando otras animaciones no funcionan
 
 ## Valores de referencia
@@ -82,10 +85,41 @@ imperceptibles — si el usuario nota la animación, es demasiado.
 }
 ```
 
+## Stagger de entrada con CSS custom property
+
+Para listas de N elementos que entran en cascada (timeline, cards, ítems de menú). Usar `--i` en el HTML y `calc(var(--i, 0) * Xms)` en el CSS. Más robusto que `nth-child` porque funciona con cualquier N sin enumerar selectores.
+
+```html
+<!-- HTML: cada item lleva --i con su índice (0-based) -->
+<div class="card" style="--i:0">…</div>
+<div class="card" style="--i:1">…</div>
+<div class="card" style="--i:2">…</div>
+```
+
+```css
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 65ms);
+}
+```
+
+Valores de referencia para el delay:
+- `50ms` — listas cortas (≤4 items), ritmo rápido
+- `65ms` — timelines y pipelines (5-8 items), ritmo natural
+- `80ms` — listas largas (>8 items) donde el stagger es narrativo
+
 ## Checklist
 
 - [ ] Ninguna animación supera 600ms
-- [ ] Solo se animan transform y opacity
+- [ ] Solo se animan `transform` y `opacity`
 - [ ] Hover no desplaza más de 2px
 - [ ] No hay scale por debajo de 0.9
 - [ ] transform-origin correcto según punto de activación
+- [ ] **v5.3** Barras de progreso usan `transform: scaleX/scaleY`, NO `width/height` animado
+- [ ] **v5.3** No hay `cubic-bezier(...> 1.0...)` (overshoot/bounce) por defecto
+- [ ] **v5.3** `@media (prefers-reduced-motion: reduce)` desactiva animaciones no esenciales

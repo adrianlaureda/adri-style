@@ -4,6 +4,10 @@ Catalogo completo de componentes del sistema Adri Style.
 Cada componente usa variables CSS del sistema (`--step-*`, `--space-*`, `--font-*`, `--bg-*`, `--text-*`, `--border`, `--accent`).
 Principios: bordes (no sombras), transiciones sutiles, contraste moderado, `color-mix()` para superficies tintadas.
 
+> **AVISO v5.3 (post-audit Impeccable 2026-05-08)**: las barras de progreso de las secciones 1B, 2A, 2B, 2E y 5 (estados `mini-bar-fill`, `h-bar-fill`, `v-bar`, `progress-fill`, `score-fill`) usan `transition: width/height`, que causa layout thrash y fue detectado como anti-pattern en `planificacion-2eso.pages.dev` y `adri-app-react`. **Para outputs nuevos, preferir el patrón "Modern progress bars" (sección 14 al final del documento)** que usa `transform: scaleX/scaleY` con `transform-origin`. Los ejemplos legacy se mantienen para compatibilidad con outputs ya publicados, pero NO copiar para nuevos materiales.
+
+> **AVISO v5.3 — `border-left` decorativo**: la sección 5 (`blockquote`) usa `border-left: 3px solid var(--accent)`. Patrón válido cuando codifica datos (semáforo educativo verde/amarillo/rojo, categoría, estado). Patrón "side-tab AI-tell" si es decoración pura sin información. Verificar caso por caso. Detectado como anti-pattern en `branding-adri`, `formacion-ia-xograr` y `planificacion-2eso` (este último legítimo: codifica notas).
+
 **Reglas universales:**
 - `border: 1px solid var(--border)` — NUNCA `box-shadow`
 - `border-radius: var(--radius)` (max 12px, 100px solo para pills)
@@ -12,6 +16,8 @@ Principios: bordes (no sombras), transiciones sutiles, contraste moderado, `colo
 - `font-variant-numeric: tabular-nums` en datos numericos
 - Lucide SVG: `stroke-width="1.5"`, `fill="none"`, `stroke="currentColor"`
 - No gradientes, no emojis
+- **Animar SOLO `transform` y `opacity`** — nunca `width/height/padding/margin/border/top/left` (ver `animation.md`)
+- **`border-left` colorido grueso** SOLO si codifica información (categoría, estado, semáforo). Si es decoración → quitar (anti-pattern AI)
 
 ---
 
@@ -2449,6 +2455,91 @@ Variable-sized grid cells for modern dashboard/portfolio layouts:
 
 ---
 
+## 14. Modern Progress Bars (v5.3+) — patrón canónico para nuevos outputs
+
+> Sustituye los ejemplos legacy de secciones 1B/2A/2B/2E/5 que usaban `transition: width/height` (anti-pattern detectado en producción). Los ejemplos legacy se mantienen para compatibilidad pero NO copiar para outputs nuevos.
+
+### 14A. Barra horizontal moderna
+
+```html
+<div class="progress" style="--pct-decimal: 0.75">
+  <div class="progress-fill"></div>
+</div>
+```
+
+```css
+.progress {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-elevated);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  width: 100%;
+  height: 100%;
+  background: var(--accent, var(--text-secondary));
+  border-radius: 3px;
+  transform: scaleX(var(--pct-decimal, 0));
+  transform-origin: left;
+  transition: transform 0.6s var(--ease-out);
+}
+```
+
+### 14B. Barra vertical moderna
+
+```html
+<div class="v-bar" style="--pct-decimal: 0.5"></div>
+```
+
+```css
+.v-bar {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px 6px 0 0;
+  transform: scaleY(var(--pct-decimal, 0));
+  transform-origin: bottom;
+  transition: transform 0.6s var(--ease-out);
+}
+```
+
+### 14C. Score / KPI bar con color por umbral
+
+```html
+<div class="score">
+  <div class="score-fill good" style="--pct-decimal: 0.85"></div>
+</div>
+```
+
+```css
+.score {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-elevated);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.score-fill {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  transform: scaleX(var(--pct-decimal, 0));
+  transform-origin: left;
+  transition: transform 0.6s var(--ease-out);
+}
+.score-fill.good { background: #22c55e; }
+.score-fill.warning { background: #eab308; }
+.score-fill.bad { background: #ef4444; }
+```
+
+**API**: pasar `--pct-decimal` con valor entre `0` y `1` (no `0%-100%`). Si el dato fuente es un porcentaje en string, calcular `decimal = pct / 100` en el generador.
+
+**Por qué `transform: scaleX/scaleY` en lugar de `width/height`**: el navegador puede compositar `transform` en GPU sin recalcular layout (no reflow, no paint en hijos). Animar `width/height` fuerza layout thrash en cada frame.
+
+---
+
 ## Checklist de componentes
 
 - [ ] Cards usan `border: 1px solid var(--border)` (no box-shadow)
@@ -2463,3 +2554,107 @@ Variable-sized grid cells for modern dashboard/portfolio layouts:
 - [ ] Ejercicios tienen feedback con `color-mix()` para `.correct`/`.incorrect`
 - [ ] Grid de cards con jerarquia (no 4 identicas en fila)
 - [ ] Responsive a 900px y 600px
+- [ ] **v5.3** Barras de progreso usan `transform: scaleX/scaleY` (sección 14), NO `transition: width/height`
+- [ ] **v5.3** `border-left` colorido grueso solo si codifica información (semáforo notas, categoría)
+- [ ] **v5.3** Outputs NO usan Inter como única fuente
+- [ ] **v5.7** §15 Cada elemento con caja debe pasar el "Test de la Caja" (regla EAR). Cajas innecesarias eliminadas.
+
+---
+
+## §15. Anti-cajas — la "caja innecesaria" es AI-tell (v5.7+)
+
+**Regla canónica detectada por Adri 2026-05-08 noche tras iterar `estacion-clasificacion`:**
+
+> «Veo cuadros, destaques sin necesidad. Me gusta el estilo minimalista, salvo que sea un botón que haya que clicar por algún motivo».
+
+Las cajas (`background: var(--bg-card)` + `border` + `border-radius`) son una de las marcas más fuertes de output IA-genérico. La IA tiende a ENCAJAR todo "porque queda ordenado". El resultado parece SaaS dashboard, no material editorial.
+
+### Test de la Caja — regla EAR
+
+Antes de envolver un elemento en una caja (`background` + `border` + `border-radius > 4px` + `padding` interior), debe pasar **AL MENOS UNA** de estas tres pruebas:
+
+- **E** — **Es accionable**. Es un control que el usuario puede pulsar/tocar para ejecutar una acción discreta. Ej: `<button class="btn-primary">Comenzar</button>`.
+- **A** — **Agrupa contenido heterogéneo**. Contiene 3+ elementos visuales distintos (texto + imagen + meta + cta) que necesitan delimitación. Ej: una card de proyecto en un grid de portfolio.
+- **R** — **Representa un dato discreto**. Es la representación visual de un objeto de datos único (un usuario, una fecha, un evento). Ej: chip de etiqueta, badge de estado.
+
+**Si NO pasa ninguna de las tres → NO va en caja.** Ofrece la información con espaciado, tipografía y separadores horizontales finos en su lugar.
+
+### Patrones canónicos de sustitución
+
+#### 1. Selectores tipo radio (FÁCIL/MEDIO/DIFÍCIL, 2/3/4/5 jugadores, plan económico/estándar/premium)
+
+Son **selecciones**, no acciones. NO necesitan caja.
+
+❌ Anti-pattern:
+```css
+.option-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 14px 18px; }
+.option-card.selected { border-color: var(--accent); box-shadow: 0 0 16px rgba(...); }
+```
+
+✅ Patrón v5.7:
+```css
+.option { background: transparent; border: none; padding: 10px 6px; color: var(--text-secondary); position: relative; }
+.option:hover, .option.selected { color: var(--text-primary); }
+.option.selected::after { content: ""; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 24px; height: 1px; background: var(--text-primary); }
+```
+
+#### 2. Inputs de texto
+
+NO son "campos de formulario SaaS". Solo subrayado.
+
+❌ `input { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; }`
+
+✅ `input { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 8px 0; } input:focus { border-bottom-color: var(--text-primary); outline: none; }`
+
+#### 3. Contenedor del contenido protagonista (palabra de juego, métrica hero, cita)
+
+Si el elemento ES el protagonista visual, NO necesita caja: domina por tamaño tipográfico.
+
+❌ `.word-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 36px 40px; min-height: 140px; }`
+
+✅ `.word-card { background: transparent; border: none; padding: 24px 0; } .word-main { font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 900; }`
+
+#### 4. Feedback contextual (correcto / incorrecto / aviso)
+
+Color del texto + icono. Caja solo si el feedback persiste y compite con otro contenido visible.
+
+❌ `.feedback.correct { background: rgba(34,197,94,0.08); border: 1px solid var(--success); border-radius: 14px; padding: 16px 20px; }`
+
+✅ `.feedback.correct { background: transparent; border: none; padding: 12px 0; color: var(--success); } .feedback .icon { opacity: 0.85; }`
+
+#### 5. Cards equipo / cards categoría con identidad cromática
+
+El color del equipo/categoría comunica identidad. NO necesita borde envolvente — basta una **línea fina superior** del color del equipo.
+
+❌ `.team-card.team1 { border-color: var(--team-1); border-width: 1px 1px 1px 1px; box-shadow: 0 0 0 2px var(--team-1); background: var(--bg-card); }`
+
+✅ `.team-card { background: transparent; border: none; border-top: 2px solid var(--border); padding-top: 14px; } .team-card.team1 { border-top-color: var(--team-1); }`
+
+#### 6. Listados / tablas de datos
+
+Líneas separadoras horizontales, no celdas en cuadrícula.
+
+❌ `.row { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }`
+
+✅ `.row { background: transparent; border: none; border-bottom: 1px solid var(--border); padding: 14px 0; }`
+
+### Cuándo SÍ va caja (lista cerrada)
+
+- **Botones de acción explícita** que el usuario debe pulsar (Comenzar, Enviar, Continuar). Caja sobria: `border: 1px solid var(--border); border-radius: 4px; background: transparent`.
+- **Modales / overlays** con backdrop oscuro (la caja delimita el área activa frente al fondo).
+- **Code blocks** con `font-family: monospace` (la caja indica "texto literal/no prosa").
+- **Quotes editoriales** con `<blockquote>` cuando contienen meta-información (autor, obra) además del texto.
+- **Cards de portfolio** que agrupan imagen + título + meta + CTA en un grid (regla A).
+
+### Auditoría visual: cómo detectar caja sospechosa
+
+En cualquier output, contar el número de elementos con `border-radius > 6px`. Si supera **8 en la pantalla visible**, casi seguro que hay encajamiento excesivo. Cada caja debe justificar su existencia con la regla EAR.
+
+### Excepción educativa explícita
+
+Para outputs Moodle/Edixgal con feedback automático, las cajas de "respuesta correcta/incorrecta" son convenciones del entorno y se respetan aunque no pasen EAR. Documentar la decisión con un comentario en el HTML.
+
+### Referencias internas
+
+- Caso de origen: `~/Proyectos/Claude/apps/adri-react/public/estacion-clasificacion/index.html` (regenerado en v5.7).
+- Iteración documentada: feedback de Adri 2026-05-08 noche en sesión `Impeccable y Rebranding`.

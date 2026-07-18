@@ -1,0 +1,498 @@
+{
+  "$schema_version": "1.0",
+  "adri_style_version": "5.6",
+  "generated_at": "2026-05-08",
+  "source_canonical": "references/style-presets.md § Audit v5.4",
+  "warning_for_humans": "Esta es la fuente programática derivada de la tabla canónica humana. Si modificas un preset: edita PRIMERO references/style-presets.md y MIRROR aquí. Tools que consumen este JSON: scripts/audit-adri.sh (filtro 2 v5.6), futuras integraciones (tweak-adri Font variation slider, etc.).",
+  "presets": [
+    {
+      "id": "01-bold-signal",
+      "n": 1,
+      "name": "Bold Signal",
+      "default": true,
+      "fonts": {
+        "display": "Satoshi",
+        "body": "Inter",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "500-900",
+        "weights_body": "300-400",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#f8f8f8", "accent": "#0a0a0a" },
+      "mode_default": "light",
+      "estado": "activo",
+      "uso_real": ["brandbook", "formacion-xograr", "planificacion-4eso", "adri-react"]
+    },
+    {
+      "id": "02-electric-studio",
+      "n": 2,
+      "name": "Electric Studio",
+      "fonts": {
+        "display": "Geist",
+        "body": "Inter",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "300-800",
+        "weights_body": "400-600",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#0a1628", "accent": "#3b82f6" },
+      "mode_default": "dark",
+      "estado": "activo",
+      "uso_real": ["formacion-xograr v0 parcial"]
+    },
+    {
+      "id": "03-creative-voltage",
+      "n": 3,
+      "name": "Creative Voltage",
+      "fonts": {
+        "display": "Clash Display",
+        "body": "Satoshi",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "500-700",
+        "weights_body": "400-700",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#1a0a2e", "accent": "#f59e0b" },
+      "mode_default": "dark",
+      "estado": "revisión-30d",
+      "uso_real": []
+    },
+    {
+      "id": "04-dark-botanical",
+      "n": 4,
+      "name": "Dark Botanical",
+      "fonts": {
+        "display": "Cormorant Garamond",
+        "body": "DM Sans",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "400, 600, 700",
+        "weights_body": "100-1000 var",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#0a0f0a", "accent": "#4ade80" },
+      "mode_default": "dark",
+      "estado": "revisión-30d",
+      "uso_real": []
+    },
+    {
+      "id": "05-notebook-tabs",
+      "n": 5,
+      "name": "Notebook Tabs",
+      "fonts": {
+        "display": "Newsreader",
+        "body": "Source Serif 4",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "400, 600, 700",
+        "weights_body": "400, 600",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#f5f0e8", "accent": "#2563eb" },
+      "mode_default": "light",
+      "estado": "activo-frágil",
+      "uso_real": []
+    },
+    {
+      "id": "06-pastel-geometry",
+      "n": 6,
+      "name": "Pastel Geometry",
+      "fonts": {
+        "display": "Satoshi",
+        "body": "Inter",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "300-700",
+        "weights_body": "400-600",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#fef7f4", "accent": "#e07850" },
+      "mode_default": "light",
+      "estado": "activo",
+      "uso_real": ["quizzes", "forms-alumnos"]
+    },
+    {
+      "id": "07-split-pastel",
+      "n": 7,
+      "name": "Split Pastel",
+      "fonts": {
+        "display": "Space Grotesk",
+        "body": "Inter",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "400-700",
+        "weights_body": "400-600",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#fff1f2", "accent": "#e11d48" },
+      "mode_default": "light",
+      "estado": "revisión-30d",
+      "uso_real": []
+    },
+    {
+      "id": "08-vintage-editorial",
+      "n": 8,
+      "name": "Vintage Editorial",
+      "fonts": {
+        "display": "Playfair Display",
+        "body": "Public Sans",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "400-900 var",
+        "weights_body": "100-900 var",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#faf8f5", "accent": "#8B2E1F" },
+      "mode_default": "light",
+      "estado": "activo",
+      "uso_real": ["dia-letras-2026 (planificado)"]
+    },
+    {
+      "id": "09-neon-cyber",
+      "n": 9,
+      "name": "Neon Cyber",
+      "fonts": {
+        "display": "Orbitron",
+        "body": "Inter",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "400, 600, 700, 800",
+        "weights_body": "400-600",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#030712", "accent": "#06ffa5" },
+      "mode_default": "dark",
+      "estado": "revisión-30d",
+      "uso_real": []
+    },
+    {
+      "id": "10-terminal-green",
+      "n": 10,
+      "name": "Terminal Green",
+      "fonts": {
+        "display": "JetBrains Mono",
+        "body": "JetBrains Mono",
+        "single_font": true,
+        "single_font_justified": "Autenticidad terminal: la fuente *es* el lenguaje.",
+        "weights_display": "400-700",
+        "weights_body": "400-700",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#0a0a0a", "accent": "#22c55e" },
+      "mode_default": "dark",
+      "estado": "activo-frágil",
+      "uso_real": []
+    },
+    {
+      "id": "11-swiss-modern",
+      "n": 11,
+      "name": "Swiss Modern",
+      "fonts": {
+        "display": "Switzer",
+        "body": "Inter",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "700-900",
+        "weights_body": "400-700",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#ffffff", "accent": "#000000" },
+      "mode_default": "light",
+      "estado": "revisión-30d",
+      "uso_real": []
+    },
+    {
+      "id": "12-paper-ink",
+      "n": 12,
+      "name": "Paper & Ink",
+      "fonts": {
+        "display": "Instrument Serif",
+        "body": "Inter",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "400 (única disponible)",
+        "weights_body": "100-900 var",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#1c1917", "accent": "#d4a574" },
+      "mode_default": "dark",
+      "estado": "activo",
+      "uso_real": ["reading-log", "journal-personal"]
+    },
+    {
+      "id": "13-minimalista-adri",
+      "n": 13,
+      "name": "Minimalista Adri",
+      "fonts": {
+        "display": "Geist",
+        "body": "Inter",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "300-700",
+        "weights_body": "400-800",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#050505", "accent": "multi-section" },
+      "mode_default": "dark",
+      "estado": "activo",
+      "uso_real": ["dashboards-calificaciones", "materiales-clase"]
+    },
+    {
+      "id": "14-soffia-warm",
+      "n": 14,
+      "name": "Soffia Warm",
+      "fonts": {
+        "display": "Satoshi",
+        "body": "Inter",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "300-900",
+        "weights_body": "400-600",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "hsl(220 15% 8%)", "accent": "#c9a96e" },
+      "mode_default": "dark",
+      "estado": "activo-frágil",
+      "uso_real": []
+    },
+    {
+      "id": "15-signal-hardware",
+      "n": 15,
+      "name": "Signal Hardware",
+      "fonts": {
+        "display": "Space Grotesk",
+        "body": "Space Mono",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "400-700",
+        "weights_body": "400-700",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#050505", "accent": "#f04d23" },
+      "mode_default": "dark",
+      "estado": "activo",
+      "uso_real": ["dashboards-cora", "tooling"]
+    },
+    {
+      "id": "16-magazine-editorial",
+      "n": 16,
+      "name": "Magazine Editorial",
+      "fonts": {
+        "display": "Fraunces",
+        "body": "Source Serif 4",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "100-900 var (drop-cap 900)",
+        "weights_body": "200-900 var",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#fafaf9", "accent": "#C1272D" },
+      "mode_default": "light",
+      "estado": "activo",
+      "uso_real": ["dossiers-literarios", "longreads"]
+    },
+    {
+      "id": "17-cinematic-story",
+      "n": 17,
+      "name": "Cinematic Story",
+      "fonts": {
+        "display": "Bricolage Grotesque",
+        "body": "Public Sans",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "200-800 var",
+        "weights_body": "100-900 var",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "hsl(220 30% 6%)", "accent": "#F59E0B" },
+      "mode_default": "dark",
+      "estado": "activo",
+      "uso_real": ["unidades-narrativas-planificadas"]
+    },
+    {
+      "id": "18-storytelling",
+      "n": 18,
+      "name": "Storytelling-Driven",
+      "fonts": {
+        "display": "Literata",
+        "body": "Inter",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "200-900 var",
+        "weights_body": "100-900 var",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#faf5ed", "accent": "#D97706" },
+      "mode_default": "light",
+      "estado": "activo",
+      "uso_real": ["unidades-arco-narrativo-planificadas"]
+    },
+    {
+      "id": "19-e-ink-paper",
+      "n": 19,
+      "name": "E-Ink Paper",
+      "fonts": {
+        "display": "Literata",
+        "body": "Inter",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "200-900 var",
+        "weights_body": "100-900 var",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#fdfbf7", "accent": "#1A1A1A" },
+      "mode_default": "light",
+      "estado": "activo",
+      "uso_real": ["guias-lectura", "antologias", "imprimible-bn"]
+    },
+    {
+      "id": "20-exaggerated-min",
+      "n": 20,
+      "name": "Exaggerated Minimalism",
+      "fonts": {
+        "display": "Archivo Black",
+        "body": "Inter",
+        "single_font": false,
+        "single_font_justified": null,
+        "weights_display": "400 (única)",
+        "weights_body": "100-900 var",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#FFFFFF", "accent": "#FF3B30" },
+      "mode_default": "light",
+      "estado": "activo",
+      "uso_real": ["portadas", "intro-slides"]
+    },
+    {
+      "id": "21-bento-grids",
+      "n": 21,
+      "name": "Bento Grids",
+      "fonts": {
+        "display": "Inter",
+        "body": "Inter",
+        "single_font": true,
+        "single_font_justified": "Sistema Apple-style usa una sola family — Inter sustituye a SF Pro.",
+        "weights_display": "700",
+        "weights_body": "400-500",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#F5F5F7", "accent": "#1D1D1F" },
+      "mode_default": "light",
+      "estado": "activo",
+      "uso_real": ["dashboards-educativos-kpi"]
+    },
+    {
+      "id": "22-zero-interface",
+      "n": 22,
+      "name": "Zero Interface",
+      "fonts": {
+        "display": "Inter",
+        "body": "Inter",
+        "single_font": true,
+        "single_font_justified": "Interfaz invisible: la fuente desaparece.",
+        "weights_display": "200 (Light)",
+        "weights_body": "200-400",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#FAFAFA", "accent": "hsl(220 10% 40%)" },
+      "mode_default": "light",
+      "estado": "activo-frágil",
+      "uso_real": ["splash-pausas-pedagogicas-planificado"]
+    },
+    {
+      "id": "23-neumorphism",
+      "n": 23,
+      "name": "Neumorphism",
+      "fonts": {
+        "display": "Nunito",
+        "body": "Nunito",
+        "single_font": true,
+        "single_font_justified": "Rounded sans coherente con vibe blando.",
+        "weights_display": "800",
+        "weights_body": "600-700",
+        "body_default_over_500": true,
+        "body_over_500_justified": "Peso 600+ obligatorio para legibilidad sobre fondo plomizo #E0E5EC; documentado en components.md."
+      },
+      "color": { "bg": "#E0E5EC", "accent": "#5E72E4" },
+      "mode_default": "light",
+      "estado": "revisión-30d",
+      "uso_real": []
+    },
+    {
+      "id": "24-motion-driven",
+      "n": 24,
+      "name": "Motion-Driven",
+      "fonts": {
+        "display": "Inter",
+        "body": "Inter",
+        "single_font": true,
+        "single_font_justified": "El wow es la animación, no la tipografía.",
+        "weights_display": "800 (Black)",
+        "weights_body": "400-500",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#0A0A0A", "accent": "#22C55E" },
+      "mode_default": "dark",
+      "estado": "revisión-30d",
+      "uso_real": []
+    },
+    {
+      "id": "25-micro-interact",
+      "n": 25,
+      "name": "Micro-interactions",
+      "fonts": {
+        "display": "Inter",
+        "body": "Inter",
+        "single_font": true,
+        "single_font_justified": "Linear/Notion-style, sistema único.",
+        "weights_display": "700",
+        "weights_body": "400-600",
+        "body_default_over_500": true,
+        "body_over_500_justified": "Default 600 en .btn (interacción) — body texto sigue 400."
+      },
+      "color": { "bg": "#FFFFFF", "accent": "#22C55E" },
+      "mode_default": "light",
+      "estado": "activo",
+      "uso_real": ["quizzes-feedback-inmediato"]
+    },
+    {
+      "id": "26-ai-native-ui",
+      "n": 26,
+      "name": "AI-Native UI",
+      "fonts": {
+        "display": "Inter",
+        "body": "Inter",
+        "single_font": true,
+        "single_font_justified": "Claude/ChatGPT/Perplexity usan Inter Display + Inter Text; coherente con producto chat.",
+        "weights_display": "700",
+        "weights_body": "400-500",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#0A0A0F", "accent": "#6366F1" },
+      "mode_default": "dark",
+      "estado": "activo-frágil",
+      "uso_real": ["tutor-ia-planificado"]
+    },
+    {
+      "id": "27-interactive-cur",
+      "n": 27,
+      "name": "Interactive Cursor",
+      "fonts": {
+        "display": "Inter",
+        "body": "Inter",
+        "single_font": true,
+        "single_font_justified": "Portfolio premium tipo Linear/Vercel.",
+        "weights_display": "800 (Black)",
+        "weights_body": "400-500",
+        "body_default_over_500": false
+      },
+      "color": { "bg": "#FAFAFA", "accent": "#5E6AD2" },
+      "mode_default": "light",
+      "estado": "revisión-30d",
+      "uso_real": []
+    }
+  ]
+}

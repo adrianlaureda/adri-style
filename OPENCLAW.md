@@ -51,18 +51,18 @@ Al generar materiales:
    - Ejercicio interactivo → Pastel Geometry, Split Pastel, Electric Studio
    - Editorial/literario → Vintage Editorial, Paper & Ink, Dark Botanical
    - Futurista → Neon Cyber, Terminal Green
-2. Copiar `skills/adri-style/assets/base.css` como punto de partida
-3. Sobreescribir variables CSS con las del preset elegido
-4. Consultar `references/` para tipografía, layout, componentes, animación
+2. Copiar `skills/adri-style/templates/bootstrap-adri.html`
+3. Sustituir fuentes, tokens y `data-preset` con el bloque completo del preset
+4. Consultar `references/` para tipografía, layout, componentes y animación
+5. Ejecutar `skills/adri-style/scripts/audit-adri.sh <archivo.html>`
 
 **Reglas innegociables:**
-- Escala tipográfica fluida con `clamp()` y variables `--step-*`
-- Font pairing real: `--font-display` DIFERENTE de `--font-body`
-- Tema dual (oscuro por defecto) con toggle + localStorage
-- Iconos Lucide SVG, NUNCA emojis en UI
-- Near-black `#0a0a0a`, NUNCA `#000000`. Grises tintados, NUNCA puros
-- Al menos 1 SVG inline por output. 2 breakpoints responsive mínimo
-- NUNCA: box-shadow, animar padding/margin, Inter como única fuente, purple gradients
+- Declarar `data-preset="NN-name"`
+- Cargar las fuentes canónicas del preset declarado
+- Usar Lucide SVG; nunca emojis como iconos de UI
+- Mantener el toggle luna/sol en la dirección definida por `SKILL.md`
+- Aplicar el Test de la Caja (EAR)
+- Si este resumen contradice `SKILL.md`, prevalece `SKILL.md`
 
 ---
 
