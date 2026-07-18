@@ -5,13 +5,20 @@ Principio: a tipografia e a base do deseño; se a tipografia falla, todo falla.
 
 ## Sistema de fontes (font pairing)
 
-Tres roles tipograficos, cada un con fallback:
+> **REGLA v5.3 (post-audit Impeccable 2026-05-08)**: NO existe "fuente por defecto" global de adri-style. **El preset activo dicta las fuentes y pesos**. Si NO hay preset activo, el output debe abortar y pedir uno antes de generar. Inter es UNA opción entre muchas — su uso por defecto fue un anti-pattern detectado en outputs reales (adri-app, estacion-clasificacion). Cada preset en `style-presets.md` declara su pareja display/body explícitamente.
 
-| Rol | Fonte por defecto | Alternativas | Uso |
-|-----|------------------|-------------|-----|
-| Display/Headings | Inter 600 | Cabinet Grotesk, Clash Display, Excon, Alpino, Space Grotesk, Plus Jakarta Sans, Instrument Serif, Playfair Display, Cormorant Garamond, Orbitron, DM Sans, Newsreader | Titulos, heroes, headings |
-| Body/Copy | Inter 400-500 | DM Sans, Satoshi, Switzer, Alpino, Pally, Lora, Source Serif 4, General Sans | Texto corrido, parrafos |
-| Mono/Data | Geist Mono | JetBrains Mono, Fira Code | Dashboards, codigo, tabular-nums |
+Tres roles tipograficos. Cada preset elige fuentes y pesos:
+
+| Rol | Función | Catalogo de fuentes recomendadas |
+|-----|---------|----------------------------------|
+| Display/Headings | Titulos, heroes, headings | Satoshi, Cabinet Grotesk, Clash Display, Excon, Alpino, Space Grotesk, Plus Jakarta Sans, Instrument Serif, Playfair Display, Cormorant Garamond, Orbitron, DM Sans, Newsreader, Inter |
+| Body/Copy | Texto corrido, parrafos | Inter, DM Sans, Satoshi, Switzer, Alpino, Pally, Nunito, Lora, Source Serif 4, General Sans |
+| Mono/Data | Dashboards, codigo, tabular-nums | Geist Mono, JetBrains Mono, Fira Code, IBM Plex Mono |
+
+**Antipatterns detectados en producción que NO se deben repetir** (audit Impeccable 2026-05-08):
+- Single-font: usar Inter (o una sola fuente) para display Y body. Pareja display+body distinta es obligatoria.
+- Inter como default sin pensar el preset: el output tira de Inter porque "es lo seguro" → señal IA-generada.
+- Display sin pareja body diferenciada: jerarquía floja.
 
 **Decision tree para elexir fuentes:**
 1. Proxecto educativo/dashboard → Minimalista Adri o Swiss Modern (ver style-presets.md)
@@ -58,22 +65,24 @@ Tres roles tipograficos, cada un con fallback:
 <link href="https://api.fontshare.com/v2/css?f[]=pally@400,500,700&display=swap" rel="stylesheet">
 ```
 
-### Variables CSS de fuentes
+### Variables CSS de fuentes (placeholders, debe rellenarlos el preset activo)
 
 ```css
 :root {
-  --font-display: 'Inter', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  /* PLACEHOLDERS — el preset activo redefine estos valores */
+  --font-display: 'Satoshi', system-ui, sans-serif;     /* ejemplo: Bold Signal */
+  --font-body: 'Inter', system-ui, sans-serif;          /* ejemplo: Bold Signal */
   --font-mono: 'Geist Mono', 'JetBrains Mono', monospace;
 }
 ```
 
-Para cambiar a Space Grotesk en headings:
-```css
-:root {
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-}
-```
+Cada preset (`style-presets.md`) declara su propia pareja explícita. Por ejemplo:
+- **Bold Signal**: display Satoshi 900 + body Inter 300.
+- **Paper & Ink**: display Newsreader + body Source Serif 4.
+- **Swiss Modern**: display Inter 700 + body Inter 400.
+- **Vintage Editorial**: display Playfair Display + body Lora.
+
+NUNCA dejar `--font-display === --font-body` (single-font), salvo que el preset lo declare como decisión consciente.
 
 ## Escala tipografica fluida (ratio 1.25 — Major Third)
 
@@ -102,21 +111,29 @@ Ratio: 1.25 (Major Third) — equilibrio entre jerarquia clara e eficiencia vert
 | General (default) | 1.25 (Major Third) | step--2 a step-5 |
 | Editorial/portfolio | 1.333 (Perfect Fourth) | step--1 a step-5 |
 
-## Xerarquia tipografica
+## Xerarquia tipografica (defaults v5.3 — favorecen pesos finos)
+
+> **Cambio v5.3**: defaults rebajados a 300/400/500. **Nunca** subir a 600+ salvo que el preset lo justifique en su sección de `style-presets.md`. Justificación: weights medios/bold por defecto son tell IA-generado (audit Adri 2026-05-08).
 
 | Elemento | Font | Size | Weight | Letter-spacing | Line-height |
 |----------|------|------|--------|----------------|-------------|
-| Hero | --font-display | --step-5 | 600 | -0.03em | 1.05 |
-| H1 | --font-display | --step-4 | 600 | -0.02em | 1.1 |
-| H2 | --font-display | --step-3 | 600 | -0.02em | 1.15 |
-| H3 | --font-display | --step-2 | 500 | -0.01em | 1.2 |
-| H4 | --font-display | --step-1 | 500 | normal | 1.25 |
-| Body | --font-body | --step-0 | 400 | normal | 1.5 |
-| Small | --font-body | --step--1 | 400 | normal | 1.45 |
-| Caption | --font-body | --step--2 | 500 | 0.02em | 1.3 |
+| Hero | --font-display | --step-5 | 400-500 | -0.03em | 1.05 |
+| H1 | --font-display | --step-4 | 400-500 | -0.02em | 1.1 |
+| H2 | --font-display | --step-3 | 400-500 | -0.02em | 1.15 |
+| H3 | --font-display | --step-2 | 400 | -0.01em | 1.2 |
+| H4 | --font-display | --step-1 | 400 | normal | 1.25 |
+| Body | --font-body | --step-0 | 300-400 | normal | 1.5 |
+| Small | --font-body | --step--1 | 300-400 | normal | 1.45 |
+| Caption | --font-body | --step--2 | 400 | 0.02em | 1.3 |
 | Labels | --font-body | --step--2 | 500 | 0.1em (uppercase) | 1.2 |
 | Data | --font-mono | --step-0 | 400 | normal | 1.3 |
 | Code | --font-mono | --step--1 | 400 | normal | 1.5 |
+
+**Excepciones legítimas** (presets que justifican weights altos):
+- **Bold Signal** ★: display Satoshi 900 (impacto visual identidad). Body Inter 300.
+- **Swiss Modern**: display Inter 700 (típica identidad swiss).
+- **Exaggerated Minimalism**: display Inter 800-900 (es su seña).
+- **Motion-Driven** / **Interactive Cursor**: pesos altos justificados por preset.
 
 ## Espazado fluido (Utopia)
 
@@ -181,12 +198,16 @@ Reglas adicionales para temas oscuros de calidad profesional:
 - **Always** manter lonxitude de liña entre 45-90 caracteres (optimo: 65ch)
 - **Always** usar marxes asimetricos en headings: mais espazo arriba que abaixo
 - **Always** usar font-display: swap ao cargar fontes web
-- **Never** usar font-weight > 600 (excepto se --font-display soporta 700)
+- **Always** declarar `--font-display` y `--font-body` distintos (no single-font) salvo decisión consciente del preset
+- **Always** verificar que `--font-display` y `--font-body` provienen del preset activo, no del default IA-genérico
+- **Never** usar Inter como ÚNICA fuente del documento (tell IA detectado en outputs reales)
+- **Never** usar font-weight > 500 por defecto. Solo > 500 si el preset activo lo justifica explícitamente (Bold Signal, Swiss Modern, Exaggerated Minimalism)
 - **Never** usar cursiva para enfase con sans-serif — usar negrita
 - **Never** combinar espazo entre parrafos E sangria — elexir un
 - **Consider** letter-spacing negativo (-0.02em) solo en titulos grandes (>step-3)
 - **Consider** letter-spacing positivo (0.1em) solo en labels uppercase
 - **Consider** ratio 1.125 para dashboards densos, 1.333 para editorial
+- **Consider** weight 300 en body para presets con énfasis editorial/literario (Paper & Ink, Vintage Editorial)
 
 ## Checklist
 
@@ -196,4 +217,7 @@ Reglas adicionales para temas oscuros de calidad profesional:
 - [ ] Body usa line-height 1.5
 - [ ] Titulos usan line-height 1.05-1.25
 - [ ] Datos numericos con font-mono + tabular-nums
-- [ ] Font-weight maximo 600 (ou 700 so para display alternativo)
+- [ ] `--font-display` ≠ `--font-body` (no single-font)
+- [ ] Fuentes provienen del preset activo (declarado en `style-presets.md`), NO del default Inter
+- [ ] Font-weight default ≤ 500 salvo justificación documentada en preset (Bold Signal, Swiss Modern, etc.)
+- [ ] Output NO usa Inter como única fuente del documento

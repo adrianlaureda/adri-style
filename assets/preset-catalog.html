@@ -24,6 +24,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <!-- v5.2 new fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,700;9..144,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,300;7..72,400;7..72,600;7..72,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -224,6 +230,122 @@
       margin-bottom: 16px;
     }
 
+    /* Signature micro-elements */
+    .sig-dropcap {
+      float: left;
+      font-size: 4.5em;
+      line-height: 0.75;
+      padding: 0.05em 0.08em 0 0;
+      font-weight: 900;
+    }
+    .sig-pullquote {
+      margin-top: 20px;
+      padding-left: 16px;
+      border-left: 3px solid;
+      font-style: italic;
+      font-size: clamp(12px, 0.95vw, 15px);
+      line-height: 1.5;
+      max-width: 38ch;
+    }
+    .sig-bento {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 8px;
+      margin-top: 20px;
+      max-width: 280px;
+    }
+    .sig-bento-card {
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .sig-bento-card--hero {
+      grid-row: 1 / 3;
+      min-height: 80px;
+    }
+    .sig-waveform {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      margin-top: 20px;
+      height: 28px;
+    }
+    .sig-waveform span {
+      width: 3px;
+      border-radius: 2px;
+      opacity: 0.7;
+    }
+    .sig-neu-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .sig-chat {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 260px;
+    }
+    .sig-chat-msg {
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      line-height: 1.4;
+      max-width: 80%;
+    }
+    .sig-cursor-dot {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      margin-top: 20px;
+      position: relative;
+    }
+    .sig-cursor-ring {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid;
+      margin-top: 12px;
+      opacity: 0.5;
+    }
+    .sig-motion-bar {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sig-motion-bar span {
+      height: 3px;
+      border-radius: 2px;
+      opacity: 0.7;
+    }
+    .sig-micro-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid;
+    }
+    .sig-pulse-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-top: 16px;
+      margin-left: 12px;
+      vertical-align: middle;
+    }
+
     @media (max-width: 900px) {
       .preset { grid-template-columns: 1fr; }
       .preset-preview { min-height: 60vh; }
@@ -239,9 +361,9 @@
 
   <!-- PAGE HEADER -->
   <header class="page-header">
-    <div class="label">adri-style v5.1 &middot; Sistema de Diseño</div>
+    <div class="label">adri-style v5.2 &middot; Sistema de Diseño</div>
     <h1>Elige tu<br>preset</h1>
-    <p>15 estilos visuales. Cada uno con personalidad tipográfica, paleta y composición propias. Scroll para explorar.</p>
+    <p>25 estilos visuales. Cada uno con personalidad tipográfica, paleta y composición propias. Scroll para explorar.</p>
   </header>
 
   <!-- 1. BOLD SIGNAL -->
@@ -414,75 +536,7 @@
     </div>
   </section>
 
-  <!-- 6. PASTEL GEOMETRY -->
-  <section class="preset">
-    <div class="preset-preview" style="background: #faf5ff;">
-      <div class="preview-label" style="color: #8b5cf6; font-family: 'Satoshi';">Friendly Pastel</div>
-      <div class="preview-title" style="font-family: 'Satoshi'; font-weight: 700; color: #1a1a1a;">Learn &<br>Play</div>
-      <div class="preview-body" style="font-family: 'Inter'; color: rgba(0,0,0,0.45);">
-        Amigable y educativo. Violeta suave con geometrías pastel.
-      </div>
-      <div class="deco" style="font-family: 'Satoshi'; color: rgba(139,92,246,0.06);">06</div>
-    </div>
-    <div class="preset-info">
-      <div class="preset-number">Preset 06</div>
-      <div class="preset-name">Pastel Geometry</div>
-      <div class="preset-mood">Friendly pastel</div>
-      <div class="meta-grid">
-        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Satoshi 700</div></div>
-        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
-        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#faf5ff</div></div>
-        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#8b5cf6</div></div>
-      </div>
-      <div class="swatches">
-        <div class="swatch" style="background: #faf5ff;"></div>
-        <div class="swatch" style="background: #f3e8ff;"></div>
-        <div class="swatch" style="background: #8b5cf6;"></div>
-        <div class="swatch" style="background: #1a1a1a;"></div>
-      </div>
-      <ul class="use-cases">
-        <li>Ejercicios interactivos</li>
-        <li>Apps educativas</li>
-        <li>Onboarding</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 7. SPLIT PASTEL -->
-  <section class="preset">
-    <div class="preset-preview" style="background: #fff1f2;">
-      <div class="preview-label" style="color: #e11d48; font-family: 'Space Grotesk';">Juicy Bicolor</div>
-      <div class="preview-title" style="font-family: 'Space Grotesk'; color: #1a1a1a;">Fresh<br>Split</div>
-      <div class="preview-body" style="font-family: 'Inter'; color: rgba(0,0,0,0.45);">
-        Bicolor jugoso. Rosa y rojo cereza con composiciones divididas.
-      </div>
-      <div class="deco" style="font-family: 'Space Grotesk'; color: rgba(225,29,72,0.06);">07</div>
-    </div>
-    <div class="preset-info">
-      <div class="preset-number">Preset 07</div>
-      <div class="preset-name">Split Pastel</div>
-      <div class="preset-mood">Juicy bicolor</div>
-      <div class="meta-grid">
-        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Space Grotesk 700</div></div>
-        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
-        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#fff1f2</div></div>
-        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#e11d48</div></div>
-      </div>
-      <div class="swatches">
-        <div class="swatch" style="background: #fff1f2;"></div>
-        <div class="swatch" style="background: #ffe4e6;"></div>
-        <div class="swatch" style="background: #e11d48;"></div>
-        <div class="swatch" style="background: #1a1a1a;"></div>
-      </div>
-      <ul class="use-cases">
-        <li>Landing pages jugosas</li>
-        <li>Campañas</li>
-        <li>Redes sociales</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 8. VINTAGE EDITORIAL -->
+  <!-- 6. VINTAGE EDITORIAL -->
   <section class="preset">
     <div class="preset-preview" style="background: #faf8f5;">
       <div class="preview-label" style="color: #92400e; font-family: 'Playfair Display';">Literary Classic</div>
@@ -490,10 +544,10 @@
       <div class="preview-body" style="font-family: 'Lora'; color: rgba(0,0,0,0.5);">
         Literario y clásico. Serif display con calidez editorial sobre pergamino.
       </div>
-      <div class="deco" style="font-family: 'Playfair Display'; color: rgba(0,0,0,0.04);">08</div>
+      <div class="deco" style="font-family: 'Playfair Display'; color: rgba(0,0,0,0.04);">06</div>
     </div>
     <div class="preset-info">
-      <div class="preset-number">Preset 08</div>
+      <div class="preset-number">Preset 06</div>
       <div class="preset-name">Vintage Editorial</div>
       <div class="preset-mood">Literary classic</div>
       <div class="meta-grid">
@@ -516,7 +570,7 @@
     </div>
   </section>
 
-  <!-- 9. NEON CYBER -->
+  <!-- 7. NEON CYBER -->
   <section class="preset">
     <div class="preset-preview" style="background: #030712;">
       <div class="preview-label" style="color: #06ffa5; font-family: 'Orbitron';">Futuristic Neon</div>
@@ -524,10 +578,10 @@
       <div class="preview-body" style="font-family: 'Inter'; color: rgba(255,255,255,0.4);">
         Futurista neón. Verde brillante sobre negro profundo, estética cyberpunk.
       </div>
-      <div class="deco" style="font-family: 'Orbitron'; color: rgba(6,255,165,0.05);">09</div>
+      <div class="deco" style="font-family: 'Orbitron'; color: rgba(6,255,165,0.05);">07</div>
     </div>
     <div class="preset-info">
-      <div class="preset-number">Preset 09</div>
+      <div class="preset-number">Preset 07</div>
       <div class="preset-name">Neon Cyber</div>
       <div class="preset-mood">Futuristic neon</div>
       <div class="meta-grid">
@@ -550,7 +604,7 @@
     </div>
   </section>
 
-  <!-- 10. TERMINAL GREEN -->
+  <!-- 8. TERMINAL GREEN -->
   <section class="preset">
     <div class="preset-preview" style="background: #0a0a0a;">
       <div class="preview-label" style="color: #22c55e; font-family: 'JetBrains Mono';">Developer</div>
@@ -558,10 +612,10 @@
       <div class="preview-body" style="font-family: 'JetBrains Mono'; color: rgba(34,197,94,0.4); font-size: 13px;">
         100% monospace. Estética terminal para herramientas de desarrollador.
       </div>
-      <div class="deco" style="font-family: 'JetBrains Mono'; color: rgba(34,197,94,0.04);">10</div>
+      <div class="deco" style="font-family: 'JetBrains Mono'; color: rgba(34,197,94,0.04);">08</div>
     </div>
     <div class="preset-info">
-      <div class="preset-number">Preset 10</div>
+      <div class="preset-number">Preset 08</div>
       <div class="preset-name">Terminal Green</div>
       <div class="preset-mood">Developer</div>
       <div class="meta-grid">
@@ -584,7 +638,7 @@
     </div>
   </section>
 
-  <!-- 11. SWISS MODERN -->
+  <!-- 9. SWISS MODERN -->
   <section class="preset">
     <div class="preset-preview" style="background: #ffffff;">
       <div class="preview-label" style="color: #000000; font-family: 'Switzer';">Corporate Precise</div>
@@ -592,10 +646,10 @@
       <div class="preview-body" style="font-family: 'Inter'; color: rgba(0,0,0,0.45);">
         Precisión suiza. Blanco puro, negro absoluto, cero decoración.
       </div>
-      <div class="deco" style="font-family: 'Switzer'; color: rgba(0,0,0,0.04);">11</div>
+      <div class="deco" style="font-family: 'Switzer'; color: rgba(0,0,0,0.04);">09</div>
     </div>
     <div class="preset-info">
-      <div class="preset-number">Preset 11</div>
+      <div class="preset-number">Preset 09</div>
       <div class="preset-name">Swiss Modern</div>
       <div class="preset-mood">Corporate precise</div>
       <div class="meta-grid">
@@ -618,19 +672,19 @@
     </div>
   </section>
 
-  <!-- 12. PAPER & INK -->
+  <!-- 10. PAPER & INK -->
   <section class="preset">
     <div class="preset-preview" style="background: #1c1917;">
       <div class="preview-label" style="color: #d4a574; font-family: 'Instrument Serif';">Literary Reflective</div>
-      <div class="preview-title" style="font-family: 'Instrument Serif'; color: #ffffff; letter-spacing: 0; text-transform: none; font-style: italic;">Paper<br>& Ink</div>
+      <div class="preview-title" style="font-family: 'Instrument Serif'; color: #ffffff; letter-spacing: 0; text-transform: none; font-style: italic;">Paper<br>&amp; Ink</div>
       <div class="preview-body" style="font-family: 'Inter'; color: rgba(255,255,255,0.4);">
         Literario y reflexivo. Serif elegante con tonos cálidos de tinta sobre papel oscuro.
       </div>
-      <div class="deco" style="font-family: 'Instrument Serif'; color: rgba(212,165,116,0.05);">12</div>
+      <div class="deco" style="font-family: 'Instrument Serif'; color: rgba(212,165,116,0.05);">10</div>
     </div>
     <div class="preset-info">
-      <div class="preset-number">Preset 12</div>
-      <div class="preset-name">Paper & Ink</div>
+      <div class="preset-number">Preset 10</div>
+      <div class="preset-name">Paper &amp; Ink</div>
       <div class="preset-mood">Literary reflective</div>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Instrument Serif</div></div>
@@ -652,7 +706,7 @@
     </div>
   </section>
 
-  <!-- 13. MINIMALISTA ADRI -->
+  <!-- 11. MINIMALISTA ADRI -->
   <section class="preset">
     <div class="preset-preview" style="background: #050505;">
       <div class="preview-label" style="color: rgba(255,255,255,0.5); font-family: 'Geist';">Educational Default</div>
@@ -660,10 +714,10 @@
       <div class="preview-body" style="font-family: 'Inter'; color: rgba(255,255,255,0.4);">
         El default educativo. Limpio, funcional, con acentos multi-sección.
       </div>
-      <div class="deco" style="font-family: 'Geist'; color: rgba(255,255,255,0.04);">13</div>
+      <div class="deco" style="font-family: 'Geist'; color: rgba(255,255,255,0.04);">11</div>
     </div>
     <div class="preset-info">
-      <div class="preset-number">Preset 13</div>
+      <div class="preset-number">Preset 11</div>
       <div class="preset-name">Minimalista Adri</div>
       <div class="preset-mood">Educational default</div>
       <div class="meta-grid">
@@ -686,7 +740,7 @@
     </div>
   </section>
 
-  <!-- 14. SOFFIA WARM -->
+  <!-- 12. SOFFIA WARM -->
   <section class="preset">
     <div class="preset-preview" style="background: hsl(220 15% 8%);">
       <div class="preview-label" style="color: #c9a96e; font-family: 'Satoshi';">Warm Premium</div>
@@ -697,10 +751,10 @@
       <div class="preview-quote" style="font-family: 'Inter'; border-left: 2px solid rgba(201,169,110,0.3); color: rgba(255,255,255,0.45);">
         "El diseño es cómo funciona, no cómo se ve."
       </div>
-      <div class="deco" style="font-family: 'Satoshi'; color: rgba(201,169,110,0.05);">14</div>
+      <div class="deco" style="font-family: 'Satoshi'; color: rgba(201,169,110,0.05);">12</div>
     </div>
     <div class="preset-info">
-      <div class="preset-number">Preset 14</div>
+      <div class="preset-number">Preset 12</div>
       <div class="preset-name">Soffia Warm</div>
       <div class="preset-mood">Warm premium</div>
       <div class="meta-grid">
@@ -723,7 +777,7 @@
     </div>
   </section>
 
-  <!-- 15. SIGNAL HARDWARE -->
+  <!-- 13. SIGNAL HARDWARE -->
   <section class="preset">
     <div class="preset-preview" style="background: #050505; color: #f5f5f0;">
       <div class="preview-label" style="color: #f04d23; font-family: 'Space Mono';">Monochrome Industrial</div>
@@ -734,10 +788,10 @@
       <div class="preview-quote" style="font-family: 'Space Mono'; border-left: 2px solid rgba(240,77,35,0.35); color: rgba(245,245,240,0.48);">
         "State first. Decoration later."
       </div>
-      <div class="deco" style="font-family: 'Space Grotesk'; color: rgba(255,255,255,0.04);">15</div>
+      <div class="deco" style="font-family: 'Space Grotesk'; color: rgba(255,255,255,0.04);">13</div>
     </div>
     <div class="preset-info">
-      <div class="preset-number">Preset 15</div>
+      <div class="preset-number">Preset 13</div>
       <div class="preset-name">Signal Hardware</div>
       <div class="preset-mood">Monochrome industrial</div>
       <div class="meta-grid">
@@ -756,6 +810,465 @@
         <li>Dashboards de agentes</li>
         <li>Paneles internos</li>
         <li>Interfaces de monitorización</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 14. MAGAZINE EDITORIAL -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #fafaf9; color: #0c0a09;">
+      <div class="preview-label" style="color: #C1272D; font-family: 'Fraunces'; letter-spacing: 0.18em; font-size: 11px;">Revista Dense</div>
+      <div class="preview-title" style="font-family: 'Fraunces'; color: #0c0a09; font-size: clamp(36px, 5vw, 72px); text-transform: none; font-weight: 900; line-height: 0.92;">
+        <span class="sig-dropcap" style="color: #C1272D; font-family: 'Fraunces';">L</span>ong-form<br>Journalism
+      </div>
+      <div class="preview-body" style="font-family: 'Source Serif 4'; color: rgba(12,10,9,0.6); font-size: 14px; line-height: 1.7; clear: both;">
+        Rejilla multi-columna con drop caps y pull quotes. The New Yorker meets Pitchfork.
+      </div>
+      <div class="sig-pullquote" style="color: #0c0a09; border-color: #C1272D; font-family: 'Fraunces';">
+        "El periodismo es el primer borrador de la historia."
+      </div>
+      <div class="deco" style="font-family: 'Fraunces'; color: rgba(193,39,45,0.05);">14</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 14</div>
+      <div class="preset-name">Magazine Editorial</div>
+      <div class="preset-mood">Revista densa multi-col</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Fraunces 900</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Source Serif 4</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#fafaf9</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#C1272D</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #fafaf9;"></div>
+        <div class="swatch" style="background: #f5f5f4;"></div>
+        <div class="swatch" style="background: #C1272D;"></div>
+        <div class="swatch" style="background: #0c0a09;"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Dossiers literarios</li>
+        <li>Artículos académicos</li>
+        <li>Revista digital de centro</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 15. CINEMATIC STORY -->
+  <section class="preset">
+    <div class="preset-preview" style="background: hsl(220 30% 6%); color: #f5f3ea; position: relative;">
+      <div class="preview-label" style="color: #F59E0B; font-family: 'Bricolage Grotesque'; letter-spacing: 0.18em; font-size: 11px;">Narrativa Inmersiva</div>
+      <div class="preview-title" style="font-family: 'Bricolage Grotesque'; color: #f5f3ea; font-weight: 800; line-height: 0.9; text-transform: none;">Chapter<br>One</div>
+      <div class="preview-body" style="font-family: 'Inter'; color: hsl(220 15% 72%); font-size: 14px; margin-top: 20px;">
+        Full-bleed hero con capítulos numerados gigantes. Scroll narrativo tipo Apple Event.
+      </div>
+      <!-- Número decorativo de capítulo gigante (firma) -->
+      <div style="position: absolute; top: 8%; right: 5%; font-family: 'Bricolage Grotesque'; font-weight: 200; font-size: clamp(80px, 14vw, 180px); line-height: 0.85; color: #F59E0B; opacity: 0.12; user-select: none; pointer-events: none;">I</div>
+      <div class="deco" style="font-family: 'Bricolage Grotesque'; color: rgba(245,158,11,0.04);">15</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 15</div>
+      <div class="preset-name">Cinematic Story</div>
+      <div class="preset-mood">Narrativa inmersiva</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Bricolage Grotesque 800</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">hsl(220 30% 6%)</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#F59E0B</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: hsl(220 30% 6%);"></div>
+        <div class="swatch" style="background: hsl(220 28% 10%);"></div>
+        <div class="swatch" style="background: #F59E0B;"></div>
+        <div class="swatch" style="background: rgba(245,158,11,0.15);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Unidades didácticas narrativas</li>
+        <li>Cursos inmersivos</li>
+        <li>Landings de charla</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 16. STORYTELLING-DRIVEN -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #faf5ed; color: #1a1410;">
+      <div class="preview-label" style="color: #D97706; font-family: 'Literata'; letter-spacing: 0.18em; font-size: 11px;">Narrativa por capítulos</div>
+      <div class="preview-title" style="font-family: 'Literata'; color: #1a1410; font-style: italic; font-weight: 700; text-transform: none; line-height: 1.05; font-size: clamp(32px, 4.5vw, 68px);">The Story<br>Begins</div>
+      <div class="preview-body" style="font-family: 'Inter'; color: hsl(25 12% 28%); font-size: 14px; margin-top: 20px;">
+        Capítulos con acento variable por sección. Cada color marca un cambio emocional.
+      </div>
+      <!-- Timeline marker (firma) -->
+      <div style="margin-top: 24px; display: flex; align-items: center; gap: 12px;">
+        <div style="width: 2px; height: 40px; background: #D97706; border-radius: 1px;"></div>
+        <div style="font-family: 'JetBrains Mono'; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #D97706;">Cap. II</div>
+      </div>
+      <div class="deco" style="font-family: 'Literata'; color: rgba(217,119,6,0.06);">16</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 16</div>
+      <div class="preset-name">Storytelling-Driven</div>
+      <div class="preset-mood">Narrativa por capítulos</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Literata 700 italic</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 400</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#faf5ed</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#D97706</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #faf5ed;"></div>
+        <div class="swatch" style="background: #f1ead9;"></div>
+        <div class="swatch" style="background: #D97706;"></div>
+        <div class="swatch" style="background: #9F1239;"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Unidades con arco narrativo</li>
+        <li>Biografías de autores</li>
+        <li>Dossiers temáticos</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 17. E-INK PAPER -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #fdfbf7; color: #1a1a1a; background-image: radial-gradient(circle at 1px 1px, rgba(26,26,26,0.06) 1px, transparent 0); background-size: 14px 14px;">
+      <div class="preview-label" style="color: hsl(20 5% 35%); font-family: 'Literata'; letter-spacing: 0.18em; font-size: 11px;">Lectura Calmada</div>
+      <div class="preview-title" style="font-family: 'Literata'; color: #1a1a1a; font-style: italic; font-weight: 700; text-transform: none; line-height: 1.15; font-size: clamp(28px, 4vw, 60px);">Reading<br>Mode</div>
+      <div class="preview-body" style="font-family: 'Inter'; color: hsl(20 5% 28%); font-size: 14px; line-height: 1.7; margin-top: 20px; max-width: 38ch;">
+        Cero color, cero sombras. Solo contraste de peso y jerarquía. Ideal para dossiers de impresión.
+      </div>
+      <div class="deco" style="font-family: 'Literata'; color: rgba(26,26,26,0.04);">17</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 17</div>
+      <div class="preset-name">E-Ink Paper</div>
+      <div class="preset-mood">Lectura calmada mate</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Literata italic</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 400</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#fdfbf7</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#1a1a1a</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #fdfbf7;"></div>
+        <div class="swatch" style="background: #f5f3ed;"></div>
+        <div class="swatch" style="background: #1a1a1a;"></div>
+        <div class="swatch" style="background: hsl(20 5% 35%);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Guías de lectura largas</li>
+        <li>Antologías y poemas</li>
+        <li>Dossiers para imprimir</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 18. EXAGGERATED MINIMALISM -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #ffffff; color: #000000;">
+      <div class="preview-label" style="color: #FF3B30; font-family: 'Archivo Black'; letter-spacing: 0.18em; font-size: 11px; text-transform: uppercase; font-weight: 400;">Tipografía Gigante</div>
+      <div style="font-family: 'Archivo Black'; font-size: clamp(60px, 14vw, 180px); line-height: 0.82; letter-spacing: -0.04em; text-transform: uppercase; color: #000000; margin-top: 12px;">ONE<br><span style="color: #FF3B30;">WORD</span></div>
+      <div class="preview-body" style="font-family: 'Inter'; color: hsl(0 0% 25%); font-size: 13px; margin-top: 24px; font-weight: 300;">
+        Un único acento puntual vibrante. La tipografía invade el viewport.
+      </div>
+      <div class="deco" style="font-family: 'Archivo Black'; color: rgba(0,0,0,0.04); font-size: clamp(100px, 16vw, 240px);">18</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 18</div>
+      <div class="preset-name">Exaggerated Minimalism</div>
+      <div class="preset-mood">Tipografía gigante + 1 acento</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Archivo Black</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 300</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#ffffff</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#FF3B30</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #ffffff;"></div>
+        <div class="swatch" style="background: #fafafa;"></div>
+        <div class="swatch" style="background: #FF3B30;"></div>
+        <div class="swatch" style="background: #000000;"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Portadas de examen o dossier</li>
+        <li>Citas tamaño display</li>
+        <li>Intros de presentación</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 19. BENTO GRIDS -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #f5f5f7; color: #1d1d1f;">
+      <div class="preview-label" style="color: hsl(220 4% 28%); font-family: 'Inter'; letter-spacing: 0.18em; font-size: 11px; text-transform: uppercase; font-weight: 600;">Modular Apple-style</div>
+      <div class="preview-title" style="font-family: 'Inter'; color: #1d1d1f; font-weight: 700; text-transform: none; line-height: 1.05; font-size: clamp(28px, 4vw, 56px);">Bento<br>Grids</div>
+      <!-- Signature mini bento -->
+      <div class="sig-bento">
+        <div class="sig-bento-card sig-bento-card--hero" style="background: #ffffff; border: 1px solid hsl(220 5% 20% / 0.08); color: #1d1d1f;">
+          <div style="font-size: 16px; font-weight: 700; font-family: 'Inter';">Hero</div>
+          <div style="font-size: 9px; color: hsl(220 4% 52%); margin-top: 4px; font-family: 'Inter';">2x1</div>
+        </div>
+        <div class="sig-bento-card" style="background: #1d1d1f; color: #f5f5f7; font-family: 'Inter';">Feature A</div>
+        <div class="sig-bento-card" style="background: #ffffff; border: 1px solid hsl(220 5% 20% / 0.08); color: #1d1d1f; font-family: 'Inter';">Feature B</div>
+      </div>
+      <div class="deco" style="font-family: 'Inter'; color: rgba(29,29,31,0.04);">19</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 19</div>
+      <div class="preset-name">Bento Grids</div>
+      <div class="preset-mood">Modular Apple-style</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Inter 700</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 400</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#f5f5f7</div></div>
+        <div class="meta-item"><div class="meta-label">Radius</div><div class="meta-value">22px</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #f5f5f7;"></div>
+        <div class="swatch" style="background: #ffffff;"></div>
+        <div class="swatch" style="background: #1d1d1f;"></div>
+        <div class="swatch" style="background: hsl(220 5% 20% / 0.1);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Landings de herramientas</li>
+        <li>Dashboards educativos</li>
+        <li>Portfolios con jerarquía</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 20. ZERO INTERFACE -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #FAFAFA; background-image: radial-gradient(ellipse at 50% 50%, hsl(220 20% 95%) 0%, transparent 70%); color: hsl(220 10% 18%);">
+      <div class="preview-label" style="color: hsl(220 10% 40%); font-family: 'Inter'; letter-spacing: 0.22em; font-size: 11px; text-transform: uppercase; font-weight: 300;">Minimal Ambiental</div>
+      <div style="font-family: 'Inter'; font-weight: 200; font-size: clamp(28px, 4vw, 60px); letter-spacing: -0.03em; color: hsl(220 10% 18%); line-height: 1.15; margin-top: 16px; max-width: 22ch; text-wrap: balance;">
+        Everything<br>you need.
+      </div>
+      <!-- Waveform decorativa (firma) -->
+      <div class="sig-waveform">
+        <span style="height: 40%; background: hsl(220 10% 40%);"></span>
+        <span style="height: 70%; background: hsl(220 10% 40%);"></span>
+        <span style="height: 100%; background: hsl(220 10% 40%);"></span>
+        <span style="height: 55%; background: hsl(220 10% 40%);"></span>
+        <span style="height: 85%; background: hsl(220 10% 40%);"></span>
+      </div>
+      <div class="deco" style="font-family: 'Inter'; color: rgba(0,0,0,0.03);">20</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 20</div>
+      <div class="preset-name">Zero Interface</div>
+      <div class="preset-mood">Minimal ambiental</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Inter 200</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 400</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#FAFAFA</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">hsl(220 10% 40%)</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #FAFAFA;"></div>
+        <div class="swatch" style="background: #ffffff;"></div>
+        <div class="swatch" style="background: hsl(220 10% 40%);"></div>
+        <div class="swatch" style="background: hsl(220 20% 95%);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Splash screens de sesión</li>
+        <li>Pantallas de "escuchando"</li>
+        <li>Pausas pedagógicas</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 21. NEUMORPHISM -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #E0E5EC; color: #2d3748;">
+      <div class="preview-label" style="color: #5E72E4; font-family: 'Nunito'; letter-spacing: 0.18em; font-size: 11px; text-transform: uppercase; font-weight: 800;">Soft UI Playful</div>
+      <div style="font-family: 'Nunito'; font-weight: 800; font-size: clamp(28px, 4vw, 60px); color: #2d3748; line-height: 1.1; margin-top: 12px; text-transform: none;">Soft<br>Shapes</div>
+      <!-- Neumorphic button (firma) -->
+      <div class="sig-neu-btn" style="background: #E0E5EC; box-shadow: 8px 8px 16px #b8bfc9, -8px -8px 16px #ffffff; color: #5E72E4; font-family: 'Nunito'; display: inline-block;">Extruded</div>
+      <div style="margin-top: 16px; display: inline-block; width: 60px; height: 60px; border-radius: 20px; background: #E0E5EC; box-shadow: inset 6px 6px 12px #b8bfc9, inset -6px -6px 12px #ffffff;"></div>
+      <div class="deco" style="font-family: 'Nunito'; color: rgba(94,114,228,0.05);">21</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 21</div>
+      <div class="preset-name">Neumorphism</div>
+      <div class="preset-mood">Soft UI playful</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Nunito 800</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Nunito 600</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#E0E5EC</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#5E72E4</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #E0E5EC;"></div>
+        <div class="swatch" style="background: #E8EDF5;"></div>
+        <div class="swatch" style="background: #5E72E4;"></div>
+        <div class="swatch" style="background: #2d3748;"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Material infantil de primaria</li>
+        <li>Calculadoras didácticas</li>
+        <li>Controles de audio educativo</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 22. MOTION-DRIVEN -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #0A0A0A; color: #e8e8e8;">
+      <div class="preview-label" style="color: #22C55E; font-family: 'Inter'; letter-spacing: 0.18em; font-size: 11px; text-transform: uppercase; font-weight: 600;">Animaciones Coreografiadas</div>
+      <div style="font-family: 'Inter'; font-weight: 800; font-size: clamp(32px, 5vw, 72px); color: #e8e8e8; line-height: 0.95; margin-top: 16px; letter-spacing: -0.02em;">Motion<br><span style="color: #22C55E;">Driven</span></div>
+      <!-- Stagger bars (firma) -->
+      <div class="sig-motion-bar">
+        <span style="width: 80%; background: #22C55E;"></span>
+        <span style="width: 55%; background: rgba(34,197,94,0.5); transition-delay: 80ms;"></span>
+        <span style="width: 35%; background: rgba(34,197,94,0.25); transition-delay: 160ms;"></span>
+      </div>
+      <div class="preview-body" style="font-family: 'Inter'; color: hsl(0 0% 72%); font-size: 13px; margin-top: 20px;">
+        Entrada staggered + scroll-triggered keyframes. Stripe meets Apple Sequoia.
+      </div>
+      <div class="deco" style="font-family: 'Inter'; color: rgba(34,197,94,0.04);">22</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 22</div>
+      <div class="preset-name">Motion-Driven</div>
+      <div class="preset-mood">Animaciones coreografiadas</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Inter 800</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 400</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#0A0A0A</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#22C55E</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #0A0A0A;"></div>
+        <div class="swatch" style="background: #141414;"></div>
+        <div class="swatch" style="background: #22C55E;"></div>
+        <div class="swatch" style="background: hsl(142 71% 45% / 0.15);"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Landings con high polish</li>
+        <li>Trailers de unidades</li>
+        <li>Presentaciones keynote HTML</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 23. MICRO-INTERACTIONS -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #ffffff; color: #1a1a1a;">
+      <div class="preview-label" style="color: #22C55E; font-family: 'Inter'; letter-spacing: 0.18em; font-size: 11px; text-transform: uppercase; font-weight: 600;">Feedback Sutil</div>
+      <div style="font-family: 'Inter'; font-weight: 700; font-size: clamp(28px, 4vw, 60px); color: #1a1a1a; line-height: 1.1; margin-top: 12px;">Every<br>Click<br>Counts</div>
+      <!-- Micro btn (firma) -->
+      <div style="margin-top: 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+        <div class="sig-micro-btn" style="border-color: #22C55E; color: #22C55E; background: hsl(142 71% 45% / 0.08); font-family: 'Inter';">Valid</div>
+        <div class="sig-micro-btn" style="border-color: #EF4444; color: #EF4444; background: hsl(0 84% 60% / 0.08); font-family: 'Inter';">Error</div>
+        <!-- Pulse dot -->
+        <div class="sig-pulse-dot" style="background: #22C55E; box-shadow: 0 0 0 5px hsl(142 71% 45% / 0.2);"></div>
+      </div>
+      <div class="preview-body" style="font-family: 'Inter'; color: hsl(220 5% 30%); font-size: 13px; margin-top: 20px; font-weight: 300;">
+        Hover pulse, click ripple, focus glow, validación visual inmediata.
+      </div>
+      <div class="deco" style="font-family: 'Inter'; color: rgba(34,197,94,0.04);">23</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 23</div>
+      <div class="preset-name">Micro-interactions</div>
+      <div class="preset-mood">Feedback sutil</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Inter 700</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 400</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#ffffff</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#22C55E</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #ffffff;"></div>
+        <div class="swatch" style="background: #fafafa;"></div>
+        <div class="swatch" style="background: #22C55E;"></div>
+        <div class="swatch" style="background: #EF4444;"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Ejercicios interactivos</li>
+        <li>Formularios y encuestas</li>
+        <li>Quizzes con feedback</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 24. AI-NATIVE UI -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #0A0A0F; color: #E8E8F0;">
+      <div class="preview-label" style="color: #6366F1; font-family: 'Inter'; letter-spacing: 0.18em; font-size: 11px; text-transform: uppercase; font-weight: 600;">Chat-first</div>
+      <div style="font-family: 'Inter'; font-weight: 700; font-size: clamp(24px, 3.5vw, 52px); color: #E8E8F0; line-height: 1.1; margin-top: 12px;">AI<br>Native UI</div>
+      <!-- Chat messages (firma) -->
+      <div class="sig-chat">
+        <div class="sig-chat-msg" style="align-self: flex-end; background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); color: #fff; border-bottom-right-radius: 4px; font-family: 'Inter';">
+          Explícame esto
+        </div>
+        <div class="sig-chat-msg" style="align-self: flex-start; background: hsl(240 20% 12%); color: #E8E8F0; border: 1px solid hsl(240 30% 60% / 0.14); border-bottom-left-radius: 4px; font-family: 'Inter';">
+          Con gusto te ayudo...
+        </div>
+      </div>
+      <div class="deco" style="font-family: 'Inter'; color: rgba(99,102,241,0.05);">24</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 24</div>
+      <div class="preset-name">AI-Native UI</div>
+      <div class="preset-mood">Chat-first conversacional</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Inter 700</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 400</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#0A0A0F</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#6366F1</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #0A0A0F;"></div>
+        <div class="swatch" style="background: #13131A;"></div>
+        <div class="swatch" style="background: #6366F1;"></div>
+        <div class="swatch" style="background: #8B5CF6;"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Asistentes educativos</li>
+        <li>Interfaces de búsqueda IA</li>
+        <li>Herramientas chat-first</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 25. INTERACTIVE CURSOR -->
+  <section class="preset">
+    <div class="preset-preview" style="background: #FAFAFA; color: #0a0a0a;">
+      <div class="preview-label" style="color: #5E6AD2; font-family: 'Inter'; letter-spacing: 0.18em; font-size: 11px; text-transform: uppercase; font-weight: 600;">Cursor-centric</div>
+      <div style="font-family: 'Inter'; font-weight: 800; font-size: clamp(28px, 4.5vw, 68px); color: #0a0a0a; line-height: 1.0; margin-top: 12px; letter-spacing: -0.02em;">Your<br>Pointer<br>Matters</div>
+      <!-- Cursor dot + ring (firma) -->
+      <div style="display: flex; align-items: center; gap: 16px; margin-top: 24px;">
+        <div class="sig-cursor-dot" style="background: #5E6AD2;"></div>
+        <div class="sig-cursor-ring" style="border-color: #5E6AD2; width: 32px; height: 32px;"></div>
+        <div style="font-family: 'Inter'; font-size: 11px; color: hsl(240 5% 48%); letter-spacing: 0.1em; font-weight: 400;">hover</div>
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(94,106,210,0.15); border: 1px solid #5E6AD2;"></div>
+      </div>
+      <div class="preview-body" style="font-family: 'Inter'; color: hsl(240 5% 26%); font-size: 13px; margin-top: 20px; font-weight: 300;">
+        El cursor reacciona al hover: se agranda, deja trail, transforma en botones.
+      </div>
+      <div class="deco" style="font-family: 'Inter'; color: rgba(94,106,210,0.04);">25</div>
+    </div>
+    <div class="preset-info">
+      <div class="preset-number">Preset 25</div>
+      <div class="preset-name">Interactive Cursor</div>
+      <div class="preset-mood">Cursor-centric portfolio</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">Display</div><div class="meta-value">Inter 800</div></div>
+        <div class="meta-item"><div class="meta-label">Body</div><div class="meta-value">Inter 400</div></div>
+        <div class="meta-item"><div class="meta-label">Background</div><div class="meta-value">#FAFAFA</div></div>
+        <div class="meta-item"><div class="meta-label">Accent</div><div class="meta-value">#5E6AD2</div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch" style="background: #FAFAFA;"></div>
+        <div class="swatch" style="background: #ffffff;"></div>
+        <div class="swatch" style="background: #5E6AD2;"></div>
+        <div class="swatch" style="background: #8B93E3;"></div>
+      </div>
+      <ul class="use-cases">
+        <li>Portfolios premium</li>
+        <li>Experiencias interactivas</li>
+        <li>Inicios de curso especiales</li>
       </ul>
     </div>
   </section>
