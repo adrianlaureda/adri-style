@@ -5,11 +5,11 @@ Principio: espacio generoso, contenido centrado, responsive natural.
 
 ## Reglas
 
-- **Always** usar max-width: 1000px para layouts generales
-- **Always** usar max-width: 65ch para bloques de texto/lectura (.prose)
-- **Always** diseñar responsive con 3→2→1 columna
-- **Never** usar más de 1100px de ancho (incluso para grids de 3 columnas)
-- **Consider** 1100px solo para grids de 3+ columnas
+- **Por superficie**: 1000px es el default de páginas generales, no de slides,
+  galerías full-bleed o consolas densas.
+- **Always** limitar texto de lectura a aproximadamente 65ch.
+- **Always** adaptar grids al contenido y al viewport; 3→2→1 es una receta,
+  no un contrato universal.
 
 ## Container estándar
 

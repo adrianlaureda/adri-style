@@ -21,7 +21,7 @@ set -euo pipefail
 
 readonly SCRIPT_DIR="$(/usr/bin/dirname "$0")"
 readonly AUDIT_BASIC="$SCRIPT_DIR/audit-adri.sh"
-readonly METRICS_DIR="$HOME/Library/Application Support/adri-style-metrics"
+readonly METRICS_DIR="${METRICS_DIR:-$HOME/Library/Application Support/adri-style-metrics}"
 readonly TODAY="$(/bin/date +%Y-%m-%d)"
 readonly OUT="$METRICS_DIR/$TODAY.jsonl"
 
@@ -54,7 +54,7 @@ if [[ "${1:-}" == "--report" ]]; then
     while IFS= read -r jsonl; do
         date_str="$(/usr/bin/basename "$jsonl" .jsonl)"
         total=$(wc -l < "$jsonl" | /usr/bin/tr -d ' ')
-        ok=$(/usr/bin/awk -F'"critical":' '{if ($2 ~ /^0/) print}' "$jsonl" | wc -l | /usr/bin/tr -d ' ')
+        ok=$(/usr/bin/grep -c '"exit":0' "$jsonl" || true)
         if (( total > 0 )); then
             pct=$(( ok * 100 / total ))
             top=$(/usr/bin/awk -F'"top_tag":"' '{if ($2) print $2}' "$jsonl" | /usr/bin/sed 's/".*//' | /usr/bin/sort | /usr/bin/uniq -c | /usr/bin/sort -rn | /usr/bin/head -1 | /usr/bin/awk '{print $2}')
@@ -83,7 +83,7 @@ for dir in "${SCAN_DIRS[@]}"; do
             exit_code=0
             ((ok++)) || true
         else
-            exit_code=1
+            exit_code=$?
             ((fail++)) || true
         fi
         total=$(echo "$audit_out" | /usr/bin/grep -oE 'Total issues: [0-9]+' | /usr/bin/awk '{print $3}' || echo 0)

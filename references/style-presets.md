@@ -6,7 +6,10 @@
 
 **v5.4 (2026-05-08):** auditados los 27 presets uno a uno tras audit Impeccable + Codex (24 anti-patterns en 5 sites reales). Cada preset declara ahora: pareja display/body explícita, weights máximos permitidos para body y para display, justificación si single-font o si weight>500 default, estado (`activo` / `revisión-30d` candidato a eliminar si no aparece en outputs reales). Ver tabla "Audit v5.4 — Reglas de fuentes y pesos por preset" abajo. Bootstrap canónico en `templates/bootstrap-adri.html` parte de Bold Signal y carga directamente todos los tokens.
 
-**v5.6 (2026-05-08 noche):** mirror programático en `references/presets.json` (schema 1.0). Esta tabla sigue siendo la fuente humana canónica; el JSON es derivado para que `audit-adri.sh` y futuras herramientas (slider `Font variation`, validadores externos) lo consuman sin parsear markdown. **Si modificas un preset, edita primero esta tabla y replica en el JSON inmediatamente.** Las dos fuentes deben mantenerse sincronizadas hasta que en v6 (breaking) el JSON se vuelva canónico obligatorio.
+**v5.8 (2026-07-18):** `references/presets.json` es la fuente estructurada
+canónica para ids, tokens, fuentes, modos y estado. Este documento conserva la
+narrativa humana y debe validarse contra el JSON. Catálogo y exports son
+artefactos derivados.
 
 ---
 
@@ -89,21 +92,24 @@ Tabla canónica generada el 2026-05-08 tras la auditoría manual de los 27 prese
 
 **Lectura de la tabla:**
 
-- 7 presets `activo` con uso verificado: 1 ★, 2 (parcial), 6, 8, 12, 13, 15, 16, 17, 18, 19, 20, 21, 25.
-- 6 presets `activo-frágil` (admitidos pero sin pruebas): 5, 10, 14, 22, 26 — observar 30 días tras v5.4.
+- 14 presets `activo`: 1 ★, 2, 6, 8, 12, 13, 15, 16, 17, 18, 19, 20, 21, 25.
+- 5 presets `activo-frágil`: 5, 10, 14, 22, 26.
 - 8 presets `revisión-30d` candidatos a eliminar si no aparecen en outputs reales tras 2026-06-08: 3, 4, 7, 9, 11, 23, 24, 27.
 
 **Reglas operativas (post-audit):**
 
-- Cualquier output nuevo DEBE arrancar de `templates/bootstrap-adri.html` (Bold Signal por defecto) y declarar el preset elegido en un comentario `<!-- preset: NN-name -->` al inicio.
+- Una página web general puede arrancar de `templates/bootstrap-adri.html`.
+  Presentaciones, dashboards densos y otras superficies usan su propio fixture o
+  starter, pero siempre declaran `data-preset`.
 - Si un output usa pesos fuera del rango declarado para su preset, `audit-adri.sh` debe detectarlo (todo > 500 en body, single-font sin "JUSTIFICADO" en `style-presets.md`).
 - Los 8 presets `revisión-30d` no se eliminan ahora; se vuelve a auditar el 2026-06-08. Si no han aparecido en `~/Proyectos/Claude/`, se mueven a `references/_archive/style-presets-deprecated.md` y se rebaja a 19 el catálogo activo.
 
 ---
 
-## Layout Patterns por Preset (OBLIGATORIO)
+## Layout patterns por preset (recetas orientativas)
 
-Cada preset tiene layouts prescritos para evitar el patrón genérico "todo centrado en columna estrecha". Usar al menos 2 de los patrones indicados.
+Cada preset propone layouts para evitar decisiones genéricas. La superficie y
+el contenido deciden cuáles usar; no existe un mínimo obligatorio.
 
 | Preset | Layout primario | Layout secundario | Evitar |
 |--------|----------------|-------------------|--------|

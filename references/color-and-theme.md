@@ -5,17 +5,16 @@ Principio: el color debe ser funcional, no decorativo.
 
 ## Reglas
 
-- **Always** implementar tema dual (oscuro por defecto)
+- **Always** respetar `mode_default` del preset
 - **Always** usar #1a1a1a en light mode para texto (no negro puro, Butterick)
 - **Always** reservar color para enlaces (denota clickabilidad, Butterick)
-- **Always** persistir preferencia de tema en localStorage
-- **Never** usar colores saturados o de acento llamativos
-- **Never** usar gradientes de fondo
+- **Always** persistir la preferencia si la superficie incluye toggle
+- **Never** usar saturación o gradientes sin función o sin permiso del preset
 - **Never** usar blanco puro (#fff) sobre negro puro (#000) en texto largo
 - **Consider** el semáforo educativo para dashboards de calificaciones
 - **Consider** "cuando todo está enfatizado, nada lo está" (principio Butterick)
 
-## Variables CSS - Modo oscuro (default)
+## Variables CSS - Modo oscuro
 
 | Variable | Valor | Uso |
 |----------|-------|-----|
@@ -53,11 +52,12 @@ Para dashboards y materiales con calificaciones (1-10, aprobado ≥5):
 
 ```javascript
 // Leer tema guardado
-const theme = localStorage.getItem('theme') || 'dark';
+const presetDefault = document.documentElement.dataset.theme;
+const theme = localStorage.getItem('theme') || presetDefault;
 if (theme === 'light') {
   document.documentElement.setAttribute('data-theme', 'light');
 }
-// Icono: luna (lucide:moon) en oscuro → sol (lucide:sun) en claro
+// Icono de acción: luna en light; sol en dark.
 ```
 
 ## Checklist

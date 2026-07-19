@@ -13,18 +13,20 @@
 #     filtro NO aplica (preset declarado es ai-slop disfrazado).
 #
 # v5.5: filtro 2 verifica coherencia preset↔fuentes (catálogo bash hardcoded).
-# v5.6: catálogo se lee de `references/presets.json` (fuente programática única).
-# Eliminada la duplicación bash↔markdown. La fuente humana sigue siendo
-# `references/style-presets.md § Audit v5.4`; el JSON es mirror programático.
+# v5.6: catálogo se lee de `references/presets.json`.
+# v5.8/PRO-211: el JSON es el contrato estructurado canónico y la validación
+# fail-closed ocurre antes de cualquier herramienta externa.
 #
-# Bloquea (exit 1) si encuentra issues NO filtrables. WARN (exit 0) si solo filtrables.
+# Exit: 0 conforme, 1 incumplimiento del output, 2 fallo de infraestructura.
 
 set -euo pipefail
 
 readonly IMPECCABLE_REPO="${IMPECCABLE_REPO:-$HOME/Proyectos/Claude/config/impeccable-integration/sandbox/impeccable}"
-readonly NODE="${NODE:-/opt/homebrew/bin/node}"
-readonly JQ="${JQ:-/opt/homebrew/bin/jq}"
+readonly NODE="${NODE:-$(command -v node || true)}"
+readonly JQ="${JQ:-$(command -v jq || true)}"
+readonly PYTHON="${PYTHON:-$(command -v python3 || true)}"
 readonly PRESETS_JSON="${PRESETS_JSON:-$(/usr/bin/dirname "$0")/../references/presets.json}"
+readonly CONTRACT_VALIDATOR="${CONTRACT_VALIDATOR:-$(/usr/bin/dirname "$0")/validate_contract.py}"
 
 usage() {
     echo "Uso: $0 <ruta-html|url>"
@@ -34,7 +36,10 @@ usage() {
 }
 
 require_tool() {
-    [[ -x "$1" ]] || { echo "FATAL: $1 no encontrado"; exit 1; }
+    [[ -n "$1" && -x "$1" ]] || {
+        echo "INFRASTRUCTURE_ERROR: herramienta no encontrada"
+        exit 2
+    }
 }
 
 # Devuelve las fuentes canónicas del preset NN-name leídas de presets.json.
@@ -100,13 +105,6 @@ main() {
     [[ $# -eq 1 ]] || usage
     local target="$1"
 
-    require_tool "$NODE"
-    [[ -d "$IMPECCABLE_REPO/cli" ]] || {
-        echo "FATAL: Impeccable no clonado en $IMPECCABLE_REPO"
-        echo "Ejecuta: gh repo clone pbakaus/impeccable $IMPECCABLE_REPO"
-        exit 1
-    }
-
     # Si es URL, descargar a tmp con curl
     local file="$target"
     local tmp=""
@@ -122,6 +120,24 @@ main() {
 
     [[ -f "$file" ]] || { echo "FATAL: $file no existe"; exit 1; }
 
+    # El contrato local es autónomo y se valida antes de herramientas externas.
+    require_tool "$PYTHON"
+    local contract_output contract_rc
+    set +e
+    contract_output="$("$PYTHON" "$CONTRACT_VALIDATOR" "$file" --catalog "$PRESETS_JSON" 2>&1)"
+    contract_rc=$?
+    set -e
+    printf '%s\n' "$contract_output"
+    if (( contract_rc != 0 )); then
+        exit "$contract_rc"
+    fi
+
+    require_tool "$NODE"
+    [[ -d "$IMPECCABLE_REPO/cli" ]] || {
+        echo "INFRASTRUCTURE_ERROR: Impeccable no disponible en $IMPECCABLE_REPO"
+        exit 2
+    }
+
     # Detectar preset declarado y verificar coherencia con sus fuentes canónicas.
     local declared_preset=""
     local preset_coherent=1  # 1 = NO coherente / no aplicable
@@ -133,8 +149,16 @@ main() {
     fi
 
     # Ejecutar Impeccable detect
-    local raw_output
-    raw_output="$("$NODE" "$IMPECCABLE_REPO/cli/bin/cli.js" detect "$file" 2>&1 || true)"
+    local raw_output impeccable_rc
+    set +e
+    raw_output="$("$NODE" "$IMPECCABLE_REPO/cli/bin/cli.js" detect "$file" 2>&1)"
+    impeccable_rc=$?
+    set -e
+    if (( impeccable_rc != 0 )); then
+        echo "INFRASTRUCTURE_ERROR: Impeccable terminó con exit $impeccable_rc"
+        printf '%s\n' "$raw_output"
+        exit 2
+    fi
 
     if echo "$raw_output" | /usr/bin/grep -q "0 anti-patterns found\|No anti-patterns found"; then
         echo "OK: $target sin anti-patterns"
@@ -169,32 +193,10 @@ main() {
                 continue
             fi
 
-            # Filtro 1d v5.8.2: side-tab/border-accent con HEX hardcoded cuando hay 3+ colores
-            # distintos en el archivo (heurística codificación de categorías). Útil para outputs
-            # legacy con paleta inline antes de adoptar var() del preset.
-            if [[ "$tag" == "side-tab" && "$snippet" =~ border-(left|right|top|bottom):[[:space:]]*[0-9]+px[[:space:]]+solid[[:space:]]+\#[0-9a-fA-F]{3,8} ]]; then
-                # Contar colores únicos border-* en el archivo (heurística "codifica categorías")
-                local color_count
-                color_count="$(/usr/bin/grep -oE 'border-(left|right|top|bottom):[[:space:]]*[0-9]+px[[:space:]]+solid[[:space:]]+#[0-9a-fA-F]{3,8}' "$file" 2>/dev/null | /usr/bin/sort -u | wc -l | /usr/bin/tr -d ' ')"
-                if [[ "${color_count:-0}" -ge 3 ]]; then
-                    filtered=$((filtered + 1))
-                    report+="  line $lineno: [$tag] $snippet  ✓ FILTRADO (≥3 colores distintos = codifica categorías)\n"
-                    continue
-                fi
-            fi
-
-            # Filtro 1c v5.8.1: border-accent-on-rounded con var() del preset.
-            # Cuando data-preset declarado Y el border usa una var() (cualquiera del preset),
-            # se considera color funcional (codifica dato/categoría) — no decoración inventada.
+            # Border redondeado: solo se filtran tokens semánticos explícitos.
             if [[ "$tag" == "border-accent-on-rounded" ]]; then
                 local raw_line
                 raw_line="$(/usr/bin/sed -n "${lineno}p" "$file" 2>/dev/null)"
-                if [[ "$raw_line" =~ var\(-- ]] && [[ -n "$declared_preset" ]]; then
-                    filtered=$((filtered + 1))
-                    report+="  line $lineno: [$tag] $snippet  ✓ FILTRADO (var() del preset codifica dato)\n"
-                    continue
-                fi
-                # Aún sin preset declarado, aceptar vars semáforo bien conocidas
                 if [[ "$raw_line" =~ var\(--(accent|yellow|red|green|info|success|warning|danger|ink|text|text-primary|text-secondary|text-muted) ]]; then
                     filtered=$((filtered + 1))
                     report+="  line $lineno: [$tag] $snippet  ✓ FILTRADO (var semáforo/texto base)\n"
@@ -202,42 +204,11 @@ main() {
                 fi
             fi
 
-            # Filtro 5 v5.8.1: bounce-easing en outputs marcados como minijuego o como
-            # definición de design system token (:root con --ease-* var). Bounce es UX
-            # intencional cuando el output es interactivo o cuando es token de paleta de
-            # animaciones (no se aplica directamente, queda disponible en var()).
+            # Bounce solo se filtra con una declaración explícita del output.
             if [[ "$tag" == "bounce-easing" ]]; then
-                if [[ "$file" == *"adri-react/public/"* ]] \
-                   || /usr/bin/grep -qE 'data-(output="game"|allow-bounce)' "$file" 2>/dev/null; then
+                if /usr/bin/grep -qE 'data-(output="game"|allow-bounce)' "$file" 2>/dev/null; then
                     filtered=$((filtered + 1))
                     report+="  line $lineno: [$tag] $snippet  ✓ FILTRADO (minijuego — bounce es UX intencional)\n"
-                    continue
-                fi
-                # Token de design system: si la línea define una variable CSS dentro de :root
-                local raw_line
-                raw_line="$(/usr/bin/sed -n "${lineno}p" "$file" 2>/dev/null)"
-                if [[ "$raw_line" =~ --ease ]] || [[ "$raw_line" =~ --bounce ]] || [[ "$raw_line" =~ --overshoot ]]; then
-                    filtered=$((filtered + 1))
-                    report+="  line $lineno: [$tag] $snippet  ✓ FILTRADO (token de design system, no aplicación directa)\n"
-                    continue
-                fi
-                # Animación legítima de UI: scroll-indicator, attention-pulse, etc.
-                local context_start=$((lineno > 8 ? lineno - 8 : 1))
-                if /usr/bin/sed -n "${context_start},${lineno}p" "$file" 2>/dev/null | \
-                   /usr/bin/grep -qE '\.(scroll-indicator|attention-|pulse-|notify-|bounce-)' ; then
-                    filtered=$((filtered + 1))
-                    report+="  line $lineno: [$tag] $snippet  ✓ FILTRADO (UI affordance — scroll/attention/pulse)\n"
-                    continue
-                fi
-            fi
-
-            # Filtro 6 v5.8.1: layout-transition: height/width fuera de progress bar dentro de
-            # minijuegos legacy donde el comportamiento (revelar pista, expandir card) es
-            # intencional. Solo si data-preset declarado Y ruta de minijuego.
-            if [[ "$tag" == "layout-transition" ]]; then
-                if [[ "$file" == *"adri-react/public/"* ]] && [[ -n "$declared_preset" ]]; then
-                    filtered=$((filtered + 1))
-                    report+="  line $lineno: [$tag] $snippet  ✓ FILTRADO (minijuego con preset — transición intencional)\n"
                     continue
                 fi
             fi
@@ -267,19 +238,6 @@ main() {
                 if /usr/bin/grep -qE 'href="[^"]*adri-overrides\.css' "$file" 2>/dev/null; then
                     filtered=$((filtered + 1))
                     report+="  line $lineno: [$tag] $snippet  ✓ FILTRADO (override externo adri-overrides.css gestiona fuentes)\n"
-                    continue
-                fi
-            fi
-
-            # Filtro 4 v5.8.1: layout-transition (transition: width) dentro de progress/timer bars.
-            # Una progress bar codifica datos (tiempo, score, %) — el width animado ES la UI.
-            # Heurística: leer 8 líneas previas a la del issue y buscar selectores típicos de barra.
-            if [[ "$tag" == "layout-transition" && "$snippet" =~ transition[[:space:]]*:[[:space:]]*width ]]; then
-                local context_start=$((lineno > 8 ? lineno - 8 : 1))
-                if /usr/bin/sed -n "${context_start},${lineno}p" "$file" 2>/dev/null | \
-                   /usr/bin/grep -qE '\.(timer-bar|progress-bar|progress-fill|score-bar|fill-bar|aval-bar|loading-bar|bar-fill|goal-bar|goal-bar-fill|level-progress|level-progress-fill|stat-bar|kpi-bar)' ; then
-                    filtered=$((filtered + 1))
-                    report+="  line $lineno: [$tag] $snippet  ✓ FILTRADO (progress/timer bar codifica datos)\n"
                     continue
                 fi
             fi

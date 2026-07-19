@@ -766,20 +766,21 @@ Timeline vertical a la izquierda con linea conectora, tarjetas de contenido a la
 
 ## Composition rules
 
-Reglas duras para garantizar variedad visual y evitar monotonia.
+Heurísticas para aportar variedad cuando el contenido la necesita. El contrato
+de superficie prevalece y no existen cuotas universales.
 
-### Variedad obligatoria
+### Variedad contextual
 
-1. **NUNCA** usar el mismo patron de layout en 3 secciones consecutivas
-2. Cada pagina debe usar **al menos 2 patrones de layout diferentes**
-3. **Alternar** entre secciones text-heavy y visual-heavy
-4. La primera seccion despues del hero **debe incluir un elemento visual** (grafica, imagen, grid, icono grande) — nunca solo texto
-5. Cada seccion con datos densos necesita una **visualizacion** (grafica, chart, diagrama) — nunca solo una tabla
+1. Evitar repetición de layout cuando perjudica el ritmo o la jerarquía.
+2. Alternar densidades solo si ayuda a separar ideas.
+3. Añadir un visual cuando representa datos, aporta evidencia o explica una
+   relación; no para cumplir una cuota.
+4. Una tabla puede ser la mejor representación si facilita comparación exacta.
 
 ### Ritmo visual
 
-6. Si una seccion es ancha (full-width grid), la siguiente debe ser estrecha (prose 65ch o split asimetrico)
-7. Si una seccion tiene muchos elementos pequeños (grid 3-4 cols), la siguiente debe tener pocos elementos grandes (spotlight, hero, quote)
+5. Contrastar secciones anchas y estrechas cuando mejora la lectura.
+6. Tras alta densidad, considerar un bloque más simple.
 8. Los bloques de texto consecutivos sin visual no pueden superar 2 secciones
 
 ### Checklist de composicion
@@ -790,7 +791,6 @@ Reglas duras para garantizar variedad visual y evitar monotonia.
 - [ ] El whitespace es intencional, no accidental
 - [ ] En movil, los elementos se reordenan logicamente
 - [ ] Los datos numericos usan font-mono + graficas de apoyo
-- [ ] Al menos 2 patrones de layout diferentes en la pagina
-- [ ] No hay 3 secciones consecutivas con el mismo layout
-- [ ] La primera seccion post-hero tiene un visual
-- [ ] Secciones de datos incluyen visualizacion, no solo tablas
+- [ ] Cada variación de layout responde al contenido
+- [ ] Los visuales representan información o evidencia
+- [ ] Las tablas se conservan cuando son la representación más precisa
