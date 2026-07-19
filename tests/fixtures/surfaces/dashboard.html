@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es" data-preset="01-bold-signal" data-surface="dashboard" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PRO-211 · Dashboard</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,700,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#101010;font:400 14px/1.5 Inter,sans-serif}
+    main{max-width:1200px;margin:auto;padding:40px 4vw}header{display:flex;justify-content:space-between;align-items:end}
+    h1,.metric strong{font-family:Satoshi,sans-serif}h1{font-size:36px;letter-spacing:-.05em;margin:0}.meta{color:#666}
+    .metric-grid{display:grid;grid-template-columns:repeat(3,1fr);margin-top:32px;border:1px solid #ccc}
+    .metric{padding:28px;border-right:1px solid #ccc}.metric:last-child{border:0}.metric strong{display:block;font-size:48px;line-height:1}
+    .metric span{color:#666}.chart{margin-top:28px;padding:28px;border:1px solid #ccc;background:#fff}
+    .chart svg{display:block;width:100%;height:auto}.axis{fill:none;stroke:#bbb}.line{fill:none;stroke:#111;stroke-width:3}
+    @media(max-width:650px){header{display:block}.metric-grid{grid-template-columns:1fr}.metric{border-right:0;border-bottom:1px solid #ccc}}
+  </style>
+</head>
+<body>
+  <main>
+    <header><div><h1>Auditoría PRO-211</h1><span class="meta">Contrato y cobertura</span></div><time>18 jul 2026</time></header>
+    <section class="metric-grid" aria-label="Métricas principales">
+      <div class="metric"><strong>27</strong><span>presets válidos</span></div>
+      <div class="metric"><strong>4</strong><span>superficies diferenciadas</span></div>
+      <div class="metric"><strong>0</strong><span>reglas decorativas universales</span></div>
+    </section>
+    <section class="chart"><svg viewBox="0 0 760 250" role="img" aria-label="Cobertura contractual crece de 25 a 27 presets"><path class="axis" d="M40 20v190h690"/><path class="line" d="M60 172 270 172 480 120 700 50"/><circle cx="60" cy="172" r="5"/><circle cx="270" cy="172" r="5"/><circle cx="480" cy="120" r="5"/><circle cx="700" cy="50" r="5"/></svg></section>
+  </main>
+</body>
+</html>

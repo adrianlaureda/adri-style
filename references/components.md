@@ -2413,7 +2413,7 @@ These patterns are banned because they produce generic "AI-generated" looking ou
 |---------|----------------|-------------|
 | `bg-indigo-500` / purple gradients | Every AI generates this (Tailwind default) | Use preset accent colors |
 | 3 identical icon+text cards in a row | Most generic layout possible | Use spotlight (1 large + N small) or bento grid |
-| Inter as only font (display = body) | Zero typographic contrast | Always pair with a display font |
+| Inter como única fuente accidental | Contraste tipográfico débil | Seguir `fonts.single_font` del preset |
 | Pure gray `hsl(0, 0%, N%)` | Feels lifeless, no personality | Tinted grays: `hsl(210, 15%, N%)` or `hsl(30, 8%, N%)` |
 | Centered hero + 3-column grid + CTA | "Startup template" cliché | Asymmetric layouts, bento, split sections |
 | Single box-shadow for depth | Flat and generic | Multi-layer shadows or border-only approach |
@@ -2556,7 +2556,7 @@ Variable-sized grid cells for modern dashboard/portfolio layouts:
 - [ ] Responsive a 900px y 600px
 - [ ] **v5.3** Barras de progreso usan `transform: scaleX/scaleY` (sección 14), NO `transition: width/height`
 - [ ] **v5.3** `border-left` colorido grueso solo si codifica información (semáforo notas, categoría)
-- [ ] **v5.3** Outputs NO usan Inter como única fuente
+- [ ] **v5.3** Inter solo es fuente única si el preset declara `single_font=true`
 - [ ] **v5.7** §15 Cada elemento con caja debe pasar el "Test de la Caja" (regla EAR). Cajas innecesarias eliminadas.
 
 ---

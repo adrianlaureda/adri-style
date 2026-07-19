@@ -14,17 +14,31 @@ description: >
 Cualquier HTML que use este sistema DEBE cumplir, sin excepción:
 
 1. **`data-preset="NN-name"` en `<html>` o root container**. Sin esa marca, el HTML se considera fuera del sistema y `audit-adri.sh` lo marca FAIL.
-2. **Cargar AMBAS fuentes del preset declarado** (display + body). Single-font solo si el preset lo justifica explícitamente (3 presets: Bold Signal, Swiss Modern, Exaggerated Minimalism). Para el resto, cargar pareja completa = no negociable.
-3. **Default Bold Signal (`data-preset="01-bold-signal"`)** cuando:
-   - La pieza lleva firma o presencia de Adri (presentación, charla, portfolio, comunicación pública).
-   - El contexto es ambiguo o no claramente educativo-funcional.
-4. **Iconos: Lucide SVG inline**. Nunca emojis para iconos de UI.
-5. **Light/dark toggle: `lucide:moon` (modo oscuro activo) ↔ `lucide:sun` (modo claro activo)**. Inverso = bug visual.
-6. **Test de la Caja (EAR)**: cada caja con `background+border+border-radius` debe ser **E**s accionable, **A**grupa heterogéneo o **R**epresenta dato discreto. Si no pasa ninguna prueba, va sin caja (espaciado + tipografía + separador). Heurística rápida: si en pantalla hay >8 elementos con `border-radius > 6px`, hay encajamiento excesivo.
+2. **Cargar las fuentes exactas del preset declarado** según
+   `references/presets.json`. Si `single_font=true`, una familia es correcta;
+   si es `false`, display y body deben estar cargadas.
+3. **Accesibilidad y semántica**: contraste AA, foco visible, nombres
+   accesibles, teclado y estructura HTML prevalecen sobre cualquier receta
+   visual.
+4. **Iconos UI: Lucide SVG inline**. Nunca emojis como sustituto de iconos;
+   los emojis de contenido sí son válidos.
+5. **Movimiento**: si existe animación no esencial, respetar
+   `prefers-reduced-motion`.
+6. **Test de la Caja (EAR)**: cada caja con
+   `background+border+border-radius` debe ser **E**s accionable, **A**grupa
+   contenido heterogéneo o **R**epresenta un dato discreto. Si no pasa ninguna
+   prueba, va sin caja.
 
-Excepción / condición: si el output es interno (debug, tooling, no firmado) puede saltarse Bold Signal default, pero la regla 1 (data-preset) sigue.
+El preset, el tema, la densidad y la composición dependen de la superficie.
+Bold Signal es el default de identidad para piezas públicas firmadas y una
+heurística cuando el contexto es ambiguo; no es un invariante universal.
 
-Catálogo canónico de presets: `references/style-presets.md` + `references/presets.json` (machine-readable mirror).
+Si existe toggle de tema, el icono representa la **acción**: luna en light
+(`Activar modo oscuro`) y sol en dark (`Activar modo claro`).
+
+Fuente estructurada canónica: `references/presets.json`. La referencia humana
+`references/style-presets.md`, el catálogo y los exports deben validarse o
+generarse contra ella.
 
 <!-- /PRESCRIPTIVE-PATTERN -->
 
@@ -34,7 +48,28 @@ Sistema de diseño con 27 presets visuales, tipografia fluida y layouts expresiv
 Referencia: [adri-app.com](https://adri-app.com).
 Fuentes: Butterick (tipografia), Utopia (escala fluida), Vercel Geist (tokens), Emil Kowalski (animaciones), Linear/Vercel (dark mode profundidad), Refactoring UI (tinted grays), Impeccable (anti-patterns AI-tell).
 
-## Changelog v5.7 → v5.8 (2026-05-09, P4 entera ejecutada)
+## Parche transversal PRO-211 (2026-07-18)
+
+Precedencia obligatoria:
+
+1. Accesibilidad y semántica.
+2. Contrato de la superficie.
+3. Identidad y tokens del preset.
+4. Heurísticas.
+5. Recetas decorativas opcionales.
+
+“Less, but better” aplica como criterio de reducción: ninguna receta añade
+componentes, visualizaciones, layouts o decoración que el contenido no
+necesita.
+
+## Changelog v5.7 → v5.8
+
+**Consolidación PRO-211 (2026-07-18):** `presets.json` pasa a ser el
+contrato estructurado canónico; `validate_contract.py` bloquea preset o fuentes
+incoherentes antes de la auditoría opcional; el catálogo se genera desde ese
+contrato; identidad, superficie y decoración quedan separados.
+
+**Integración P4 (2026-05-09):**
 
 Cierre del backlog completo `impeccable-integration` (P1+P2+P3+P4). Cuatro items P4 originalmente "ideas no priorizadas" implementados como adiciones no-breaking:
 
@@ -54,9 +89,9 @@ Iteración sobre `estacion-clasificacion` (adri-react/public) reveló que el **A
 
 ## Changelog v5.5 → v5.6 (2026-05-08 noche, fuente única `presets.json`)
 
-Eliminada la duplicación de catálogo entre `audit-adri.sh` (case bash con 27 entries) y `references/style-presets.md` (tabla canónica humana). Ahora hay un mirror programático autoritativo: `references/presets.json`.
+Eliminada la duplicación de catálogo entre `audit-adri.sh` (case bash con 27 entries) y `references/style-presets.md` (tabla canónica humana). Desde PRO-211, `references/presets.json` es el contrato estructurado autoritativo.
 
-- **`references/presets.json` (NUEVO)**: schema 1.0 con los 27 presets. Por cada uno: id, n, name, fonts (display/body/single_font/justifications/weights), color (bg/accent), mode_default, estado, uso_real. Generado a partir de la tabla v5.4. La fuente humana sigue siendo `references/style-presets.md`; el JSON es mirror que se actualiza después.
+- **`references/presets.json` (NUEVO)**: schema 1.0 con los 27 presets. Por cada uno: id, n, name, fonts (display/body/single_font/justifications/weights), color (bg/accent), mode_default, estado, uso_real. La referencia humana explica intención y CSS; no redefine el contrato.
 - **`scripts/audit-adri.sh` (v5.6)**: la función `preset_canonical_fonts()` ahora lee de `references/presets.json` con `jq`. El catálogo bash hardcoded se elimina. Si `presets.json` o `jq` no están disponibles, el filtro 2 desactiva limpiamente (treat as preset desconocido).
 - **Compatibilidad**: el comportamiento del filtro 2 es idéntico (8/8 batch + test negativo). Solo cambia la fuente de datos. No es breaking — los outputs existentes que pasaban v5.5 siguen pasando v5.6.
 - **Desbloquea**: futuras herramientas (slider `Font variation` en `tweak-adri`, integraciones externas, validador de pesos) ya pueden consumir el JSON sin parsear markdown.
@@ -129,13 +164,13 @@ Antes de escribir CSS, elegir un preset de `references/style-presets.md`.
 **Elegir preset (flujo canónico v5.4):**
 1. Abrir catalogo visual: `open ~/.dotfiles/ai/skills/adri-style/assets/preset-catalog.html`
 2. El usuario elige visualmente el preset que quiere
-3. **Copiar `templates/bootstrap-adri.html` como punto de partida** (default Bold Signal):
+3. En una página web general, copiar `templates/bootstrap-adri.html` como punto de partida (default Bold Signal). En Console, galería, dashboard o presentación, partir del fixture o skill propietario de esa superficie:
    ```bash
    cp ~/.dotfiles/ai/skills/adri-style/templates/bootstrap-adri.html mi-output.html
    ```
 4. Si el preset elegido NO es Bold Signal: sustituir en el bootstrap el bloque `<!-- preset: NN-name -->`, las `<link>` de fuentes y el `:root` completo por los del preset elegido en `references/style-presets.md` (sección "Audit v5.4" valida los pesos permitidos).
 5. Actualizar `data-preset="NN-name"` en `<html>` para que `audit-adri.sh` reconozca el uso justificado de la fuente.
-6. Antes de publicar: `~/.dotfiles/ai/skills/adri-style/scripts/audit-adri.sh mi-output.html` debe devolver exit 0.
+6. Antes de publicar: `~/.dotfiles/ai/skills/adri-style/scripts/audit-adri.sh mi-output.html` debe devolver exit 0. Exit 2 significa infraestructura incompleta, nunca aprobación.
 
 ### Nuevo proyecto web
 1. **Elegir preset** → Paso 0 (arrancar de `templates/bootstrap-adri.html`)
@@ -146,18 +181,18 @@ Antes de escribir CSS, elegir un preset de `references/style-presets.md`.
 6. Pasar `audit-adri.sh` antes de cerrar la entrega
 
 ### Dashboard educativo
-1. **Elegir preset** → Minimalista Adri o Swiss Modern
+1. **Elegir preset** → el que fije `dashboard-educativo`; sin contrato propietario, considerar Soffia Warm, Minimalista Adri o Swiss Modern
 2. Escala: ratio 1.125 (Major Second) para densidad
-3. Cards y KPIs → `references/components.md`
+3. KPIs, tablas y gráficos necesarios → `references/components.md`; no convertir cada dato en card
 4. Graficas: Chart.js con colores semanticos → `references/color-and-theme.md`
 5. Tabular-nums obligatorio en todas las notas
 
 ### Presentacion HTML / Landing
 1. **Elegir preset** → Bold Signal ★ (default Adri), Soffia Warm, Creative Voltage, etc.
 2. Escala: ratio 1.333 (Perfect Fourth) para impacto visual
-3. Layouts asimetricos: alternar left-heavy, right-heavy, centered
-4. Patrones premium → `references/components.md` (glassmorphism, glow, bento grid)
-5. Animaciones de entrada → `references/animation.md`
+3. Cada slide presenta una idea y cabe en 100vw × 100vh; la landing usa scroll natural.
+4. Variar composición cuando lo exija el contenido, no por cuota.
+5. Patrones premium y animaciones solo si apoyan la narrativa y el preset.
 6. **Si el preset es Bold Signal**: consultar `references/identity-adri.md` para 10 animaciones HTML reutilizables (timeline, line/bar chart, comparativas A/B, procesos lineal/circular, causa-consecuencia, radial top-down, estructura literaria) + logo (relleno vs monoline) + opción de importar `tokens.css` directo del repo
 
 ### Documento / contenido de lectura
@@ -167,69 +202,49 @@ Antes de escribir CSS, elegir un preset de `references/style-presets.md`.
 
 ## Reglas core
 
-**ALWAYS:**
-- Usar escala tipografica fluida con clamp() (variables --step-*)
-- Usar text-wrap: balance en todos los headings (h1-h6)
-- Usar 3 roles tipograficos: --font-display, --font-body, --font-mono
-- Font pairing real: --font-display DIFERENTE de --font-body (Space Grotesk, Instrument Serif, etc.)
-- Implementar tema dual (oscuro por defecto) con toggle + localStorage
-- Usar Lucide SVG para iconos (stroke-width: 1.5, nunca emojis)
-- Usar font-variant-numeric: tabular-nums en datos numericos
-- Composicion dinamica: posicionar texto segun el contenido visual → `references/composition.md`
-- Activos reales primero cuando haya identidad reconocible: logo, producto, portada, foto, captura UI o documento original antes que gradientes, iconos genericos o siluetas CSS. Si no hay activos suficientes, usar placeholder honesto y pedirlos; no rellenar con decoracion.
-- Usar al menos 3 tipos de componentes distintos por pagina → `references/components.md`
-- Usar al menos 2 patrones de layout distintos (no todo grid uniforme) → `references/composition.md`
-- Incluir al menos 1 visualizacion SVG inline (donut con stroke-dashoffset, sparkline con polyline points, barras con scaleX, o decorativa con path/circle) en TODOS los outputs — no solo cuando haya datos numéricos
-- Usar prefers-reduced-motion para accesibilidad
-- Escala dramatica: al menos un elemento con tamaño ≥ step-4 (heroes, KPIs, spotlight numbers)
-- Usar color-mix() para superficies tintadas, hover states y borders con tinte del color de acento
-- Hover states con transform o border-color (no solo cambio de color)
-- Near-black para fondo oscuro: #0a0a0a o hsl(220 15% 8%), NUNCA #000000 puro
-- Superficies tintadas: backgrounds con rgba() o color-mix() a baja opacidad para status, badges, hover
-- Al menos 4 niveles de --step-* usados en la pagina (jerarquia visual rica)
-- 2 breakpoints responsive minimo (900px + 600px)
-- Alternar layouts entre secciones consecutivas (no repetir el mismo patron 3 veces seguidas)
-- Margenes asimetricos en headings: margin-top > margin-bottom (ej: margin-top: --space-l, margin-bottom: --space-s)
+**Invariantes:**
 
-**COMPOSITION (principios de composición visual — inspirados en Present/Faces, Linear, Vercel):**
-- Cada seccion debe transmitir **1 idea principal** — no 4-5 elementos compitiendo por atencion
-- El contenido debe ocupar ~50-70% del viewport, el resto es **espacio negativo intencional**
-- Hero sections: padding generoso `clamp(80px, 12vw, 160px)` vertical — que respire
-- Secciones funcionales: mas compactas `clamp(48px, 6vw, 80px)` — pero nunca agolpadas
-- **Eyebrow labels** encima de titulos: peso 300, ALL-CAPS, letter-spacing +0.15em a +0.25em, color de acento
-- **Numeros decorativos gigantes** (01, 02, 03) como textura de fondo: peso 200, opacity 0.04, position absolute
-- **Splits asimetricos**: imagen/visual 60% + texto 40%, o viceversa — NUNCA 50/50 exacto salvo comparativas
-- **Contraste de pesos extremo**: display 900 (Black) + labels 300 (Light) + body 300-400 (Regular gris al 45%)
-- Body text en gris al 40-45% opacity (`rgba(255,255,255,0.45)` en dark) — nunca blanco puro para cuerpo
-- **Profundidad con gradientes radiales**: `radial-gradient(ellipse at 70% 30%, rgba(accent, 0.04), transparent 60%)` en secciones alternas. En modo claro: opacidad ≤ 0.03 y saturación baja — nunca un tinte de color marcado
-- Max 3 cards por fila, y con jerarquia spotlight (1 grande + 2 pequeñas), nunca 4 identicas
+- Declarar preset y cargar sus fuentes canónicas.
+- Mantener contraste AA, foco, teclado, labels y HTML semántico.
+- Aplicar EAR a toda caja.
+- Usar Lucide para iconos UI y `prefers-reduced-motion` cuando haya motion.
+- Usar `tabular-nums` en datos numéricos comparables.
 
-**VIEWPORT-FIT (contenido autocontenido por vista):**
-- Cada pestaña/sección seleccionada debe caber COMPLETA en el viewport sin scroll
-- Si el contenido no cabe, subdividir en más pestañas o subsecciones
-- **Preferir navegación por PESTAÑAS sobre scroll** en dashboards, docs y contenido educativo — más práctico para el usuario
-- En docs con sidebar: cada sección del sidebar = un panel que ocupa `calc(100dvh - header)`, sin scroll de página
-- Header/título SIEMPRE clicable → scroll to top o volver a pestaña inicial (`onclick="scrollTo({top:0,behavior:'smooth'})"`)
-- Números decorativos: NUNCA sobre fondos del mismo color, `right: clamp(40px, 6vw, 100px)` mínimo desde bordes
-- Padding lateral mínimo en todo el contenido: `clamp(24px, 4vw, 80px)`
-- **Fondos consistentes**: secciones consecutivas deben usar el MISMO fondo (`var(--bg)`). Solo alternar fondo cuando hay razón visual clara (hero destacado). Evitar huecos de color vacíos entre secciones
-- **Centrado vertical**: el contenido de cada panel/sección debe estar centrado verticalmente en el viewport, no pegado arriba
-- **Variedad de layouts**: cada sección debe usar un layout DIFERENTE (split 60/40, split inverso 40/60, bento grid, full-width, centrado). No repetir el mismo patrón visual en secciones consecutivas
+**Por superficie o preset:**
+
+- Tema inicial, tema dual y toggle.
+- Pareja tipográfica o single-font.
+- Densidad, ancho, scroll, viewport-fit y breakpoints.
+- Escala dramática, hero, tabs, bento, sombras, gradientes y motion.
+- Visualizaciones: solo cuando representan datos o explican una relación.
+
+**Heurísticas:**
+
+- Escala fluida, `text-wrap: balance`, activos reales y jerarquía clara.
+- Variar layout cuando mejora la lectura; no cumplir cuotas numéricas.
+- Más de ocho cajas redondeadas visibles sugiere revisar EAR, no implica fallo.
+- En fondos oscuros, preferir near-black y contraste medido.
+
+**Eliminar como requisito:**
+
+- SVG decorativo obligatorio.
+- Mínimos de componentes, layouts o niveles tipográficos.
+- Eyebrows, números gigantes, gradientes o splits universales.
+- Cuerpo a 40–45 % de opacidad: sustituir por contraste AA verificable.
 
 **IMÁGENES PROTAGONISTAS (contenido visual educativo):**
 - Usar imágenes reales cuando el contenido lo pida: fotos de autores, portadas de libros, ilustraciones de época
 - En piezas sobre marca/producto/lugar/obra concreta, verificar identidad visual antes de diseñar: logo si existe, imagen oficial o captura real, colores/fuentes solo como apoyo. No sustituir un producto real por una silueta dibujada ni una UI real por cajas abstractas.
-- Splits imagen+texto asimétricos: imagen 55-60% + texto 40-45%
+- En un split imagen+texto, asignar espacio según la importancia real de cada parte; 55/45 es una receta posible, no un contrato.
 - Imágenes con `object-fit: cover`, `border-radius: var(--radius)`, sombra sutil con border
 - Placeholder si no hay imagen real: fondo tintado con icono Lucide SVG grande (no cuadrado gris vacío)
 - En contenido literario/editorial: las imágenes aportan contexto visual — NO son decoración
 
-**EJERCICIOS INTERACTIVOS (patrón texto-fuente + pestañas):**
-- Texto fuente (fragmento a analizar) SIEMPRE visible arriba, posición sticky
-- Actividades organizadas en PESTAÑAS debajo del texto fuente (no scroll entre actividades)
-- Si una actividad no cabe en el viewport, solo esa actividad tiene scroll interno
-- Cada pestaña = 1 actividad autocontenida con instrucciones + espacio de respuesta
-- Feedback visual inmediato al comprobar (color-mix con verde/rojo semántico)
+**EJERCICIOS INTERACTIVOS (receta cuando existe texto fuente + varias actividades):**
+- Mantener el fragmento accesible mientras se responde; `sticky` es una opción si no roba viewport.
+- Usar pestañas solo cuando reducen carga cognitiva y conservan estado.
+- Evitar scroll interno salvo que la superficie lo necesite.
+- Dar feedback accesible inmediato al comprobar; el color no puede ser la única señal.
 
 **RHYTHM (ritmo vertical):**
 - PROHIBIDO double-spacing: si la sección tiene padding-top, el h2 hijo NO necesita margin-top grande
@@ -247,7 +262,7 @@ Antes de escribir CSS, elegir un preset de `references/style-presets.md`.
 - Fondo #000000 puro (demasiado contraste, parece template)
 - 4 cards identicas en fila sin jerarquia (spotlight: 1 grande + N pequeños)
 - Chart.js con colores por defecto sin personalizar
-- Mismo font-family para display y body (sin contraste tipografico)
+- Mismo font-family para display y body cuando `single_font=false` en el contrato
 - padding: var(--space-2xl) en 4+ secciones uniformemente (falta jerarquia de espaciado)
 - h2 { margin-top: var(--space-xl) } global cuando las secciones ya tienen padding grande
 - Footer margin-top: var(--space-xl) o mayor
@@ -255,7 +270,7 @@ Antes de escribir CSS, elegir un preset de `references/style-presets.md`.
 **NEVER (anti-AI-slop — ver `references/components.md` § ANTI-AI-SLOP):**
 - `bg-indigo-500` ni purple gradients genericos (Tailwind default, cada IA genera esto)
 - 3 cards identicas con icono en grid como layout principal (el layout mas generico)
-- Inter como unica fuente sin display font contrastante
+- Inter como única fuente salvo que el preset declare `single_font=true`
 - Grises puros `hsl(0, 0%, N%)` — siempre tinted grays: `hsl(210, 15%, N%)` o `hsl(30, 8%, N%)`
 - Hero centrado + 3-column grid + CTA como unico layout (cliché "startup template")
 - Single box-shadow para profundidad (usar multi-layer o border-only)
@@ -288,9 +303,9 @@ Antes de escribir CSS, elegir un preset de `references/style-presets.md`.
 | Font body | Segun preset (Inter, DM Sans, Satoshi, Lora, etc.) |
 | Font mono | Geist Mono / JetBrains Mono |
 | Escala | 1.25 (general), 1.125 (dashboard), 1.333 (editorial) |
-| Container | max-width: 1000px |
+| Container | Depende de la superficie |
 | Prose | max-width: 65ch |
-| Radio | 12px |
+| Radio | Según preset y función |
 | Transicion | 0.2s ease |
 | Line-height body | 1.55 (dark), 1.5 (light) |
 | Line-height titles | 1.05 |
@@ -302,15 +317,13 @@ Antes de escribir CSS, elegir un preset de `references/style-presets.md`.
 
 - [ ] Escala fluida con --step-* (no px fijos)
 - [ ] Fontes cargadas con display=swap
-- [ ] 3 roles tipograficos definidos (display, body, mono)
-- [ ] Variables CSS con tema dual configuradas
-- [ ] Toggle de tema con persistencia localStorage
+- [ ] Roles tipográficos necesarios definidos; display/body respetan el contrato
+- [ ] Tema y toggle solo si la superficie los necesita
 - [ ] Datos numericos con font-mono + tabular-nums
-- [ ] Layouts variados (no todo centrado)
-- [ ] Elementos visuales/graficas donde aportan
-- [ ] Responsive: 3→2→1 columna en grids
-- [ ] Solo transform/opacity animados
-- [ ] prefers-reduced-motion
+- [ ] Layout y densidad responden a la superficie
+- [ ] Visuales solo cuando aportan información
+- [ ] Responsive proporcional al contenido
+- [ ] Motion sigue el preset y respeta reduced-motion
 - [ ] Iconos Lucide SVG (no emojis)
 
 ## Referencias
@@ -326,8 +339,9 @@ Antes de escribir CSS, elegir un preset de `references/style-presets.md`.
 
 ## Assets
 
-- `assets/global.css` — Template CSS base para copiar en nuevos proyectos (default: Minimalista Adri)
-- `assets/base.css` — CSS base inyectable con reset, tipografia fluida, tema dual y componentes base (NUEVO v5)
+- `assets/global.css` — Template legacy; no usar para outputs nuevos
+- `assets/base.css` — Base legacy con decisiones de Minimalista Adri; no es un contrato universal
+- `assets/preset-catalog.html` — Catálogo generado desde `presets.json`
 
 ## Export a DESIGN.md (interoperabilidad)
 

@@ -20,7 +20,10 @@ set -euo pipefail
 
 readonly SCRIPT_DIR="$(/usr/bin/dirname "$0")"
 readonly AUDIT_BASIC="$SCRIPT_DIR/audit-adri.sh"
-readonly NPX="${NPX:-/Users/adrianlauredaleon/.nvm/versions/node/v24.14.0/bin/npx}"
+readonly NPX="${NPX:-$(command -v npx || true)}"
+readonly HTML_VALIDATE_PACKAGE="${HTML_VALIDATE_PACKAGE:-html-validate@11.5.6}"
+readonly PA11Y_PACKAGE="${PA11Y_PACKAGE:-pa11y@9.1.1}"
+readonly LINK_CHECKER_PACKAGE="${LINK_CHECKER_PACKAGE:-broken-link-checker@0.7.8}"
 
 usage() {
     echo "Uso: $0 <ruta-html> [--links] [--quick]"
@@ -46,7 +49,7 @@ done
 [[ -f "$target" ]] || [[ "$target" =~ ^https?:// ]] || { echo "FATAL: $target no existe"; exit 1; }
 
 # Acumuladores
-declare -i fail_basic=0 fail_html=0 fail_a11y=0 fail_links=0
+declare -i fail_basic=0 fail_html=0 fail_a11y=0 fail_links=0 infra=0
 declare -a section_reports=()
 
 separator() { printf '\n%s\n' "============================================================"; }
@@ -57,19 +60,34 @@ separator() { printf '\n%s\n' "=================================================
 separator
 echo "1/$((QUICK ? 1 : (WITH_LINKS ? 4 : 3))): audit-adri (Impeccable + filtros adri)"
 separator
-if "$AUDIT_BASIC" "$target"; then
+set +e
+"$AUDIT_BASIC" "$target"
+basic_rc=$?
+set -e
+if (( basic_rc == 0 )); then
     section_reports+=("✓ adri-audit OK")
 else
     fail_basic=1
-    section_reports+=("✗ adri-audit FAIL")
+    if (( basic_rc == 2 )); then
+        infra=1
+        section_reports+=("✗ adri-audit INFRASTRUCTURE_ERROR")
+    else
+        section_reports+=("✗ adri-audit FAIL")
+    fi
 fi
 
 if (( QUICK )); then
     separator
     echo "MODO QUICK — saltando html-validate, pa11y y enlaces"
     printf '%s\n' "${section_reports[@]}"
+    (( infra )) && exit 2
     exit $(( fail_basic ))
 fi
+
+[[ -n "$NPX" && -x "$NPX" ]] || {
+    echo "INFRASTRUCTURE_ERROR: npx no encontrado"
+    exit 2
+}
 
 # ============================================================
 # 2. HTML válido: html-validate via npx (descarga primera vez ~5s)
@@ -77,7 +95,7 @@ fi
 separator
 echo "2/$((WITH_LINKS ? 4 : 3)): html-validate (estructura HTML válida)"
 separator
-if "$NPX" --yes html-validate@latest "$target" 2>&1 | /usr/bin/tail -20; then
+if "$NPX" --yes "$HTML_VALIDATE_PACKAGE" "$target" 2>&1 | /usr/bin/tail -20; then
     section_reports+=("✓ html-validate OK")
 else
     fail_html=1
@@ -95,7 +113,7 @@ pa11y_target="$target"
 if [[ ! "$target" =~ ^https?:// ]]; then
     pa11y_target="file://$(/usr/bin/realpath "$target" 2>/dev/null || echo "$target")"
 fi
-if "$NPX" --yes pa11y@latest --standard WCAG2AA "$pa11y_target" 2>&1 | /usr/bin/tail -30; then
+if "$NPX" --yes "$PA11Y_PACKAGE" --standard WCAG2AA "$pa11y_target" 2>&1 | /usr/bin/tail -30; then
     section_reports+=("✓ pa11y OK")
 else
     fail_a11y=1
@@ -110,7 +128,7 @@ if (( WITH_LINKS )); then
     echo "4/4: broken-link-checker"
     separator
     if [[ "$target" =~ ^https?:// ]]; then
-        if "$NPX" --yes broken-link-checker@latest "$target" --recursive=false --get 2>&1 | /usr/bin/tail -10; then
+        if "$NPX" --yes "$LINK_CHECKER_PACKAGE" "$target" --recursive=false --get 2>&1 | /usr/bin/tail -10; then
             section_reports+=("✓ links OK")
         else
             fail_links=1
@@ -130,6 +148,11 @@ separator
 printf '%s\n' "${section_reports[@]}"
 
 total_fail=$(( fail_basic + fail_html + fail_a11y + fail_links ))
+if (( infra )); then
+    echo ""
+    echo "VEREDICTO: INFRASTRUCTURE_ERROR"
+    exit 2
+fi
 if (( total_fail > 0 )); then
     echo ""
     echo "VEREDICTO: FAIL ($total_fail categorías con críticos)"

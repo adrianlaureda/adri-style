@@ -21,6 +21,8 @@
 version: "alpha"
 name: "<Nombre del preset>"
 description: "<Descripción 1-2 frases>"
+mode:
+  default: "light|dark"
 colors:
   bg: "#hex"
   bg-surface: "#hex"
@@ -65,11 +67,6 @@ rounded:
   base: "0px"
   pill: "9999px"
 components:
-  card:
-    background: "token(colors.bg-surface)"
-    borderColor: "token(colors.border)"
-    borderRadius: "token(rounded.base)"
-    padding: "token(spacing.m)"
   button-primary:
     background: "token(colors.accent)"
     color: "token(colors.bg)"
@@ -77,12 +74,6 @@ components:
     paddingX: "token(spacing.m)"
     paddingY: "token(spacing.2xs)"
     fontWeight: 500
-  input:
-    background: "token(colors.bg-surface)"
-    borderColor: "token(colors.border)"
-    borderRadius: "token(rounded.base)"
-    paddingX: "token(spacing.xs)"
-    paddingY: "token(spacing.2xs)"
 # color alpha notes: <comentario sobre canal alpha conservado en CSS original>
 ---
 ```
@@ -115,7 +106,7 @@ Estos campos son **compatibles directamente** con la spec Google/Stitch de desig
 | `typography.body.fontFamily` | `typography.body.fontFamily` | |
 | `spacing.*` | `spacing.*` | mismas claves t-shirt size |
 | `rounded.base` | `radius.base` | |
-| `components.card.*` | `components.card.*` | tokens del componente |
+| `components.button-primary.*` | `components.button-primary.*` | primitiva accionable |
 
 **Reglas de compatibilidad:**
 
@@ -142,16 +133,20 @@ Estos campos son **extensiones Adri** que las herramientas externas pueden ignor
 
 ## 5. Reglas de consistencia `components` ↔ `colors/rounded/spacing`
 
+`components` publica primitivas disponibles; no obliga a usarlas. No se
+exportan cards universales porque cada superficie debe justificar contenedores
+mediante EAR.
+
 Cuando un componente referencia un valor con `token(<path>)`:
 
 - El path **debe existir** en el frontmatter.
 - Si se quiere un valor literal en vez de token, escribirlo directamente (`background: "#0e0e0e"`).
-- **No mezclar**: dentro de la misma clave `card.background`, o es `token(...)` o es hex literal. No es válido `"token(colors.bg-surface)"` si la clave `colors.bg-surface` no existe.
+- **No mezclar**: dentro de una propiedad de componente, o se usa `token(...)` o un literal. No es válido `"token(colors.bg-surface)"` si la clave `colors.bg-surface` no existe.
 
 **Validador (§7) detecta**:
 - Hex literales que duplican un token existente (ej: `background: "#0e0e0e"` cuando `colors.bg-surface == "#0e0e0e"`) → recomendar `token(colors.bg-surface)`.
 - `token(<path>)` con path inexistente.
-- Mezcla incoherente entre `components.card.background` con hex y `borderColor` con token.
+- Mezcla incoherente entre literales y tokens equivalentes dentro de un componente.
 
 ## 6. Reglas de no-reimport
 

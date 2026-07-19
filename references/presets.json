@@ -1,9 +1,9 @@
 {
   "$schema_version": "1.0",
-  "adri_style_version": "5.6",
-  "generated_at": "2026-05-08",
-  "source_canonical": "references/style-presets.md § Audit v5.4",
-  "warning_for_humans": "Esta es la fuente programática derivada de la tabla canónica humana. Si modificas un preset: edita PRIMERO references/style-presets.md y MIRROR aquí. Tools que consumen este JSON: scripts/audit-adri.sh (filtro 2 v5.6), futuras integraciones (tweak-adri Font variation slider, etc.).",
+  "adri_style_version": "5.8",
+  "generated_at": "2026-07-18",
+  "source_canonical": "references/presets.json",
+  "warning_for_humans": "Fuente estructurada canónica para ids, tokens, fuentes, modos y estado. Los artefactos humanos y visuales deben generarse o validarse contra este JSON.",
   "presets": [
     {
       "id": "01-bold-signal",

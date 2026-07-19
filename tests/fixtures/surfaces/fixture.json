@@ -1,0 +1,10 @@
+{
+  "title": "Auditoría PRO-211",
+  "date": "2026-07-18",
+  "metrics": {
+    "presets": 27,
+    "surfaces": 4,
+    "decorative_rules": 0
+  },
+  "finding": "La identidad visual no debe convertirse en una plantilla universal."
+}

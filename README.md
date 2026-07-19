@@ -12,7 +12,8 @@ templates/
   bootstrap-adri.html            # Punto de partida canónico
 references/
   style-presets.md               # Catálogo humano de 27 presets
-  presets.json                   # Mirror programático
+  presets.json                   # Contrato estructurado canónico
+  presets.schema.json            # Esquema documentado del contrato
   identity-adri.md               # Identidad Bold Signal
   typography.md                  # Tipografía y escala fluida
   composition.md                 # Composición
@@ -24,35 +25,37 @@ references/
   ux-guidelines.md               # Reglas UX transversales
   design-md-spec.md              # Exportación DESIGN.md
 assets/
-  base.css                       # CSS base inyectable
+  base.css                       # Base legacy, no universal
   global.css                     # Template legacy pendiente de retirada
-  preset-catalog.html            # Catálogo visual legacy pendiente de regenerar
+  preset-catalog.html            # Catálogo generado y comparador
 scripts/
   audit-adri.sh                  # Auditoría rápida
   audit-adri-full.sh             # Auditoría completa
   export.py                      # Exportador DESIGN.md
+  generate_catalog.py            # Generador determinista del catálogo
   measure-adri.sh                # Métricas de outputs
+  validate_contract.py           # Validador fail-closed
+tests/fixtures/surfaces/         # Un contrato aplicado a cuatro superficies
 exports/                         # Ejemplos DESIGN.md generados
 ```
 
 ## Uso
 
-1. Copiar `templates/bootstrap-adri.html`.
-2. Elegir preset en `references/style-presets.md`.
+1. Elegir preset en `assets/preset-catalog.html`.
+2. Para una página general, copiar `templates/bootstrap-adri.html`; para una superficie especializada, partir de su skill o fixture.
 3. Sustituir fuentes, tokens y `data-preset` de forma coherente.
-4. Ejecutar `scripts/audit-adri.sh <archivo.html>`.
+4. Ejecutar `scripts/validate_contract.py <archivo.html>` y `scripts/audit-adri.sh <archivo.html>`.
 
 Bold Signal es el default para marca Adri o contexto ambiguo. Los contextos funcionales, educativos y editoriales conservan sus presets específicos.
 
-## Estado de consolidación
+## Contrato v5.8
 
-La versión v5.8 se recuperó desde la skill instalada el 2026-07-18. PRO-211 debe corregir después la deriva interna detectada:
+`references/presets.json` gobierna ids, fuentes, modos y estado. El catálogo y
+los exports se generan o validan contra él. `style-presets.md` conserva
+explicaciones y CSS detallado sin redefinir esos campos.
 
-- `SKILL.md`: v5.8.
-- `references/presets.json`: v5.6.
-- `assets/preset-catalog.html`: v5.2 y 25 previews.
-
-No editar esos mirrors por separado: la siguiente fase debe introducir generación y validación de coherencia.
+`audit-adri.sh` usa exit 0 para aprobación, 1 para incumplimiento y 2 para
+infraestructura incompleta. Un exit 2 nunca cuenta como verde en métricas.
 
 ## OpenClaw
 

@@ -42,7 +42,7 @@ Subcarpetas: lecciones/, presentaciones/, cuestionarios/, h5p/, sesiones/, infor
 
 ## Reglas de formato
 
-- **HTML**: siempre autocontenido (CSS+JS embebido), solo Google Fonts externo
+- **HTML**: siempre autocontenido (CSS+JS embebido); fuentes externas solo de Google Fonts o Fontshare según el preset
 - **GIFT** (Moodle): formato con HTML (`<b>`, `<i>`, `<br>`), NUNCA Markdown
 - **Informes de tutoría**: gallego normativo, texto plano
 - **Notas Obsidian**: sintaxis Obsidian Flavored Markdown

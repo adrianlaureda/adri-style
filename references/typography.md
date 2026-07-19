@@ -16,7 +16,8 @@ Tres roles tipograficos. Cada preset elige fuentes y pesos:
 | Mono/Data | Dashboards, codigo, tabular-nums | Geist Mono, JetBrains Mono, Fira Code, IBM Plex Mono |
 
 **Antipatterns detectados en producción que NO se deben repetir** (audit Impeccable 2026-05-08):
-- Single-font: usar Inter (o una sola fuente) para display Y body. Pareja display+body distinta es obligatoria.
+- Single-font accidental: usar una familia sin que el preset declare
+  `single_font=true`.
 - Inter como default sin pensar el preset: el output tira de Inter porque "es lo seguro" → señal IA-generada.
 - Display sin pareja body diferenciada: jerarquía floja.
 
@@ -78,9 +79,9 @@ Tres roles tipograficos. Cada preset elige fuentes y pesos:
 
 Cada preset (`style-presets.md`) declara su propia pareja explícita. Por ejemplo:
 - **Bold Signal**: display Satoshi 900 + body Inter 300.
-- **Paper & Ink**: display Newsreader + body Source Serif 4.
-- **Swiss Modern**: display Inter 700 + body Inter 400.
-- **Vintage Editorial**: display Playfair Display + body Lora.
+- **Paper & Ink**: display Instrument Serif + body Inter.
+- **Swiss Modern**: display Switzer + body Inter.
+- **Vintage Editorial**: display Playfair Display + body Public Sans.
 
 NUNCA dejar `--font-display === --font-body` (single-font), salvo que el preset lo declare como decisión consciente.
 
@@ -193,14 +194,17 @@ Reglas adicionales para temas oscuros de calidad profesional:
 ## Regras
 
 - **Always** usar a escala fluida (--step-*) para tamaños, non valores fixos
-- **Always** usar --font-display para headings e --font-body para corpo
-- **Always** usar --font-mono con tabular-nums para datos numericos
+- **Always** usar los roles tipográficos que declara el preset; en single-font,
+  display y body comparten familia intencionadamente.
+- **Always** usar tabular-nums para datos numéricos comparables; una familia mono
+  es opcional si el preset conserva legibilidad.
 - **Always** manter lonxitude de liña entre 45-90 caracteres (optimo: 65ch)
 - **Always** usar marxes asimetricos en headings: mais espazo arriba que abaixo
 - **Always** usar font-display: swap ao cargar fontes web
-- **Always** declarar `--font-display` y `--font-body` distintos (no single-font) salvo decisión consciente del preset
+- **Always** respetar `fonts.single_font` y las familias del preset canónico
 - **Always** verificar que `--font-display` y `--font-body` provienen del preset activo, no del default IA-genérico
-- **Never** usar Inter como ÚNICA fuente del documento (tell IA detectado en outputs reales)
+- **Never** usar Inter como única fuente salvo que el preset declare
+  `single_font=true`
 - **Never** usar font-weight > 500 por defecto. Solo > 500 si el preset activo lo justifica explícitamente (Bold Signal, Swiss Modern, Exaggerated Minimalism)
 - **Never** usar cursiva para enfase con sans-serif — usar negrita
 - **Never** combinar espazo entre parrafos E sangria — elexir un
@@ -217,7 +221,7 @@ Reglas adicionales para temas oscuros de calidad profesional:
 - [ ] Body usa line-height 1.5
 - [ ] Titulos usan line-height 1.05-1.25
 - [ ] Datos numericos con font-mono + tabular-nums
-- [ ] `--font-display` ≠ `--font-body` (no single-font)
+- [ ] Pareja o single-font coincide con `references/presets.json`
 - [ ] Fuentes provienen del preset activo (declarado en `style-presets.md`), NO del default Inter
 - [ ] Font-weight default ≤ 500 salvo justificación documentada en preset (Bold Signal, Swiss Modern, etc.)
-- [ ] Output NO usa Inter como única fuente del documento
+- [ ] Inter solo es fuente única si el preset declara `single_font=true`

@@ -27,6 +27,7 @@ Los valores con canal alpha se convierten a hex de color base; la opacidad se an
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 from dataclasses import dataclass, field
@@ -35,6 +36,7 @@ from textwrap import dedent
 
 SKILL_ROOT = Path(__file__).resolve().parent.parent
 PRESETS_FILE = SKILL_ROOT / "references" / "style-presets.md"
+PRESETS_JSON = SKILL_ROOT / "references" / "presets.json"
 DEFAULT_OUTPUT_DIR = SKILL_ROOT / "exports"
 
 SPACING_SCALE = {
@@ -148,6 +150,33 @@ class Preset:
     ideal_for: list[str] = field(default_factory=list)
     vars: dict[str, str] = field(default_factory=dict)
     raw_block: str = ""
+    mode_default: str = "light"
+    single_font: bool = False
+    weights_display: str = ""
+    weights_body: str = ""
+
+
+def load_preset_metadata(path: Path = PRESETS_JSON) -> dict[int, dict]:
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError) as exc:
+        raise ValueError(f"No se pudo cargar metadata de presets: {exc}") from exc
+    presets = raw.get("presets")
+    if not isinstance(presets, list):
+        raise ValueError("references/presets.json no contiene presets")
+    return {int(item["n"]): item for item in presets}
+
+
+def enrich_preset(preset: Preset, metadata: dict[int, dict]) -> Preset:
+    item = metadata.get(preset.number)
+    if item is None:
+        raise ValueError(f"Falta metadata para preset {preset.number}")
+    fonts = item["fonts"]
+    preset.mode_default = item["mode_default"]
+    preset.single_font = fonts["single_font"]
+    preset.weights_display = fonts["weights_display"]
+    preset.weights_body = fonts["weights_body"]
+    return preset
 
 
 def list_presets(content: str) -> list[tuple[int, str, str]]:
@@ -283,13 +312,8 @@ def build_frontmatter(preset: Preset) -> str:
         f'  pill: "9999px"',
     ]
 
-    # Components (piloto: tokens mínimos derivados del preset)
+    # Componentes accionables disponibles; no obligan a usar cards o inputs.
     components_block = dedent(f"""\
-      card:
-        background: "{v.get('bg-surface', v.get('bg', '#0e0e0e')).strip()}"
-        borderColor: "token(colors.border)"
-        borderRadius: "token(rounded.base)"
-        padding: "token(spacing.m)"
       button-primary:
         background: "token(colors.accent)"
         color: "token(colors.bg)"
@@ -297,12 +321,6 @@ def build_frontmatter(preset: Preset) -> str:
         paddingX: "token(spacing.m)"
         paddingY: "token(spacing.2xs)"
         fontWeight: 500
-      input:
-        background: "token(colors.bg-surface)"
-        borderColor: "token(colors.border)"
-        borderRadius: "token(rounded.base)"
-        paddingX: "token(spacing.xs)"
-        paddingY: "token(spacing.2xs)"
     """).rstrip()
 
     alpha_note = ""
@@ -315,6 +333,8 @@ def build_frontmatter(preset: Preset) -> str:
         'version: "alpha"',
         f"name: {yaml_quote(preset.name)}",
         f"description: {yaml_quote(preset.description)}",
+        "mode:",
+        f'  default: "{preset.mode_default}"',
         "colors:",
         *color_lines,
         "typography:",
@@ -358,6 +378,11 @@ def build_sections(preset: Preset) -> str:
     mono_family = v.get("font-mono", "monospace").strip()
     radius_raw = v.get("radius", "8px").strip()
     accent_raw = v.get("accent", "#ffffff").strip()
+    font_policy = (
+        "single-font justificado por el preset"
+        if preset.single_font
+        else "pareja display/body canónica"
+    )
 
     sections = f"""\
 ## Overview
@@ -370,7 +395,8 @@ def build_sections(preset: Preset) -> str:
 
 ### Notes
 
-- Dark mode primero; tema claro disponible vía `[data-theme="light"]`.
+- Modo inicial: `{preset.mode_default}`; un toggle es opcional según la superficie.
+- Política tipográfica: {font_policy}.
 - Fondo base nunca `#000000` puro (ver `references/color-and-theme.md`).
 - Escala tipográfica fluida Utopia (`--step-*`), no px fijos.
 
@@ -386,33 +412,31 @@ Los valores con canal alpha se preservan en el CSS original (ver columna *Fuente
 
 | Rol | Font family | Weight | Line height | Letter spacing |
 |-----|-------------|--------|-------------|----------------|
-| Display | `{display_family}` | 700–900 | {v.get('lh-display', '1.05')} | -0.04em |
-| Body | `{body_family}` | 400 | {v.get('lh-body', '1.55')} | 0 |
+| Display | `{display_family}` | {preset.weights_display or "según preset"} | {v.get('lh-display', '1.05')} | -0.04em |
+| Body | `{body_family}` | {preset.weights_body or "según preset"} | {v.get('lh-body', '1.55')} | 0 |
 | Mono | `{mono_family}` | 400 | 1.5 | 0 (tabular-nums) |
 
 Reglas transversales (desde `SKILL.md`):
 
-- Font pairing real: `--font-display` distinto de `--font-body`.
+- Pareja o single-font según `references/presets.json`.
 - `text-wrap: balance` en todos los h1-h6.
 - `font-variant-numeric: tabular-nums` en datos numéricos.
 
 ## Layout
 
-- Container: `max-width: 1000px`.
-- Prose (lectura): `max-width: 65ch`.
-- Breakpoints responsive: `900px` y `600px`.
-- Spacing escala Utopia (ver frontmatter `spacing`): xs→3xl con clamp fluido.
-- Padding hero: `clamp(80px, 12vw, 160px)` vertical.
-- Padding sección funcional: `clamp(48px, 6vw, 80px)` vertical.
+- La superficie define ancho, densidad, scroll y breakpoints.
+- Prose de lectura: aproximadamente `65ch`.
+- Spacing disponible en frontmatter: xs→3xl.
+- No hay cuota universal de layouts, cards o visualizaciones.
 
 Ver `references/layout.md` y `references/composition.md`.
 
 ## Elevation & Depth
 
-- **No usar `box-shadow` decorativo**: solo bordes (`--border`) + multi-layer inset para `card-premium`.
-- Profundidad con gradientes radiales: `radial-gradient(ellipse at 70% 30%, rgba(accent, 0.04), transparent 60%)`.
-- Niveles: `--bg` → `--bg-surface` → `--bg-elevated` (3 planos jerárquicos).
-- En modo claro: opacidad del gradiente radial ≤ 0.03 y saturación baja.
+- El preset y la superficie deciden si usan bordes, sombras o gradientes.
+- EAR elimina contenedores sin función.
+- Los tokens `--bg`, `--bg-surface` y `--bg-elevated` están disponibles sin
+  obligar a crear tres planos.
 
 ## Shapes
 
@@ -422,11 +446,12 @@ Ver `references/layout.md` y `references/composition.md`.
 
 ## Components
 
-Tokens declarados en `components:` del frontmatter:
+Tokens accionables disponibles en `components:`:
 
-- `card` — fondo `--bg-surface`, border `--border`, radius base.
 - `button-primary` — fondo `--accent`, texto `--bg`, radius base.
-- `input` — fondo `--bg-surface`, border `--border`.
+
+No se exportan cards universales. Cada superficie crea solo los contenedores que
+superan EAR.
 
 Ver `references/components.md` para catálogo extendido (bento grid, patrones premium dark mode, anti-AI-slop).
 
@@ -436,8 +461,8 @@ Ver `references/components.md` para catálogo extendido (bento grid, patrones pr
 
 - Usar escala tipográfica fluida con `clamp()` (variables `--step-*`).
 - `text-wrap: balance` en headings.
-- 3 roles tipográficos definidos (display, body, mono) con font pairing real.
-- Tema dual (oscuro por defecto) + toggle con persistencia en `localStorage`.
+- 3 roles tipográficos definidos; pareja o single-font según el preset.
+- Modo inicial del preset; toggle solo si la superficie lo necesita.
 - `font-variant-numeric: tabular-nums` en datos numéricos.
 - Iconos Lucide SVG (`stroke-width: 1.5`).
 - Near-black para fondo oscuro: `#0a0a0a` o `hsl(220 15% 8%)`.
@@ -447,13 +472,13 @@ Ver `references/components.md` para catálogo extendido (bento grid, patrones pr
 **Don't**
 
 - `font-weight > 900` (display 700–900 Black, body nunca > 600).
-- `box-shadow` decorativo (solo bordes).
+- Cajas, sombras o gradientes sin función ni permiso del preset.
 - Emojis en la interfaz (usar Lucide SVG).
 - Fondo `#000000` puro.
 - `bg-indigo-500` ni purple gradients Tailwind default.
 - 3 cards idénticas con icono en grid como layout principal (anti-AI-slop).
 - Grises puros `hsl(0, 0%, N%)` — siempre tinted.
-- Inter como única fuente sin display font contrastante.
+- Single-font no declarado por el preset.
 - Accent solid plano sin variante `--accent-surface` para backgrounds tintados.
 
 Accent base: `{accent_raw}`.
@@ -487,6 +512,11 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     content = PRESETS_FILE.read_text(encoding="utf-8")
+    try:
+        metadata = load_preset_metadata()
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
 
     if args.list:
         for num, name, slug in list_presets(content):
@@ -500,6 +530,11 @@ def main(argv: list[str] | None = None) -> int:
     preset = extract_preset(content, args.preset)
     if preset is None:
         print(f"error: preset {args.preset!r} no encontrado. Usa --list.", file=sys.stderr)
+        return 1
+    try:
+        enrich_preset(preset, metadata)
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
         return 1
 
     output = build_design_md(preset)
