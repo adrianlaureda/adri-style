@@ -25,16 +25,17 @@ references/
   ux-guidelines.md               # Reglas UX transversales
   design-md-spec.md              # Exportación DESIGN.md
 assets/
-  base.css                       # Base legacy, no universal
-  global.css                     # Template legacy pendiente de retirada
+  base.css                       # Base inyectable para consumidores existentes
   preset-catalog.html            # Catálogo generado y comparador
 scripts/
   audit-adri.sh                  # Auditoría rápida
   audit-adri-full.sh             # Auditoría completa
   export.py                      # Exportador DESIGN.md
   generate_catalog.py            # Generador determinista del catálogo
+  generate_docs.py               # Tablas humanas y coherencia CSS/JSON
+  preset_assets.py               # Fuentes y colores accesibles derivados
   measure-adri.sh                # Métricas de outputs
-  validate_contract.py           # Validador fail-closed
+  validate_contract.py           # Validador único de catálogo e inyección
 tests/fixtures/surfaces/         # Un contrato aplicado a cuatro superficies
 exports/                         # Ejemplos DESIGN.md generados
 ```
@@ -56,6 +57,33 @@ explicaciones y CSS detallado sin redefinir esos campos.
 
 `audit-adri.sh` usa exit 0 para aprobación, 1 para incumplimiento y 2 para
 infraestructura incompleta. Un exit 2 nunca cuenta como verde en métricas.
+
+## Validación sin instalaciones
+
+```bash
+python3 -m unittest discover -s tests -v
+node tests/run-browser.mjs
+```
+
+La batería de navegador requiere Node 22+ y Chrome ya instalados. Se puede
+indicar `CHROME_BIN`. Comprueba 27 presets, cuatro superficies, comparación,
+tema, anchos 320/375/768/1440 e impresión. CI ejecuta las mismas pruebas.
+La carga real de fuentes externas requiere red y se revisa visualmente;
+los checks de estructura no confunden fallback con una fuente descargada.
+
+Tras editar `presets.json`, ejecutar `python3 scripts/generate_catalog.py` y
+`python3 scripts/generate_docs.py`. Regenerar los ejemplos DESIGN.md con
+`python3 scripts/export.py --preset bold-signal` y `--preset paper-and-ink`.
+Los tests detectan drift de tablas, bloques CSS, catálogo y exports.
+
+Ver [contrato de inyección y consumidores](references/injection-contract.md).
+Se mantienen los 27 IDs y fuentes; los alias sin número se normalizan. La base
+inyectable permanece; `global.css` se ha retirado por duplicación. No combinar
+`base.css` con el reset autocontenido del bootstrap.
+
+`audit-adri-full.sh` usa html-validate/pa11y ya instalados y devuelve 2 si faltan;
+no usa npx ni instala paquetes. Impeccable sigue siendo una auditoría opcional
+adicional, separada de los tests reproducibles del repositorio.
 
 ## OpenClaw
 

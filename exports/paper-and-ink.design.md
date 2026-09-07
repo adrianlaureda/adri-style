@@ -11,14 +11,16 @@ colors:
   border: "#937c6c"
   text: "#e8e0d4"
   text-secondary: "#aa9e92"
-  text-muted: "#7c736a"
+  text-muted: "#99928b"
   accent: "#d4a574"
+  on-accent: "#101014"
+  accent-ink: "#d4a574"
   accent-surface: "#d4a677"
 typography:
   display:
     fontFamily: "'Instrument Serif', 'Georgia', serif"
     fontSize: "clamp(2.5rem, 2rem + 2.5vw, 4rem)"
-    fontWeight: 700
+    fontWeight: 400
     lineHeight: 1.05
     letterSpacing: "-0.04em"
   body:
@@ -50,7 +52,7 @@ rounded:
 components:
   button-primary:
     background: "token(colors.accent)"
-    color: "token(colors.bg)"
+    color: "token(colors.on-accent)"
     borderRadius: "token(rounded.base)"
     paddingX: "token(spacing.m)"
     paddingY: "token(spacing.2xs)"
@@ -86,8 +88,10 @@ components:
 | `border` | `#937c6c` (α=0.15) | `hsl(25 15% 50% / 0.15)` |
 | `text` | `#e8e0d4` | `#e8e0d4` |
 | `text-secondary` | `#aa9e92` | `hsl(30 12% 62%)` |
-| `text-muted` | `#7c736a` | `hsl(30 8% 45%)` |
+| `text-muted` | `#99928b` | `#99928b` |
 | `accent` | `#d4a574` | `#d4a574` |
+| `on-accent` | `#101014` | `#101014` |
+| `accent-ink` | `#d4a574` | `#d4a574` |
 | `accent-surface` | `#d4a677` (α=0.1) | `hsl(30 52% 65% / 0.1)` |
 
 Los valores con canal alpha se preservan en el CSS original (ver columna *Fuente CSS*). El hex listado es el color base sRGB sin opacidad, tal y como exige el spec.
@@ -132,7 +136,7 @@ Ver `references/layout.md` y `references/composition.md`.
 
 Tokens accionables disponibles en `components:`:
 
-- `button-primary` — fondo `--accent`, texto `--bg`, radius base.
+- `button-primary` — fondo `--accent`, texto `--on-accent`, radius base.
 
 No se exportan cards universales. Cada superficie crea solo los contenedores que
 superan EAR.
@@ -155,7 +159,7 @@ Ver `references/components.md` para catálogo extendido (bento grid, patrones pr
 
 **Don't**
 
-- `font-weight > 900` (display 700–900 Black, body nunca > 600).
+- Pesos fuera del rango canónico del preset (también en fuentes de peso único).
 - Cajas, sombras o gradientes sin función ni permiso del preset.
 - Emojis en la interfaz (usar Lucide SVG).
 - Fondo `#000000` puro.

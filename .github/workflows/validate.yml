@@ -1,0 +1,27 @@
+name: Validate adri-style
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Contratos, contraste y artefactos generados
+        run: python3 -m unittest discover -s tests -v
+      - name: Sintaxis shell
+        run: for script in scripts/*.sh setup-cora.sh; do bash -n "$script"; done
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Chrome y Node preinstalados, sin dependencias nuevas
+        run: node tests/run-browser.mjs

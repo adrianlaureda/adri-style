@@ -10,6 +10,9 @@ import sys
 from pathlib import Path
 
 
+from validate_contract import load_catalog
+from preset_assets import font_stylesheets, preview_tokens
+
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "references" / "presets.json"
 OUTPUT = ROOT / "assets" / "preset-catalog.html"
@@ -17,16 +20,7 @@ SURFACES = ("console", "gallery", "dashboard", "presentation")
 
 
 def load_contract() -> dict:
-    try:
-        data = json.loads(SOURCE.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise RuntimeError(f"No se pudo leer el contrato: {exc}") from exc
-    presets = data.get("presets")
-    if data.get("adri_style_version") != "5.8" or not isinstance(presets, list):
-        raise RuntimeError("El contrato no es adri-style v5.8")
-    if len(presets) != 27:
-        raise RuntimeError(f"Se esperaban 27 presets y hay {len(presets)}")
-    return data
+    return {'presets': list(load_catalog(SOURCE).values())}
 
 
 def build_options(presets: list[dict]) -> str:
@@ -49,7 +43,8 @@ def build_options(presets: list[dict]) -> str:
 
 
 def render_catalog(contract: dict) -> str:
-    presets = contract["presets"]
+    presets = [dict(preset, stylesheets=font_stylesheets(preset), preview=preview_tokens(preset))
+               for preset in contract["presets"]]
     encoded = json.dumps(presets, ensure_ascii=False, separators=(",", ":"))
     encoded = encoded.replace("</", "<\\/")
     options = build_options(presets)
@@ -119,26 +114,26 @@ def render_catalog(contract: dict) -> str:
     .preview{{
       min-height:540px;background:var(--preview-bg);color:var(--preview-text);
       border-radius:14px;overflow:hidden;box-shadow:0 24px 80px #0008;
-      font-family:var(--body)
+      font-family:var(--body);font-weight:var(--body-weight)
     }}
     .preview-header{{
       display:flex;align-items:center;justify-content:space-between;padding:17px 22px;
       border-bottom:1px solid color-mix(in srgb,var(--preview-text) 15%,transparent)
     }}
-    .preview-header strong{{font-family:var(--display);font-weight:700}}
+    .preview-header strong{{font-family:var(--display);font-weight:var(--display-weight)}}
     .preview-header span{{font-size:.7rem;opacity:.62}}
-    .surface{{display:none;min-height:476px}}
-    .surface.is-active{{display:block}}
+    .surface{{min-height:476px}}
+
     .console-shell{{display:grid;grid-template-columns:180px 1fr;min-height:476px}}
     .console-nav{{padding:22px;border-right:1px solid color-mix(in srgb,var(--preview-text) 15%,transparent)}}
-    .console-nav b{{display:block;margin-bottom:24px;font:700 1rem/1 var(--display)}}
+    .console-nav b{{display:block;margin-bottom:24px;font:var(--display-weight) 1rem/1 var(--display)}}
     .console-nav span{{display:block;padding:7px 0;font-size:.72rem;opacity:.62}}
     .console-main{{padding:30px}}
     .console-main h2,.gallery-copy h2,.dashboard-head h2,.slide-stage h2{{
-      margin:0;font-family:var(--display);letter-spacing:-.035em
+      margin:0;font-family:var(--display);font-weight:var(--display-weight);letter-spacing:-.035em
     }}
     .log{{display:grid;grid-template-columns:70px 1fr auto;gap:16px;padding:14px 0;border-bottom:1px solid color-mix(in srgb,var(--preview-text) 12%,transparent);font-size:.74rem}}
-    .log em{{color:var(--preview-accent);font-style:normal;font-weight:600}}
+    .log em{{color:var(--preview-accent-ink);font-style:normal;font-weight:var(--body-weight)}}
     .media-stream{{display:grid;grid-template-columns:1.2fr .8fr;min-height:476px}}
     .media-art{{background:color-mix(in srgb,var(--preview-accent) 26%,var(--preview-bg));display:grid;place-items:center}}
     .media-art svg{{width:46%;max-width:180px;color:var(--preview-accent)}}
@@ -149,14 +144,14 @@ def render_catalog(contract: dict) -> str:
     .dashboard-head p{{margin:0;font-size:.72rem;opacity:.62}}
     .metrics{{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:28px;background:color-mix(in srgb,var(--preview-text) 14%,transparent)}}
     .metric{{padding:24px;background:var(--preview-bg)}}
-    .metric strong{{display:block;font:700 2.1rem/1 var(--display)}}
+    .metric strong{{display:block;font:var(--display-weight) 2.1rem/1 var(--display)}}
     .metric span{{font-size:.7rem;opacity:.62}}
     .chart{{height:180px;margin-top:28px;border-left:1px solid currentColor;border-bottom:1px solid currentColor;display:flex;align-items:end;gap:6%;padding:0 5%}}
     .chart i{{display:block;width:14%;height:var(--h);background:var(--preview-accent)}}
     .slide-stage{{min-height:476px;display:grid;grid-template-columns:1fr auto;align-items:center;padding:clamp(32px,7vw,90px)}}
     .slide-stage h2{{font-size:clamp(3rem,8vw,7rem);line-height:.86;max-width:8ch}}
     .slide-stage p{{max-width:26ch;line-height:1.55;opacity:.66}}
-    .slide-count{{align-self:end;font:600 .72rem/1 var(--body)}}
+    .slide-count{{align-self:end;font:var(--body-weight) .72rem/1 var(--body)}}
     .surface:not(.is-active){{display:none}}
     .details{{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;margin-top:20px}}
     .details h2{{margin:0;font:700 1.15rem/1.1 "Satoshi",sans-serif}}
@@ -170,6 +165,34 @@ def render_catalog(contract: dict) -> str:
       .app{{grid-template-columns:1fr}}.sidebar{{border-right:0;border-bottom:1px solid var(--line);max-height:290px}}
       .topbar{{display:block}}.mode{{margin-top:12px}}.media-stream{{grid-template-columns:1fr}}.media-art{{min-height:220px}}
       .console-shell{{grid-template-columns:120px 1fr}}.compare-tray{{grid-template-columns:1fr}}
+    }}
+    .preview{{overflow-wrap:anywhere}}
+    .preview-header{{gap:16px;flex-wrap:wrap}}
+    .preview-header span{{opacity:1;color:var(--preview-text)}}
+    .console-main,.gallery-copy,.metric-grid,.slide-stage{{min-width:0}}
+    .log{{grid-template-columns:48px minmax(0,1fr) auto;gap:12px}}
+    .log b{{font-weight:inherit}}
+    .metric{{min-width:0;padding:20px 12px;font-variant-numeric:tabular-nums}}
+    .details p{{line-height:1.5}}
+    #font-status{{font-size:.75rem;color:var(--muted);min-height:1.5em}}
+    @media (max-width:540px){{
+      .console-shell{{grid-template-columns:1fr}}.console-nav{{display:none}}
+      .console-main,.metric-grid{{padding:22px 16px}}
+      .dashboard-head{{display:block}}.metrics{{grid-template-columns:1fr}}
+      .details{{grid-template-columns:1fr}}.slide-stage{{grid-template-columns:1fr;padding:28px}}
+      .slide-stage h2{{font-size:clamp(2.4rem,11vw,4rem);line-height:1}}
+      .gallery-copy{{padding:26px}}.slide-count{{margin-top:20px}}
+    }}
+    @media print{{
+      :root{{--shell:#fff;--text:#111;--muted:#444;--line:#bbb;--panel:#fff}}
+      .app{{display:block}}.sidebar,.controls,.compare-action,#font-status{{display:none}}
+      main{{padding:0}}.topbar h1{{font-size:26pt;line-height:1.1}}
+      .preview{{box-shadow:none;border:1px solid #bbb;border-radius:0;min-height:0}}
+      .preview,.preview *{{background:transparent!important;color:#111!important}}
+      .chart i{{background:#444!important}}
+      .surface{{min-height:0;break-inside:avoid}}.slide-stage h2{{font-size:40pt;line-height:1}}
+      .preview-header,.details{{break-inside:avoid}}.media-art{{min-height:120px}}
+      .compare-tray{{display:none}}
     }}
     @media (prefers-reduced-motion:reduce){{*,*::before,*::after{{scroll-behavior:auto!important;transition:none!important}}}}
   </style>
@@ -196,7 +219,7 @@ def render_catalog(contract: dict) -> str:
       <div class="controls" role="group" aria-label="Superficie de prueba">
 {surface_buttons}
       </div>
-      <article class="preview" id="preview">
+      <article class="preview" id="preview" data-preset="01-bold-signal" data-theme="light">
         <header class="preview-header">
           <strong id="preview-name">Bold Signal</strong>
           <span id="preview-contract">Satoshi / Inter</span>
@@ -218,6 +241,7 @@ def render_catalog(contract: dict) -> str:
           <div><h2>Identidad no es plantilla.</h2><p>La presentación amplifica una idea. El dashboard compara datos. El preset puede ser el mismo.</p></div><span class="slide-count">01 / 04</span>
         </section>
       </article>
+      <p id="font-status" role="status" aria-live="polite"></p>
       <div class="details">
         <div><h2 id="detail-name">01 · Bold Signal</h2><p id="detail-meta">activo · light · Satoshi / Inter</p></div>
         <button class="compare-action" type="button" id="compare-action" aria-pressed="false">Añadir a comparación</button>
@@ -236,16 +260,45 @@ def render_catalog(contract: dict) -> str:
       const compare = [];
       let selected = presets[0];
 
-      const safeColor = (value, fallback) =>
-        CSS.supports("color", value) ? value : fallback;
-      const contrast = (mode) => mode === "dark" ? "#f4f4f5" : "#101014";
+      const loadedStyles = new Map();
+      let fontRequest = 0;
+      async function loadFonts(preset) {{
+        const request = ++fontRequest;
+        const status = document.querySelector("#font-status");
+        status.textContent = "Cargando tipografías…";
+        try {{
+          await Promise.all(preset.stylesheets.map((url) => {{
+            if (!loadedStyles.has(url)) {{
+              loadedStyles.set(url, new Promise((resolve, reject) => {{
+                const link = document.createElement("link");
+                link.rel = "stylesheet"; link.href = url; link.dataset.presetFont = "";
+                link.onload = resolve; link.onerror = () => reject(new Error("stylesheet"));
+                document.head.append(link);
+              }}));
+            }}
+            return loadedStyles.get(url);
+          }}));
+          const faces = await Promise.all(["display", "body"].map((role) =>
+            document.fonts.load(`${{preset.preview[role + "_weight"]}} 16px "${{preset.fonts[role]}}"`)));
+          if (faces.some((family) => family.length === 0)) throw new Error("font missing");
+          if (request === fontRequest) status.textContent = "Tipografías cargadas";
+        }} catch (error) {{
+          if (request === fontRequest) status.textContent = "Fuentes externas no disponibles; vista con fuentes de reserva.";
+        }}
+      }}
 
       function renderPreset(preset) {{
         selected = preset;
         const root = document.documentElement;
-        root.style.setProperty("--preview-bg", safeColor(preset.color.bg, preset.mode_default === "dark" ? "#101014" : "#f8f8f8"));
-        root.style.setProperty("--preview-accent", safeColor(preset.color.accent, contrast(preset.mode_default)));
-        root.style.setProperty("--preview-text", contrast(preset.mode_default));
+        root.style.setProperty("--preview-bg", preset.color.bg);
+        root.style.setProperty("--preview-accent", preset.color.accent);
+        root.style.setProperty("--preview-text", preset.preview.text);
+        root.style.setProperty("--preview-accent-ink", preset.preview.accent_ink);
+        root.style.setProperty("--display-weight", preset.preview.display_weight);
+        root.style.setProperty("--body-weight", preset.preview.body_weight);
+        document.querySelector("#preview").dataset.preset = preset.id;
+        document.querySelector("#preview").dataset.theme = preset.mode_default;
+        loadFonts(preset);
         root.style.setProperty("--display", JSON.stringify(preset.fonts.display) + ", sans-serif");
         root.style.setProperty("--body", JSON.stringify(preset.fonts.body) + ", sans-serif");
         document.querySelector("#preview-name").textContent = preset.name;
@@ -255,7 +308,7 @@ def render_catalog(contract: dict) -> str:
         document.querySelector("#mode-label").textContent = `Modo ${{preset.mode_default}}`;
         options.forEach((option) => {{
           option.setAttribute("aria-pressed", String(option.dataset.presetId === preset.id));
-          option.style.setProperty("--swatch", safeColor(byId.get(option.dataset.presetId).color.accent, "#888"));
+          option.style.setProperty("--swatch", byId.get(option.dataset.presetId).color.accent);
         }});
         const active = compare.some((item) => item.id === preset.id);
         document.querySelector("#compare-action").setAttribute("aria-pressed", String(active));
@@ -263,11 +316,18 @@ def render_catalog(contract: dict) -> str:
       }}
 
       function renderCompare() {{
-        document.querySelector("#compare-tray").innerHTML = compare.map((preset) => `
-          <div class="compare-card" style="--swatch:${{safeColor(preset.color.accent, "#888")}}">
-            <strong>${{String(preset.n).padStart(2, "0")}} · ${{preset.name}}</strong>
-            <span>${{preset.mode_default}} · ${{preset.fonts.display}} / ${{preset.fonts.body}}</span>
-          </div>`).join("");
+        const cards = compare.map((preset) => {{
+          const card = document.createElement("div");
+          card.className = "compare-card";
+          card.style.setProperty("--swatch", preset.color.accent);
+          const title = document.createElement("strong");
+          title.textContent = `${{String(preset.n).padStart(2, "0")}} · ${{preset.name}}`;
+          const meta = document.createElement("span");
+          meta.textContent = `${{preset.mode_default}} · ${{preset.fonts.display}} / ${{preset.fonts.body}}`;
+          card.append(title, meta);
+          return card;
+        }});
+        document.querySelector("#compare-tray").replaceChildren(...cards);
       }}
 
       options.forEach((option) => option.addEventListener("click", () => renderPreset(byId.get(option.dataset.presetId))));

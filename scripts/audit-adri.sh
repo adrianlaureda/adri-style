@@ -23,7 +23,6 @@ set -euo pipefail
 
 readonly IMPECCABLE_REPO="${IMPECCABLE_REPO:-$HOME/Proyectos/Claude/config/impeccable-integration/sandbox/impeccable}"
 readonly NODE="${NODE:-$(command -v node || true)}"
-readonly JQ="${JQ:-$(command -v jq || true)}"
 readonly PYTHON="${PYTHON:-$(command -v python3 || true)}"
 readonly PRESETS_JSON="${PRESETS_JSON:-$(/usr/bin/dirname "$0")/../references/presets.json}"
 readonly CONTRACT_VALIDATOR="${CONTRACT_VALIDATOR:-$(/usr/bin/dirname "$0")/validate_contract.py}"
@@ -42,65 +41,6 @@ require_tool() {
     }
 }
 
-# Devuelve las fuentes canónicas del preset NN-name leídas de presets.json.
-# Cada fuente en una línea (TSV-friendly). Vacío si preset desconocido o JSON ausente.
-# Si el preset es single-font, devuelve solo 1 línea (no duplica display/body).
-preset_canonical_fonts() {
-    local preset_id="$1"
-    [[ -f "$PRESETS_JSON" ]] || return 0
-    [[ -x "$JQ" ]] || return 0
-    "$JQ" -r --arg id "$preset_id" '
-        .presets[]
-        | select(.id==$id)
-        | if .fonts.single_font then [.fonts.display]
-          else [.fonts.display, .fonts.body]
-          end
-        | .[]
-    ' "$PRESETS_JSON" 2>/dev/null
-}
-
-# Verifica que el HTML carga una fuente concreta (vía Google/Fontshare URL, font-family,
-# o vía override externo `adri-overrides.css` que se sabe que carga Satoshi + General Sans).
-# Args: $1 = ruta archivo, $2 = nombre fuente (puede tener espacios)
-html_loads_font() {
-    local file="$1"
-    local font="$2"
-    # Buscar en URLs de Google Fonts (family=Foo+Bar) o Fontshare (f[]=foo)
-    local font_url="${font// /+}"
-    local font_url_lc
-    font_url_lc="$(echo "$font" | /usr/bin/tr '[:upper:]' '[:lower:]' | /usr/bin/tr ' ' '-')"
-    if /usr/bin/grep -qiE "(family=|f\[\]=)[^\"' ]*${font_url}" "$file" 2>/dev/null; then return 0; fi
-    if /usr/bin/grep -qE "f\[\]=${font_url_lc}" "$file" 2>/dev/null; then return 0; fi
-    # O bien mencionada en una declaración font-family (acepta postfix " Variable" para
-    # variantes variable fonts como "Fraunces Variable", "Inter Variable", etc.).
-    if /usr/bin/grep -qE "font-family[[:space:]]*:[^;]*['\"]${font}( Variable)?['\"]" "$file" 2>/dev/null; then return 0; fi
-    # O bien el HTML enlaza la capa override externa adri-overrides.css que se sabe que
-    # carga la pareja canónica Bold Signal (Satoshi + General Sans + Inter como fallback).
-    # Esto permite que outputs legacy regenerados con la capa override pasen el chequeo.
-    if [[ "$font" == "Satoshi" || "$font" == "Inter" || "$font" == "General Sans" ]]; then
-        if /usr/bin/grep -qE 'href="[^"]*adri-overrides\.css' "$file" 2>/dev/null; then return 0; fi
-    fi
-    return 1
-}
-
-# Verifica coherencia preset↔fuentes. Devuelve 0 si todas las fuentes canónicas
-# del preset están cargadas en el HTML; 1 si falta alguna o si preset desconocido.
-preset_fonts_coherent() {
-    local file="$1"
-    local preset="$2"
-    local fonts
-    fonts="$(preset_canonical_fonts "$preset")"
-    [[ -z "$fonts" ]] && return 1  # preset desconocido o JSON ausente → no filtrar
-
-    while IFS= read -r f; do
-        [[ -z "$f" ]] && continue
-        if ! html_loads_font "$file" "$f"; then
-            return 1
-        fi
-    done <<< "$fonts"
-    return 0
-}
-
 main() {
     [[ $# -eq 1 ]] || usage
     local target="$1"
@@ -111,9 +51,9 @@ main() {
     if [[ "$target" =~ ^https?:// ]]; then
         tmp="$(/usr/bin/mktemp /tmp/audit-adri.XXXXXX.html)"
         trap "rm -f '$tmp'" EXIT
-        /usr/bin/curl -fsSL "$target" -o "$tmp" || {
-            echo "FATAL: no pude descargar $target"
-            exit 1
+        /usr/bin/curl --connect-timeout 10 --max-time 30 -fsSL "$target" -o "$tmp" || {
+            echo "INFRASTRUCTURE_ERROR: no pude descargar $target"
+            exit 2
         }
         file="$tmp"
     fi
@@ -124,7 +64,7 @@ main() {
     require_tool "$PYTHON"
     local contract_output contract_rc
     set +e
-    contract_output="$("$PYTHON" "$CONTRACT_VALIDATOR" "$file" --catalog "$PRESETS_JSON" 2>&1)"
+    contract_output="$("$PYTHON" "$CONTRACT_VALIDATOR" "$file" --catalog "$PRESETS_JSON" --json 2>&1)"
     contract_rc=$?
     set -e
     printf '%s\n' "$contract_output"
@@ -138,15 +78,9 @@ main() {
         exit 2
     }
 
-    # Detectar preset declarado y verificar coherencia con sus fuentes canónicas.
-    local declared_preset=""
-    local preset_coherent=1  # 1 = NO coherente / no aplicable
-    if /usr/bin/grep -qE 'data-preset="[0-9]{2}-[a-z-]+"' "$file" 2>/dev/null; then
-        declared_preset="$(/usr/bin/grep -oE 'data-preset="[0-9]{2}-[a-z-]+"' "$file" | /usr/bin/head -1 | /usr/bin/sed 's/data-preset="//; s/"//')"
-        if preset_fonts_coherent "$file" "$declared_preset"; then
-            preset_coherent=0
-        fi
-    fi
+    # Un único validador decide preset y fuentes, también para CSS externos.
+    local declared_preset
+    declared_preset="$(printf '%s' "$contract_output" | "$PYTHON" -c 'import json,sys; print(", ".join(json.load(sys.stdin)["preset_ids"]))')"
 
     # Ejecutar Impeccable detect
     local raw_output impeccable_rc
@@ -154,13 +88,19 @@ main() {
     raw_output="$("$NODE" "$IMPECCABLE_REPO/cli/bin/cli.js" detect "$file" 2>&1)"
     impeccable_rc=$?
     set -e
-    if (( impeccable_rc != 0 )); then
+    # Impeccable devuelve 2 cuando encuentra patrones; validar también el formato.
+    if (( impeccable_rc != 0 && impeccable_rc != 2 )); then
         echo "INFRASTRUCTURE_ERROR: Impeccable terminó con exit $impeccable_rc"
         printf '%s\n' "$raw_output"
         exit 2
     fi
 
-    if echo "$raw_output" | /usr/bin/grep -q "0 anti-patterns found\|No anti-patterns found"; then
+    # El CLI instalado no emite texto cuando termina sin hallazgos.
+    if (( impeccable_rc == 0 )) && [[ -z "$raw_output" ]]; then
+        echo "OK: $target sin anti-patterns"
+        exit 0
+    fi
+    if (( impeccable_rc == 0 )) && echo "$raw_output" | /usr/bin/grep -qE "^[[:space:]]*(0 anti-patterns found|No anti-patterns found)[.![:space:]]*$"; then
         echo "OK: $target sin anti-patterns"
         exit 0
     fi
@@ -213,33 +153,11 @@ main() {
                 fi
             fi
 
-            # Filtro 2 v5.5: overused-font cuando el preset declarado existe Y
-            # carga sus dos fuentes canónicas. Si declara preset pero no carga
-            # las fuentes que el preset documenta, el filtro NO aplica.
-            if [[ "$tag" == "overused-font" && -n "$declared_preset" ]]; then
-                if (( preset_coherent == 0 )); then
-                    filtered=$((filtered + 1))
-                    report+="  line $lineno: [$tag] $snippet  ✓ FILTRADO (preset $declared_preset coherente)\n"
-                    continue
-                else
-                    critical=$((critical + 1))
-                    local expected
-                    expected="$(preset_canonical_fonts "$declared_preset" | /usr/bin/tr '\n' ',' | /usr/bin/sed 's/,$//' | /usr/bin/sed 's/,/, /g')"
-                    report+="  line $lineno: [$tag] $snippet  ✗ CRÍTICO (preset $declared_preset declarado pero fuentes incoherentes; esperado: $expected)\n"
-                    continue
-                fi
-            fi
-
-            # Filtro 3 v5.8: single-font cuando hay capa override externa (adri-overrides.css)
-            # Y data-preset coherente. Impeccable analiza solo HTML+CSS inline; no sigue el <link>
-            # externo que sí carga la pareja display+body completa. Este patrón es legítimo en
-            # outputs legacy regenerados con override CSS añadido (ver adri-react/public).
-            if [[ "$tag" == "single-font" && -n "$declared_preset" ]] && (( preset_coherent == 0 )); then
-                if /usr/bin/grep -qE 'href="[^"]*adri-overrides\.css' "$file" 2>/dev/null; then
-                    filtered=$((filtered + 1))
-                    report+="  line $lineno: [$tag] $snippet  ✓ FILTRADO (override externo adri-overrides.css gestiona fuentes)\n"
-                    continue
-                fi
+            # El contrato ya comprobó las cargas; no repetir heurísticas bash.
+            if [[ "$tag" == "overused-font" || "$tag" == "single-font" ]]; then
+                filtered=$((filtered + 1))
+                report+="  line $lineno: [$tag] $snippet  ✓ FILTRADO (contrato de fuentes $declared_preset validado)\n"
+                continue
             fi
 
             critical=$((critical + 1))
@@ -248,19 +166,11 @@ main() {
     done <<< "$raw_output"
 
     echo "audit-adri report for: $target"
-    if [[ -n "$declared_preset" ]]; then
-        if (( preset_coherent == 0 )); then
-            echo "Preset declarado: $declared_preset · fuentes coherentes ✓"
-        else
-            local expected
-            expected="$(preset_canonical_fonts "$declared_preset" | /usr/bin/tr '\n' ',' | /usr/bin/sed 's/,$//' | /usr/bin/sed 's/,/, /g')"
-            if [[ -z "$expected" ]]; then
-                echo "Preset declarado: $declared_preset · DESCONOCIDO en references/presets.json"
-            else
-                echo "Preset declarado: $declared_preset · INCOHERENTE — fuentes canónicas esperadas: $expected"
-            fi
-        fi
+    if (( total == 0 )); then
+        echo "INFRASTRUCTURE_ERROR: respuesta de Impeccable no reconocida"
+        exit 2
     fi
+    echo "Preset declarado: $declared_preset · fuentes coherentes"
     echo "Total issues: $total | Críticos: $critical | Filtrados (excepción educativa): $filtered"
     echo ""
     printf "%b" "$report"

@@ -13,7 +13,7 @@ description: >
 
 Cualquier HTML que use este sistema DEBE cumplir, sin excepción:
 
-1. **`data-preset="NN-name"` en `<html>` o root container**. Sin esa marca, el HTML se considera fuera del sistema y `audit-adri.sh` lo marca FAIL.
+1. **`data-preset="NN-name"` en `<html>` o root container**. Los slugs sin número (por ejemplo `soffia-warm`) se resuelven al ID canónico; outputs nuevos usan el ID completo. Sin esa marca, el HTML se considera fuera del sistema y `audit-adri.sh` lo marca FAIL.
 2. **Cargar las fuentes exactas del preset declarado** según
    `references/presets.json`. Si `single_font=true`, una familia es correcta;
    si es `false`, display y body deben estar cargadas.
@@ -62,63 +62,15 @@ Precedencia obligatoria:
 componentes, visualizaciones, layouts o decoración que el contenido no
 necesita.
 
-## Changelog v5.7 → v5.8
+## Auditoría de septiembre de 2026
 
-**Consolidación PRO-211 (2026-07-18):** `presets.json` pasa a ser el
-contrato estructurado canónico; `validate_contract.py` bloquea preset o fuentes
-incoherentes antes de la auditoría opcional; el catálogo se genera desde ese
-contrato; identidad, superficie y decoración quedan separados.
-
-**Integración P4 (2026-05-09):**
-
-Cierre del backlog completo `impeccable-integration` (P1+P2+P3+P4). Cuatro items P4 originalmente "ideas no priorizadas" implementados como adiciones no-breaking:
-
-- **`scripts/audit-adri-full.sh` (NUEVO)**: wrapper de quality-check unificado. Combina `audit-adri.sh` + `html-validate` (npx) + `pa11y` WCAG 2.1 AA (npx) + opcional `broken-link-checker`. Flags `--quick` (solo audit-adri, rápido) y `--links` (verificación enlaces, lento). Sin instalación global, todo vía npx.
-- **`scripts/measure-adri.sh` (NUEVO) + LaunchAgent diario 06:30**: medición objetiva del % de outputs HTML que pasan audit-adri.sh sin críticos. Escanea `~/Proyectos/Claude/{apps/adri-react/public, educacion, personal}` y registra JSONL por día en `~/Library/Application Support/adri-style-metrics/`. Modo `--report` genera tabla markdown de tendencia 30d. Línea base 2026-05-09: 35 HTMLs escaneados, 4 OK (11%), 31 con críticos (mayormente single-font Inter en minijuegos pre-override). LaunchAgent `com.adri.style-metrics` cargado.
-- **`references/colors-oklch.md` (NUEVO)**: documentación del espacio de color OKLCH como capa adicional no-breaking. Tabla de los 27 accents canónicos convertidos a OKLCH para usar en variantes derivadas (hover, muted, semantic). Migración a v6 donde el JSON canónico añadiría `color.accent_oklch` queda como camino opcional. Soporte navegador ~96% global a 2026-05.
-- **Chrome ext Impeccable**: instalación manual desde Chrome Web Store (Adri completa el click). Permite auditoría visual ad-hoc en preview local sin tocar código. Complementa `audit-adri.sh` que es CLI estático.
-
-Sin breaking changes. Backlog impeccable-integration cerrado entero.
-
-## Changelog v5.6 → v5.7 (2026-05-08 noche, anti-cajas como requisito canónico)
-
-Iteración sobre `estacion-clasificacion` (adri-react/public) reveló que el **AI-tell más persistente NO es la tipografía sino el encajamiento**: cuando todo va envuelto en `background + border + border-radius`, el resultado parece SaaS dashboard genérico aunque la tipografía esté impecable. Adri lo expresó así: «Veo cuadros, destaques sin necesidad. Me gusta el estilo minimalista, salvo que sea un botón que haya que clicar por algún motivo».
-
-- **`references/components.md` §15 (NUEVO)**: regla canónica **Test de la Caja (EAR)** — cada caja debe justificar su existencia con AL MENOS UNA de tres pruebas: **E**s accionable / **A**grupa contenido heterogéneo / **R**epresenta un dato discreto. Si no pasa ninguna, va sin caja (espaciado + tipografía + separador horizontal). Documentados 6 patrones canónicos de sustitución con ejemplos before/after: selectores radio, inputs de texto, contenedor protagonista, feedback contextual, cards de equipo, listados/tablas. Lista cerrada de excepciones (botones de acción, modales, code blocks, quotes editoriales, cards de portfolio en grid). Heurística rápida: contar elementos con `border-radius > 6px` en pantalla visible — si supera 8, hay encajamiento excesivo.
-- **Checklist de entrega** (`components.md` final) ampliada con la casilla v5.7.
-
-## Changelog v5.5 → v5.6 (2026-05-08 noche, fuente única `presets.json`)
-
-Eliminada la duplicación de catálogo entre `audit-adri.sh` (case bash con 27 entries) y `references/style-presets.md` (tabla canónica humana). Desde PRO-211, `references/presets.json` es el contrato estructurado autoritativo.
-
-- **`references/presets.json` (NUEVO)**: schema 1.0 con los 27 presets. Por cada uno: id, n, name, fonts (display/body/single_font/justifications/weights), color (bg/accent), mode_default, estado, uso_real. La referencia humana explica intención y CSS; no redefine el contrato.
-- **`scripts/audit-adri.sh` (v5.6)**: la función `preset_canonical_fonts()` ahora lee de `references/presets.json` con `jq`. El catálogo bash hardcoded se elimina. Si `presets.json` o `jq` no están disponibles, el filtro 2 desactiva limpiamente (treat as preset desconocido).
-- **Compatibilidad**: el comportamiento del filtro 2 es idéntico (8/8 batch + test negativo). Solo cambia la fuente de datos. No es breaking — los outputs existentes que pasaban v5.5 siguen pasando v5.6.
-- **Desbloquea**: futuras herramientas (slider `Font variation` en `tweak-adri`, integraciones externas, validador de pesos) ya pueden consumir el JSON sin parsear markdown.
-
-## Changelog v5.4 → v5.5 (2026-05-08 noche, cierre agujero filtro 2)
-
-El filtro 2 introducido en v5.4 era ingenuo: aprobaba cualquier HTML que declarara `data-preset="NN-name"` aunque el HTML cargara solo una fuente y el preset declarado pidiera pareja display+body. Resultado: ai-slop (single-font Inter) disfrazado por declaración. Detectado y corregido tras auditar 7 cinematic-modules cherry-picked.
-
-- **`scripts/audit-adri.sh`** (v5.5): el filtro 2 ahora **verifica coherencia** preset↔fuentes. Mantiene un catálogo interno de los 27 presets con sus fuentes canónicas (display + body) y exige que TODAS aparezcan cargadas en el HTML (vía `<link>` Google Fonts/Fontshare o declaración `font-family:` directa). Si declaras `01-bold-signal` pero no cargas Satoshi → FAIL. El reporte muestra "Preset declarado: NN-name · fuentes coherentes ✓" o "INCOHERENTE — fuentes esperadas: …".
-- **`references/cinematic-modules/`** (en `presentacion-html`): 7 módulos cherry-picked de `robonuggets/cinematic-site-components` adaptados con Satoshi 900 display + Inter 300 body coherente con Bold Signal. Estaban single-font Inter en v0.1.0 (regresión IA-slop); arreglados en v5.5.
-
-## Changelog v5.3 → v5.4 (2026-05-08, cierre Top 3 audit Codex ABCD)
-
-Cierre de los dos puntos críticos del audit Codex (`AUDIT-codex-ABCD-2026-05-08.md` bloques C2/E2/F2):
-
-- **`references/style-presets.md`**: nueva sección **"Audit v5.4 — Reglas de fuentes y pesos por preset"** con tabla canónica de los 27 presets. Cada preset declara explícitamente: pareja display/body, weights permitidos, justificación si single-font, justificación si body>500 default, modo light/dark, estado (`activo` / `activo-frágil` / `revisión-30d`). 8 presets quedan marcados como candidatos a eliminar tras 2026-06-08 si no aparecen en outputs reales (3, 4, 7, 9, 11, 23, 24, 27).
-- **`templates/bootstrap-adri.html` (NUEVO)**: plantilla canónica para outputs nuevos. Carga Bold Signal por defecto (Satoshi + Inter + JetBrains Mono), tokens completos del preset, toggle light/dark con iconos lucide:moon/lucide:sun inline, esqueleto header/main/footer con comentarios de extensión. Pasa `audit-adri.sh` con preset declarado vía `data-preset="01-bold-signal"`. Cualquier output nuevo DEBE arrancar de aquí — sustituyendo el bloque `<!-- preset: NN-name -->`, las `<link>` de fuentes y el `:root`.
-- **`scripts/audit-adri.sh`**: añadido filtro 2 — `overused-font` se considera FILTRADO cuando el HTML declara `data-preset="NN-name"` (señal de que el uso de Inter/Geist/etc. es intencional del preset y no IA-genérico).
-
-## Changelog v5.2 → v5.3 (2026-05-08, post-audit Impeccable de 5 sites reales)
-
-Cambios disparados por evidencia objetiva: 24 anti-patterns detectados en `branding-adri`, `adri-app-react/estacion-clasificacion`, `planificacion-2eso`, `formacion-ia-xograr`, `adri-app.com`.
-
-- **`typography.md`**: eliminado "Inter 600" como default global. Cada preset declara su pareja display+body. Defaults rebajados a 300/400/500. Excepciones documentadas (Bold Signal Satoshi 900, Swiss Modern Inter 700, Exaggerated Minimalism). Single-font prohibido salvo decisión consciente del preset.
-- **`components.md`**: avisos sobre anti-patterns en barras de progreso legacy (5 ejemplos con `transition: width/height`). Nueva sección **§14 Modern Progress Bars** con `transform: scaleX/scaleY` + `transform-origin`. Aviso sobre `border-left` colorido grueso (válido si codifica datos, anti-pattern si decoración).
-- **`animation.md`**: prohibición explícita de `cubic-bezier(...> 1.0...)` (overshoot/bounce/elastic) por defecto. Refuerzo de `prefers-reduced-motion`. Refuerzo de "no animar `width/height/padding/margin/border/top/left`".
-- **Linter `audit-adri.sh`** disponible en `scripts/` (CLI Impeccable + filtro de excepciones educativas: semáforo `border-left` permitido, etc.).
+El contrato de inyección, los 27 presets y las superficies conservan sus IDs.
+`validate_contract.py` es el validador único de catálogo y fuentes; catálogo,
+exports y tablas humanas se comprueban en CI. `references/injection-contract.md`
+detalla contenedores, alias, CSS local y límites de la validación estática.
+`base.css` sigue disponible para consumidores documentados; `global.css` se ha
+retirado por duplicar esa base. La auditoría completa usa binarios ya instalados;
+si faltan devuelve 2, sin descargar paquetes.
 
 ## Workflow (Decision Tree)
 
@@ -339,8 +291,7 @@ Antes de escribir CSS, elegir un preset de `references/style-presets.md`.
 
 ## Assets
 
-- `assets/global.css` — Template legacy; no usar para outputs nuevos
-- `assets/base.css` — Base legacy con decisiones de Minimalista Adri; no es un contrato universal
+- `assets/base.css` — Base inyectable para consumidores existentes; aplicar después el preset completo y sus temas
 - `assets/preset-catalog.html` — Catálogo generado desde `presets.json`
 
 ## Export a DESIGN.md (interoperabilidad)

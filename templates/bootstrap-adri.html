@@ -50,6 +50,7 @@
        elegido en references/style-presets.md.
        ======================================================================== */
     :root {
+      color-scheme: light;
       /* Fuentes */
       --font-display: 'Satoshi', system-ui, -apple-system, sans-serif;
       --font-body:    'Inter', system-ui, -apple-system, sans-serif;
@@ -70,7 +71,7 @@
       /* Text */
       --text:           #0a0a0a;
       --text-secondary: hsl(0 0% 0% / 0.60);
-      --text-muted:     hsl(0 0% 0% / 0.35);
+      --text-muted:     #626262;
 
       /* Accent (negro como acento neutro por defecto) */
       --accent:         #0a0a0a;
@@ -115,13 +116,14 @@
     }
 
     [data-theme="dark"] {
+      color-scheme: dark;
       --bg:             #050505;
       --bg-surface:     #0e0e0e;
       --bg-elevated:    #161616;
       --border:         hsl(0 0% 100% / 0.10);
       --text:           #ffffff;
       --text-secondary: hsl(0 0% 100% / 0.70);
-      --text-muted:     hsl(0 0% 100% / 0.40);
+      --text-muted:     #a3a3a3;
       --accent:         #ffffff;
       --accent-surface: hsl(0 0% 100% / 0.06);
       --success:        #22c55e;
@@ -229,8 +231,9 @@
        Toggle de tema (lucide:moon / lucide:sun)
        ======================================================================== */
     .theme-toggle {
-      width: 2.25rem;
-      height: 2.25rem;
+      width: 2.75rem;
+      flex-shrink: 0;
+      height: 2.75rem;
       display: inline-grid;
       place-items: center;
       color: var(--text-secondary);
@@ -275,8 +278,26 @@
       color: var(--text-secondary);
     }
 
+    :focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+    h1, h2, h3 { text-wrap: balance; overflow-wrap: anywhere; }
+    @media print {
+      :root, [data-theme="dark"] {
+        color-scheme: light;
+        --bg: #fff; --bg-surface: #fff; --bg-elevated: #fff;
+        --text: #111; --text-secondary: #444; --text-muted: #555;
+        --border: #bbb; --accent: #111;
+      }
+      body { min-height: 0; display: block; font-size: 11pt; }
+      .theme-toggle { display: none; }
+      .site-main { padding-block: 20pt; }
+      .shell { max-width: none; padding-inline: 0; }
+      .hero h1 { font-size: 26pt; }
+      h1, h2, h3 { break-after: avoid; }
+      p { orphans: 3; widows: 3; }
+    }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
+        scroll-behavior: auto !important;
         animation-duration: 0ms !important;
         transition-duration: 0ms !important;
       }

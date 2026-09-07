@@ -1,0 +1,32 @@
+/* Reglas comunes de accesibilidad de las muestras; cada superficie fija su layout. */
+:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+h1, h2, p, .log { overflow-wrap: anywhere; }
+main, aside { min-width: 0; }
+@media (max-width: 420px) {
+  .bar { flex-wrap: wrap; gap: 12px; }
+  .console-shell main { padding: 24px 16px; }
+  .log { grid-template-columns: 46px minmax(0, 1fr) auto; gap: 12px; }
+  .slide-stage h1 { font-size: clamp(44px, 13vw, 60px); line-height: .95; }
+}
+@media (max-height: 520px) and (orientation: landscape) {
+  .slide-stage { grid-template-columns: 1fr 1fr; padding: 4vw; gap: 4vw; }
+  .slide-stage h1 { font-size: clamp(32px, 8vh, 54px); line-height: 1; }
+  .slide-stage p { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+@media print {
+  html, body { background: #fff !important; color: #111 !important; overflow: visible; }
+  body { font-size: 11pt; }
+  main, .console-shell, .media-stream, .slide-stage { display: block; width: auto; height: auto; min-height: 0; padding: 0; }
+  .slide-stage h1, h1 { font-size: 28pt; line-height: 1.1; max-width: none; }
+  h1, h2 { break-after: avoid; }
+  p { color: #333; orphans: 3; widows: 3; }
+  nav, .slide-count { display: none; }
+  figure { background: #fff; color: #111; min-height: 0; }
+  figure svg { width: 100px; }
+  article { padding: 20pt 0; }
+  .chart, .metric-grid { break-inside: avoid; }
+  .chart { padding: 12pt; }
+}

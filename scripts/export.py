@@ -27,12 +27,14 @@ Los valores con canal alpha se convierten a hex de color base; la opacidad se an
 from __future__ import annotations
 
 import argparse
-import json
 import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from textwrap import dedent
+
+from validate_contract import ContractConfigError, load_catalog, font_weights
+from preset_assets import foreground, readable_accent
 
 SKILL_ROOT = Path(__file__).resolve().parent.parent
 PRESETS_FILE = SKILL_ROOT / "references" / "style-presets.md"
@@ -157,14 +159,7 @@ class Preset:
 
 
 def load_preset_metadata(path: Path = PRESETS_JSON) -> dict[int, dict]:
-    try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError) as exc:
-        raise ValueError(f"No se pudo cargar metadata de presets: {exc}") from exc
-    presets = raw.get("presets")
-    if not isinstance(presets, list):
-        raise ValueError("references/presets.json no contiene presets")
-    return {int(item["n"]): item for item in presets}
+    return {item['n']: item for item in load_catalog(path).values()}
 
 
 def enrich_preset(preset: Preset, metadata: dict[int, dict]) -> Preset:
@@ -176,6 +171,14 @@ def enrich_preset(preset: Preset, metadata: dict[int, dict]) -> Preset:
     preset.single_font = fonts["single_font"]
     preset.weights_display = fonts["weights_display"]
     preset.weights_body = fonts["weights_body"]
+    preset.vars['bg'] = item['color']['bg']
+    preset.vars['accent'] = item['color']['accent']
+    for role in ('display', 'body'):
+        current = preset.vars.get(f'font-{role}', '')
+        fallback = current.split(',', 1)[1] if ',' in current else ' sans-serif'
+        preset.vars[f'font-{role}'] = "'" + fonts[role] + "'," + fallback
+    preset.vars['on-accent'] = foreground(preset.vars['accent'])
+    preset.vars['accent-ink'] = readable_accent(preset.vars['accent'], preset.vars['bg'])
     return preset
 
 
@@ -239,6 +242,8 @@ COLOR_KEYS_ORDER = [
     "text-secondary",
     "text-muted",
     "accent",
+    "on-accent",
+    "accent-ink",
     "accent-surface",
     "accent-blue",
     "accent-green",
@@ -284,13 +289,13 @@ def build_frontmatter(preset: Preset) -> str:
       display:
         fontFamily: {yaml_quote(display_family)}
         fontSize: "clamp(2.5rem, 2rem + 2.5vw, 4rem)"
-        fontWeight: 700
+        fontWeight: {max(font_weights(preset.weights_display)) if preset.weights_display else 700}
         lineHeight: {lh_display}
         letterSpacing: "-0.04em"
       body:
         fontFamily: {yaml_quote(body_family)}
         fontSize: "1rem"
-        fontWeight: 400
+        fontWeight: {min(font_weights(preset.weights_body), key=lambda w: abs(w - 400)) if preset.weights_body else 400}
         lineHeight: {lh_body}
         letterSpacing: "0"
       mono:
@@ -316,7 +321,7 @@ def build_frontmatter(preset: Preset) -> str:
     components_block = dedent(f"""\
       button-primary:
         background: "token(colors.accent)"
-        color: "token(colors.bg)"
+        color: "token(colors.on-accent)"
         borderRadius: "token(rounded.base)"
         paddingX: "token(spacing.m)"
         paddingY: "token(spacing.2xs)"
@@ -365,13 +370,6 @@ def build_sections(preset: Preset) -> str:
         note = f" (α={parsed.alpha})" if parsed and parsed.alpha is not None else ""
         colors_rows.append(f"| `{key}` | `{hex_val}`{note} | `{v[key]}` |")
     colors_table = "\n".join(colors_rows)
-
-    light_rows = []
-    # Busca el bloque [data-theme="light"]
-    light_block_re = re.compile(r"\[data-theme=\"light\"\]\s*\{(.*?)\}", re.DOTALL)
-    lm = light_block_re.search(preset.raw_block) if False else None
-    # raw_block solo contiene :root — no tiene light. Se referencia en sección.
-    _ = light_rows, lm  # placeholder
 
     display_family = v.get("font-display", "system-ui, sans-serif").strip()
     body_family = v.get("font-body", "system-ui, sans-serif").strip()
@@ -448,7 +446,7 @@ Ver `references/layout.md` y `references/composition.md`.
 
 Tokens accionables disponibles en `components:`:
 
-- `button-primary` — fondo `--accent`, texto `--bg`, radius base.
+- `button-primary` — fondo `--accent`, texto `--on-accent`, radius base.
 
 No se exportan cards universales. Cada superficie crea solo los contenedores que
 superan EAR.
@@ -471,7 +469,7 @@ Ver `references/components.md` para catálogo extendido (bento grid, patrones pr
 
 **Don't**
 
-- `font-weight > 900` (display 700–900 Black, body nunca > 600).
+- Pesos fuera del rango canónico del preset (también en fuentes de peso único).
 - Cajas, sombras o gradientes sin función ni permiso del preset.
 - Emojis en la interfaz (usar Lucide SVG).
 - Fondo `#000000` puro.
@@ -514,9 +512,9 @@ def main(argv: list[str] | None = None) -> int:
     content = PRESETS_FILE.read_text(encoding="utf-8")
     try:
         metadata = load_preset_metadata()
-    except ValueError as exc:
+    except (ValueError, ContractConfigError) as exc:
         print(f"error: {exc}", file=sys.stderr)
-        return 1
+        return 2
 
     if args.list:
         for num, name, slug in list_presets(content):
@@ -533,9 +531,9 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     try:
         enrich_preset(preset, metadata)
-    except ValueError as exc:
+    except (ValueError, ContractConfigError) as exc:
         print(f"error: {exc}", file=sys.stderr)
-        return 1
+        return 2
 
     output = build_design_md(preset)
 

@@ -14,7 +14,7 @@
 /* === VARIABLES (default: Minimalista Adri) === */
 :root {
   /* Fontes — sobreescribir con las del preset */
-  --font-display: 'Inter', system-ui, sans-serif;
+  --font-display: 'Geist', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'Geist Mono', 'JetBrains Mono', monospace;
 
@@ -54,7 +54,7 @@
   --border: hsl(0 0% 100% / 0.08);
   --text: #E8E8E8;
   --text-secondary: hsl(0 0% 100% / 0.6);
-  --text-muted: hsl(0 0% 100% / 0.35);
+  --text-muted: #a3a3a3;
 
   /* Acento — sobreescribir con las del preset */
   --accent: #3b82f6;
@@ -74,7 +74,7 @@
   --border: #e5e5e5;
   --text: #1a1a1a;
   --text-secondary: #666666;
-  --text-muted: #999999;
+  --text-muted: #666666;
   --lh-body: 1.5;
   --ls-tight: -0.03em;
 }
@@ -103,8 +103,8 @@ body {
   transition: background-color var(--transition), color var(--transition);
 }
 
-a { color: inherit; text-decoration: none; }
-button { font-family: inherit; cursor: pointer; border: none; background: none; }
+a { color: inherit; text-underline-offset: .18em; }
+button { color: inherit; font-family: inherit; cursor: pointer; border: none; background: none; }
 img, svg { display: block; max-width: 100%; }
 
 /* === TIPOGRAFIA === */
@@ -225,7 +225,7 @@ code {
   font-weight: 500;
   border-radius: 8px;
   text-decoration: none;
-  transition: all var(--transition);
+  transition: color var(--transition), background-color var(--transition), border-color var(--transition), transform var(--transition);
   cursor: pointer;
 }
 
@@ -366,22 +366,31 @@ code {
   .container { padding: 0 var(--space-s); }
 }
 
-/* === TOGGLE DE TEMA === */
-/*
-  Incluir en el HTML:
-  <button class="theme-toggle" aria-label="Cambiar tema" onclick="toggleTheme()">
-    <!-- luna (lucide:moon) en oscuro, sol (lucide:sun) en claro -->
-  </button>
+/* Toggle de tema: implementación canónica en templates/bootstrap-adri.html. */
 
-  <script>
-  const theme = localStorage.getItem('theme') || 'dark';
-  if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+/* Foco para navegación por teclado y controles heredados. */
+:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+h1, h2, h3, h4, h5, h6 { overflow-wrap: anywhere; }
+:root { color-scheme: dark; }
+[data-theme="light"] { color-scheme: light; }
+[data-theme="light"] .badge-success { color: #166534; }
+[data-theme="light"] .badge-warning { color: #854d0e; }
+[data-theme="light"] .badge-danger { color: #991b1b; }
 
-  function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+@media print {
+  :root, [data-theme="light"], [data-theme="dark"] {
+    color-scheme: light;
+    --bg: #fff; --bg-surface: #fff; --bg-elevated: #fff;
+    --text: #111; --text-secondary: #444; --text-muted: #555;
+    --accent: #111; --border: #bbb;
   }
-  </script>
-*/
+  body { min-height: 0; font-size: 11pt; }
+  .theme-toggle { display: none; }
+  .header-glass { position: static; backdrop-filter: none; }
+  .hero-glow { background-image: none; }
+  .title-glow { text-shadow: none; }
+  .container { max-width: none; padding: 0; }
+  h1, h2, h3 { break-after: avoid; }
+  p { orphans: 3; widows: 3; }
+  *, *::before, *::after { animation: none !important; transition: none !important; box-shadow: none !important; }
+}
