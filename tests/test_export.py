@@ -5,6 +5,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 MODULE_PATH = ROOT / "scripts" / "export.py"
 SPEC = importlib.util.spec_from_file_location("adri_export", MODULE_PATH)
 assert SPEC and SPEC.loader

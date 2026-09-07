@@ -11,14 +11,16 @@ colors:
   border: "#000000"
   text: "#0a0a0a"
   text-secondary: "#000000"
-  text-muted: "#000000"
+  text-muted: "#6b6b6d"
   accent: "#0a0a0a"
+  on-accent: "#ffffff"
+  accent-ink: "#0a0a0a"
   accent-surface: "#000000"
 typography:
   display:
     fontFamily: "'Satoshi', system-ui, -apple-system, sans-serif"
     fontSize: "clamp(2.5rem, 2rem + 2.5vw, 4rem)"
-    fontWeight: 700
+    fontWeight: 900
     lineHeight: 1.05
     letterSpacing: "-0.04em"
   body:
@@ -50,12 +52,12 @@ rounded:
 components:
   button-primary:
     background: "token(colors.accent)"
-    color: "token(colors.bg)"
+    color: "token(colors.on-accent)"
     borderRadius: "token(rounded.base)"
     paddingX: "token(spacing.m)"
     paddingY: "token(spacing.2xs)"
     fontWeight: 500
-# color alpha conservado en CSS original: border (α=0.1), text-secondary (α=0.6), text-muted (α=0.35), accent-surface (α=0.06)
+# color alpha conservado en CSS original: border (α=0.1), text-secondary (α=0.6), accent-surface (α=0.06)
 ---
 
 ## Overview
@@ -83,8 +85,10 @@ components:
 | `border` | `#000000` (α=0.1) | `hsl(0 0% 0% / 0.10)` |
 | `text` | `#0a0a0a` | `#0a0a0a` |
 | `text-secondary` | `#000000` (α=0.6) | `hsl(0 0% 0% / 0.60)` |
-| `text-muted` | `#000000` (α=0.35) | `hsl(0 0% 0% / 0.35)` |
+| `text-muted` | `#6b6b6d` | `#6b6b6d` |
 | `accent` | `#0a0a0a` | `#0a0a0a` |
+| `on-accent` | `#ffffff` | `#ffffff` |
+| `accent-ink` | `#0a0a0a` | `#0a0a0a` |
 | `accent-surface` | `#000000` (α=0.06) | `hsl(0 0% 0% / 0.06)` |
 
 Los valores con canal alpha se preservan en el CSS original (ver columna *Fuente CSS*). El hex listado es el color base sRGB sin opacidad, tal y como exige el spec.
@@ -129,7 +133,7 @@ Ver `references/layout.md` y `references/composition.md`.
 
 Tokens accionables disponibles en `components:`:
 
-- `button-primary` — fondo `--accent`, texto `--bg`, radius base.
+- `button-primary` — fondo `--accent`, texto `--on-accent`, radius base.
 
 No se exportan cards universales. Cada superficie crea solo los contenedores que
 superan EAR.
@@ -152,7 +156,7 @@ Ver `references/components.md` para catálogo extendido (bento grid, patrones pr
 
 **Don't**
 
-- `font-weight > 900` (display 700–900 Black, body nunca > 600).
+- Pesos fuera del rango canónico del preset (también en fuentes de peso único).
 - Cajas, sombras o gradientes sin función ni permiso del preset.
 - Emojis en la interfaz (usar Lucide SVG).
 - Fondo `#000000` puro.

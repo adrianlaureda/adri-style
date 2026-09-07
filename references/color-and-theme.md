@@ -1,69 +1,31 @@
 # Color y tema
 
-Fuentes: Butterick (uso del color), práctica actual de adri-app.com.
-Principio: el color debe ser funcional, no decorativo.
+El preset aporta identidad; la superficie elige cómo aplicarla. Los colores
+base y acento viven en `presets.json`; los temas y tokens completos se muestran
+en `style-presets.md`. No copiar una paleta genérica encima de un preset.
 
-## Reglas
+Texto normal: contraste mínimo 4.5:1 sobre el fondo efectivo, incluida la
+composición alpha. Texto grande: 3:1. Controles y foco: comprobar visibilidad
+sobre todos los fondos que atraviesan. Aumentar el peso no compensa un contraste
+insuficiente. Los grises `text-muted` también necesitan contraste si llevan texto.
 
-- **Always** respetar `mode_default` del preset
-- **Always** usar #1a1a1a en light mode para texto (no negro puro, Butterick)
-- **Always** reservar color para enlaces (denota clickabilidad, Butterick)
-- **Always** persistir la preferencia si la superficie incluye toggle
-- **Never** usar saturación o gradientes sin función o sin permiso del preset
-- **Never** usar blanco puro (#fff) sobre negro puro (#000) en texto largo
-- **Consider** el semáforo educativo para dashboards de calificaciones
-- **Consider** "cuando todo está enfatizado, nada lo está" (principio Butterick)
+El acento original puede servir como fondo o muestra de identidad sin ser
+válido para texto pequeño. Catálogo y exports derivan `accent-ink` para texto
+sobre el fondo base y `on-accent` para texto sobre el acento. Si cambia el fondo,
+recalcular el contraste; no suponer que `--bg` funciona como texto de un botón.
 
-## Variables CSS - Modo oscuro
+El modo inicial procede de `mode_default` salvo contrato de superficie. El
+bootstrap incluye tema dual y persistencia protegida frente a localStorage
+bloqueado. Su icono indica la acción: luna en light para activar oscuro; sol en
+dark para activar claro. Ver implementación única en `templates/bootstrap-adri.html`.
 
-| Variable | Valor | Uso |
-|----------|-------|-----|
-| --bg | #0a0a0a | Fondo principal (near-black, NUNCA #000000) |
-| --bg-surface | #111111 | Fondo de tarjetas (+3% lightness) |
-| --bg-elevated | #1a1a1a | Fondo elevado, hover (+6% lightness) |
-| --border | #222222 | Bordes |
-| --text | #ffffff | Texto principal |
-| --text-secondary | #999999 | Texto secundario |
-| --text-muted | #666666 | Texto silenciado |
-
-## Variables CSS - Modo claro
-
-| Variable | Valor | Uso |
-|----------|-------|-----|
-| --bg | #ffffff | Fondo principal |
-| --bg-surface | #fafafa | Fondo de tarjetas |
-| --bg-elevated | #f5f5f5 | Fondo elevado |
-| --border | #e5e5e5 | Bordes |
-| --text | #1a1a1a | Texto (no #000, Butterick) |
-| --text-secondary | #666666 | Texto secundario |
-| --text-muted | #999999 | Texto silenciado |
+En impresión: fondo blanco, texto oscuro, eliminar toggles, animaciones, fondos
+ornamentales y alturas de viewport. Mantener datos y significado sin depender
+del color. Revisar también páginas generadas desde modo oscuro.
 
 ## Semáforo educativo
 
-Para dashboards y materiales con calificaciones (1-10, aprobado ≥5):
-
-| Color | Hex | Uso |
-|-------|-----|-----|
-| Verde | #22c55e | Aprobado (≥5) |
-| Amarillo | #eab308 | Advertencia (5-6, riesgo) |
-| Rojo | #ef4444 | Suspenso (<5) |
-
-## Toggle de tema
-
-```javascript
-// Leer tema guardado
-const presetDefault = document.documentElement.dataset.theme;
-const theme = localStorage.getItem('theme') || presetDefault;
-if (theme === 'light') {
-  document.documentElement.setAttribute('data-theme', 'light');
-}
-// Icono de acción: luna en light; sol en dark.
-```
-
-## Checklist
-
-- [ ] Variables CSS con ambos temas definidas
-- [ ] Light mode usa #1a1a1a para --text (no #000000)
-- [ ] Color reservado para enlaces
-- [ ] Toggle con persistencia localStorage
-- [ ] Contraste suficiente en ambos modos
+Verde identifica aprobado (nota ≥5), amarillo advierte riesgo cuando el contexto
+lo define y rojo suspenso (<5). Acompañar con nota/etiqueta, nunca solo color.
+Las demás métricas usan neutros. Las variantes claras de badges están en
+`base.css`; no usar amarillo brillante como texto sobre blanco.

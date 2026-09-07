@@ -17,39 +17,39 @@ artefactos derivados.
 
 | # | Name | Mood | Background | Accent | Display Font | Body Font |
 |---|------|------|------------|--------|-------------|-----------|
-| 1 | Bold Signal ★ | **Default Adri** — marca personal | `#f8f8f8` (light default) | `#0a0a0a` | Satoshi 900 | Inter 300 |
-| 2 | Electric Studio | Professional tech | `#0a1628` | `#3b82f6` | Geist 800 | Inter |
+| 1 | Bold Signal | **Default Adri** — marca personal | `#f8f8f8` | `#0a0a0a` | Satoshi | Inter |
+| 2 | Electric Studio | Professional tech | `#0a1628` | `#3b82f6` | Geist | Inter |
 | 3 | Creative Voltage | Retro-modern | `#1a0a2e` | `#f59e0b` | Clash Display | Satoshi |
 | 4 | Dark Botanical | Elegant organic | `#0a0f0a` | `#4ade80` | Cormorant Garamond | DM Sans |
 | 5 | Notebook Tabs | Editorial paper | `#f5f0e8` | `#2563eb` | Newsreader | Source Serif 4 |
-| 6 | Pastel Geometry | Friendly pastel | `#fef7f4` | `#e07850` | Satoshi 700 | Inter |
+| 6 | Pastel Geometry | Friendly pastel | `#fef7f4` | `#e07850` | Satoshi | Inter |
 | 7 | Split Pastel | Juicy bicolor | `#fff1f2` | `#e11d48` | Space Grotesk | Inter |
 | 8 | Vintage Editorial | Literary cálido | `#faf8f5` | `#8B2E1F` | Playfair Display | Public Sans |
 | 9 | Neon Cyber | Futuristic neon | `#030712` | `#06ffa5` | Orbitron | Inter |
 | 10 | Terminal Green | Developer | `#0a0a0a` | `#22c55e` | JetBrains Mono | JetBrains Mono |
-| 11 | Swiss Modern | Corporate precise | `#ffffff` | `#000000` | Switzer 900 | Inter |
+| 11 | Swiss Modern | Corporate precise | `#ffffff` | `#0a0a0a` | Switzer | Inter |
 | 12 | Paper & Ink | Literary reflective | `#1c1917` | `#d4a574` | Instrument Serif | Inter |
-| 13 | Minimalista Adri | Educational default | `#050505` | multi-section | Geist 700 | Inter |
-| 14 | Soffia Warm | Warm premium | `hsl(220 15% 8%)` | `#c9a96e` | Satoshi 900 | Inter |
+| 13 | Minimalista Adri | Educational default | `#050505` | `#3b82f6` | Geist | Inter |
+| 14 | Soffia Warm | Warm premium | `hsl(220 15% 8%)` | `#c9a96e` | Satoshi | Inter |
 | 15 | Signal Hardware | Monochrome industrial | `#050505` | `#f04d23` | Space Grotesk | Space Mono |
 | 16 | Magazine Editorial | Revista densa multi-col | `#fafaf9` | `#C1272D` | Fraunces | Source Serif 4 |
 | 17 | Cinematic Story | Narrativa inmersiva | `hsl(220 30% 6%)` | `#F59E0B` | Bricolage Grotesque | Public Sans |
 | 18 | Storytelling-Driven | Narrativa por capítulos | `#faf5ed` | `#D97706` | Literata | Inter |
 | 19 | E-Ink Paper | Lectura calmada mate | `#fdfbf7` | `#1A1A1A` | Literata | Inter |
 | 20 | Exaggerated Minimalism | Tipografía gigante + 1 acento | `#FFFFFF` | `#FF3B30` | Archivo Black | Inter |
-| 21 | Bento Grids | Modular Apple-style | `#F5F5F7` | `#1D1D1F` | Inter 700 | Inter |
-| 22 | Zero Interface | Minimal ambiental | `#FAFAFA` | `hsl(220 10% 40%)` | Inter Light 200 | Inter |
-| 23 | Neumorphism | Soft UI playful | `#E0E5EC` | `#5E72E4` | Nunito 800 | Nunito |
-| 24 | Motion-Driven | Animaciones coreografiadas | `#0A0A0A` | `#22C55E` | Inter 800 | Inter |
-| 25 | Micro-interactions | Feedback sutil | `#FFFFFF` | `#22C55E` | Inter 700 | Inter |
-| 26 | AI-Native UI | Chat-first conversacional | `#0A0A0F` | `#6366F1` | Inter 700 | Inter |
-| 27 | Interactive Cursor | Cursor-centric portfolio | `#FAFAFA` | `#5E6AD2` | Inter 800 | Inter |
+| 21 | Bento Grids | Modular Apple-style | `#F5F5F7` | `#1D1D1F` | Inter | Inter |
+| 22 | Zero Interface | Minimal ambiental | `#FAFAFA` | `hsl(220 10% 40%)` | Inter | Inter |
+| 23 | Neumorphism | Soft UI playful | `#E0E5EC` | `#5E72E4` | Nunito | Nunito |
+| 24 | Motion-Driven | Animaciones coreografiadas | `#0A0A0A` | `#22C55E` | Inter | Inter |
+| 25 | Micro-interactions | Feedback sutil | `#FFFFFF` | `#22C55E` | Inter | Inter |
+| 26 | AI-Native UI | Chat-first conversacional | `#0A0A0F` | `#6366F1` | Inter | Inter |
+| 27 | Interactive Cursor | Cursor-centric portfolio | `#FAFAFA` | `#5E6AD2` | Inter | Inter |
 
 ---
 
 ## Audit v5.4 — Reglas de fuentes y pesos por preset
 
-Tabla canónica generada el 2026-05-08 tras la auditoría manual de los 27 presets. Resuelve la queja v5.3: cada preset DEBE declarar explícitamente qué fuentes acepta, en qué rango de peso y por qué se desvía de los defaults `300-500`.
+Tablas generadas desde `presets.json` por `scripts/generate_docs.py`; editar el JSON y regenerar. Resuelve la queja v5.3: cada preset DEBE declarar explícitamente qué fuentes acepta, en qué rango de peso y por qué se desvía de los defaults `300-500`.
 
 **Columnas:**
 - **Display / Body**: las fuentes oficiales del preset. Si dice "—" en body es porque comparte familia con display (single-font justificado).
@@ -61,40 +61,40 @@ Tabla canónica generada el 2026-05-08 tras la auditoría manual de los 27 prese
 - **Estado**: `activo` (ok), `activo-frágil` (acepta uso pero requiere observación), `revisión-30d` (candidato a eliminar tras Codex B1).
 
 | # | Preset | Display | Body | Display weights | Body weights | Single-font? | Body >500 default? | Modo default | Caso aula real | Estado |
-|---|--------|---------|------|-----------------|--------------|---------------|---------------------|---------------|------------------|--------|
-| 1 | Bold Signal ★ | Satoshi | Inter | 500 (.t-overline) · 900 (display+section+h2) | 300 (body) · 400 (utility) | NO | NO — body 300 | light | brandbook live, formacion-xograr, planificacion-4eso, adri-react | activo |
-| 2 | Electric Studio | Geist | Inter | 300-800 (display) | 400-600 | NO | NO — body 400 | dark | parcial (formacion-xograr v0) | activo |
-| 3 | Creative Voltage | Clash Display | Satoshi | 500-700 | 400-700 (default 400) | NO | NO — body 400 | dark | (sin uso real verificado) | revisión-30d |
-| 4 | Dark Botanical | Cormorant Garamond | DM Sans | 400 · 600 · 700 (display) | 100-1000 var (default 400) | NO | NO — body 400 | dark | (sin uso real verificado) | revisión-30d |
-| 5 | Notebook Tabs | Newsreader | Source Serif 4 | 400 · 600 · 700 (italic 400) | 400 · 600 (italic 400) | NO (dos serif distintas) | NO — body 400 | light | (lectura prolongada, casos hipotéticos) | activo-frágil |
-| 6 | Pastel Geometry | Satoshi | Inter | 300-700 | 400-600 (default 400) | NO | NO — body 400 | light | quizzes/forms alumnos | activo |
-| 7 | Split Pastel | Space Grotesk | Inter | 400-700 | 400-600 | NO | NO — body 400 | light | (eventos/workshops, sin uso verificado) | revisión-30d |
-| 8 | Vintage Editorial | Playfair Display | Public Sans | 400-900 var | 100-900 var (default 400) | NO (display serif + body sans humanist) | NO — body 400 | light | Día das Letras 2026 (ámbito objetivo) | activo |
-| 9 | Neon Cyber | Orbitron | Inter | 400 · 600 · 700 · 800 | 400-600 | NO | NO — body 400 | dark | (programación/cyber, sin uso verificado) | revisión-30d |
-| 10 | Terminal Green | JetBrains Mono | JetBrains Mono | 400-700 | 400-700 (default 400) | **SÍ — JUSTIFICADO** (autenticidad terminal: la fuente *es* el lenguaje) | NO — body 400 | dark | (docs CLI, sin uso aula verificado) | activo-frágil |
-| 11 | Swiss Modern | Switzer | Inter | 700-900 (display típico swiss) | 400-700 | NO | NO — body 400 | light | (reports densos, sin uso verificado) | revisión-30d |
-| 12 | Paper & Ink | Instrument Serif | Inter | 400 (italic 400) — *única weight disponible en la fuente* | 100-900 var (default 400) | NO (serif + sans) | NO — body 400 | dark | reading log/journal (uso personal) | activo |
-| 13 | Minimalista Adri | Geist | Inter | 300-700 | 400-800 (default 400) | NO | NO — body 400 | dark | dashboards calificaciones, materiales clase | activo |
-| 14 | Soffia Warm | Satoshi | Inter | 300-900 | 400-600 (default 400) | NO | NO — body 400 | dark | (premium edu, casos hipotéticos) | activo-frágil |
-| 15 | Signal Hardware | Space Grotesk | Space Mono | 400-700 | 400-700 (default 400) | NO (sans + mono) | NO — body 400 | dark | dashboards agentes (cora), tooling | activo |
-| 16 | Magazine Editorial | Fraunces | Source Serif 4 | 100-900 var (drop-cap usa 900) | 200-900 var (default 400) | NO (dos serifs con registros distintos) | NO — body 400 | light | dossiers literarios (Día das Letras, longreads) | activo |
-| 17 | Cinematic Story | Bricolage Grotesque | Public Sans | 200-800 var (chapter-num usa 200 italic) | 100-900 var (default 400) | NO | NO — body 400 | dark | unidades narrativas (Odisea, Quijote — uso planificado) | activo |
-| 18 | Storytelling-Driven | Literata | Inter | 200-900 var (chapter-num 300 italic) | 100-900 var (default 400) | NO (serif + sans) | NO — body 400 | light | unidades arco narrativo (Generación 27, planificadas) | activo |
-| 19 | E-Ink Paper | Literata | Inter | 200-900 var (h2/h3 italic 700) | 100-900 var (default 400) | NO (serif + sans) | NO — body 400 | light | guías de lectura, antologías, B/N imprimible | activo |
-| 20 | Exaggerated Minimalism | Archivo Black | Inter | 400 (única weight disponible — Archivo Black ya es black) | 100-900 var (eyebrow 300) | NO | NO — body 400 | light | portadas/intro slides | activo |
-| 21 | Bento Grids | Inter | Inter | 700 (display) | 400-500 (default 400) | **SÍ — JUSTIFICADO** (sistema Apple-style usa una sola family — Inter sustituye a SF Pro) | NO — body 400 | light | dashboards educativos (KPI hero + métricas) | activo |
-| 22 | Zero Interface | Inter | Inter | 200 (display Light) | 200-400 (default 400) | **SÍ — JUSTIFICADO** (interfaz invisible: la fuente desaparece) | NO — body 200-400 | light | splash/pausas pedagógicas (uso planificado) | activo-frágil |
-| 23 | Neumorphism | Nunito | Nunito | 800 (display) | 600-700 forced para contraste WCAG | **SÍ — JUSTIFICADO** (rounded sans coherente con vibe blando) | **SÍ — JUSTIFICADO** (peso 600+ obligatorio para legibilidad sobre fondo plomizo `#E0E5EC`; documentado en components.md) | light | material primaria/calculadoras (hipotético) | revisión-30d |
-| 24 | Motion-Driven | Inter | Inter | 800 (display Black) | 400-500 | **SÍ — JUSTIFICADO** (el wow es la animación, no la tipografía) | NO — body 400 | dark | trailers unidades (sin uso verificado) | revisión-30d |
-| 25 | Micro-interactions | Inter | Inter | 700 (display) | 400-600 (default 600 en btn) | **SÍ — JUSTIFICADO** (Linear/Notion-style, sistema único) | NO — body 400 default | light | quizzes con feedback inmediato | activo |
-| 26 | AI-Native UI | Inter | Inter | 700 (display) | 400-500 | **SÍ — JUSTIFICADO** (Claude/ChatGPT/Perplexity usan Inter Display + Inter Text; coherente con producto chat) | NO — body 400 | dark | tutor IA (uso planificado) | activo-frágil |
-| 27 | Interactive Cursor | Inter | Inter | 800 (display Black) | 400-500 | **SÍ — JUSTIFICADO** (portfolio premium tipo Linear/Vercel) | NO — body 400 | light | (portfolios, sin uso verificado) | revisión-30d |
+|---|--------|---------|------|-----------------|--------------|--------------|--------------------|--------------|---------------|--------|
+| 1 | Bold Signal | Satoshi | Inter | 500-900 | 300-400 | No | No | light | brandbook, formacion-xograr, planificacion-4eso, adri-react | activo |
+| 2 | Electric Studio | Geist | Inter | 300-800 | 400-600 | No | No | dark | formacion-xograr v0 parcial | activo |
+| 3 | Creative Voltage | Clash Display | Satoshi | 500-700 | 400-700 | No | No | dark | Sin uso verificado | revisión-30d |
+| 4 | Dark Botanical | Cormorant Garamond | DM Sans | 400, 600, 700 | 100-1000 var | No | No | dark | Sin uso verificado | revisión-30d |
+| 5 | Notebook Tabs | Newsreader | Source Serif 4 | 400, 600, 700 | 400, 600 | No | No | light | Sin uso verificado | activo-frágil |
+| 6 | Pastel Geometry | Satoshi | Inter | 300-700 | 400-600 | No | No | light | quizzes, forms-alumnos | activo |
+| 7 | Split Pastel | Space Grotesk | Inter | 400-700 | 400-600 | No | No | light | Sin uso verificado | revisión-30d |
+| 8 | Vintage Editorial | Playfair Display | Public Sans | 400-900 var | 100-900 var | No | No | light | dia-letras-2026 (planificado) | activo |
+| 9 | Neon Cyber | Orbitron | Inter | 400, 600, 700, 800 | 400-600 | No | No | dark | Sin uso verificado | revisión-30d |
+| 10 | Terminal Green | JetBrains Mono | JetBrains Mono | 400-700 | 400-700 | Sí: Autenticidad terminal: la fuente *es* el lenguaje. | No | dark | Sin uso verificado | activo-frágil |
+| 11 | Swiss Modern | Switzer | Inter | 700-900 | 400-700 | No | No | light | Sin uso verificado | revisión-30d |
+| 12 | Paper & Ink | Instrument Serif | Inter | 400 (única disponible) | 100-900 var | No | No | dark | reading-log, journal-personal | activo |
+| 13 | Minimalista Adri | Geist | Inter | 300-700 | 400-800 | No | No | dark | dashboards-calificaciones, materiales-clase | activo |
+| 14 | Soffia Warm | Satoshi | Inter | 300-900 | 400-600 | No | No | dark | Sin uso verificado | activo-frágil |
+| 15 | Signal Hardware | Space Grotesk | Space Mono | 400-700 | 400-700 | No | No | dark | dashboards-cora, tooling | activo |
+| 16 | Magazine Editorial | Fraunces | Source Serif 4 | 100-900 var (drop-cap 900) | 200-900 var | No | No | light | dossiers-literarios, longreads | activo |
+| 17 | Cinematic Story | Bricolage Grotesque | Public Sans | 200-800 var | 100-900 var | No | No | dark | unidades-narrativas-planificadas | activo |
+| 18 | Storytelling-Driven | Literata | Inter | 200-900 var | 100-900 var | No | No | light | unidades-arco-narrativo-planificadas | activo |
+| 19 | E-Ink Paper | Literata | Inter | 200-900 var | 100-900 var | No | No | light | guias-lectura, antologias, imprimible-bn | activo |
+| 20 | Exaggerated Minimalism | Archivo Black | Inter | 400 (única) | 100-900 var | No | No | light | portadas, intro-slides | activo |
+| 21 | Bento Grids | Inter | Inter | 700 | 400-500 | Sí: Sistema Apple-style usa una sola family — Inter sustituye a SF Pro. | No | light | dashboards-educativos-kpi | activo |
+| 22 | Zero Interface | Inter | Inter | 200 (Light) | 200-400 | Sí: Interfaz invisible: la fuente desaparece. | No | light | splash-pausas-pedagogicas-planificado | activo-frágil |
+| 23 | Neumorphism | Nunito | Nunito | 800 | 600-700 | Sí: Rounded sans coherente con vibe blando. | Sí: Peso 600+ obligatorio para legibilidad sobre fondo plomizo #E0E5EC; documentado en components.md. | light | Sin uso verificado | revisión-30d |
+| 24 | Motion-Driven | Inter | Inter | 800 (Black) | 400-500 | Sí: El wow es la animación, no la tipografía. | No | dark | Sin uso verificado | revisión-30d |
+| 25 | Micro-interactions | Inter | Inter | 700 | 400-600 | Sí: Linear/Notion-style, sistema único. | Sí: Default 600 en .btn (interacción) — body texto sigue 400. | light | quizzes-feedback-inmediato | activo |
+| 26 | AI-Native UI | Inter | Inter | 700 | 400-500 | Sí: Claude/ChatGPT/Perplexity usan Inter Display + Inter Text; coherente con producto chat. | No | dark | tutor-ia-planificado | activo-frágil |
+| 27 | Interactive Cursor | Inter | Inter | 800 (Black) | 400-500 | Sí: Portfolio premium tipo Linear/Vercel. | No | light | Sin uso verificado | revisión-30d |
 
 **Lectura de la tabla:**
 
 - 14 presets `activo`: 1 ★, 2, 6, 8, 12, 13, 15, 16, 17, 18, 19, 20, 21, 25.
 - 5 presets `activo-frágil`: 5, 10, 14, 22, 26.
-- 8 presets `revisión-30d` candidatos a eliminar si no aparecen en outputs reales tras 2026-06-08: 3, 4, 7, 9, 11, 23, 24, 27.
+- 8 presets `revisión-30d` con etiqueta histórica de revisión; no retirar sin comprobar consumidores actuales: 3, 4, 7, 9, 11, 23, 24, 27.
 
 **Reglas operativas (post-audit):**
 
@@ -189,7 +189,7 @@ el contenido deciden cuáles usar; no existe un mínimo obligatorio.
   /* Text */
   --text:           #0a0a0a;
   --text-secondary: hsl(0 0% 0% / 0.60);
-  --text-muted:     hsl(0 0% 0% / 0.35);
+  --text-muted:     #6b6b6d;
 
   /* Accent — negro como acento neutro por defecto */
   --accent:         #0a0a0a;
@@ -221,7 +221,7 @@ el contenido deciden cuáles usar; no existe un mínimo obligatorio.
   --border:         hsl(0 0% 100% / 0.10);
   --text:           #ffffff;
   --text-secondary: hsl(0 0% 100% / 0.70);
-  --text-muted:     hsl(0 0% 100% / 0.40);
+  --text-muted:     #808080;
   --accent:         #ffffff;
   --accent-surface: hsl(0 0% 100% / 0.06);
   --success: #22c55e;
@@ -319,7 +319,7 @@ Azul nocturno profesional con acento azul eléctrico. Transmite competencia téc
   /* Text */
   --text:           #e8edf5;
   --text-secondary: hsl(215 20% 75%);
-  --text-muted:     hsl(215 15% 50%);
+  --text-muted:     #7f8da1;
 
   /* Accent */
   --accent:         #3b82f6;
@@ -338,7 +338,7 @@ Azul nocturno profesional con acento azul eléctrico. Transmite competencia téc
   --border:      hsl(217 50% 60% / 0.2);
   --text:           #1a1a2e;
   --text-secondary: hsl(220 15% 40%);
-  --text-muted:     hsl(220 10% 60%);
+  --text-muted:     #686c77;
   --accent:         #2563eb;
   --accent-surface: hsl(221 83% 53% / 0.08);
 }
@@ -384,7 +384,7 @@ Púrpura profundo con ámbar dorado. Energía retro-futurista, entre póster de 
   /* Text */
   --text:           #f0eaf8;
   --text-secondary: hsl(270 20% 70%);
-  --text-muted:     hsl(270 15% 50%);
+  --text-muted:     #9181a2;
 
   /* Accent */
   --accent:         #f59e0b;
@@ -403,7 +403,7 @@ Púrpura profundo con ámbar dorado. Energía retro-futurista, entre póster de 
   --border:      hsl(38 50% 50% / 0.2);
   --text:           #1a1005;
   --text-secondary: hsl(35 15% 40%);
-  --text-muted:     hsl(35 10% 60%);
+  --text-muted:     #77716a;
   --accent:         #d97706;
   --accent-surface: hsl(38 92% 50% / 0.08);
 }
@@ -480,7 +480,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/dm-sans@latest/f
   /* Text */
   --text:           #e8f0e8;
   --text-secondary: hsl(130 10% 65%);
-  --text-muted:     hsl(130 8% 45%);
+  --text-muted:     #77887a;
 
   /* Accent */
   --accent:         #4ade80;
@@ -499,7 +499,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/dm-sans@latest/f
   --border:      hsl(130 20% 40% / 0.15);
   --text:           #0f1a0f;
   --text-secondary: hsl(130 10% 35%);
-  --text-muted:     hsl(130 8% 55%);
+  --text-muted:     #626e65;
   --accent:         #16a34a;
   --accent-surface: hsl(142 72% 29% / 0.08);
 }
@@ -545,7 +545,7 @@ Crema de papel con tinta azul. Evoca el cuaderno académico, la anotación a man
   /* Text */
   --text:           #1a1a1a;
   --text-secondary: hsl(35 10% 35%);
-  --text-muted:     hsl(35 8% 55%);
+  --text-muted:     #726d66;
 
   /* Accent */
   --accent:         #2563eb;
@@ -564,7 +564,7 @@ Crema de papel con tinta azul. Evoca el cuaderno académico, la anotación a man
   --border:      hsl(40 15% 50% / 0.15);
   --text:           #e8e2d4;
   --text-secondary: hsl(40 10% 60%);
-  --text-muted:     hsl(40 8% 45%);
+  --text-muted:     #908b80;
   --accent:         #60a5fa;
   --accent-surface: hsl(213 94% 68% / 0.1);
 }
@@ -611,7 +611,7 @@ Melocotón claro con coral cálido. Amigable, moderno y ligeramente lúdico sin 
   /* Text */
   --text:           #1a1a1a;
   --text-secondary: hsl(15 10% 40%);
-  --text-muted:     hsl(15 8% 60%);
+  --text-muted:     #756d6b;
 
   /* Accent */
   --accent:         #e07850;
@@ -630,7 +630,7 @@ Melocotón claro con coral cálido. Amigable, moderno y ligeramente lúdico sin 
   --border:      hsl(15 40% 50% / 0.15);
   --text:           #f5ece8;
   --text-secondary: hsl(15 15% 68%);
-  --text-muted:     hsl(15 10% 50%);
+  --text-muted:     #95847e;
   --accent:         #f09070;
   --accent-surface: hsl(15 74% 68% / 0.12);
 }
@@ -676,7 +676,7 @@ Rosa muy claro con rojo carmesí intenso. Contraste llamativo dentro de una pale
   /* Text */
   --text:           #1a1a1a;
   --text-secondary: hsl(350 10% 40%);
-  --text-muted:     hsl(350 8% 60%);
+  --text-muted:     #71666a;
 
   /* Accent */
   --accent:         #e11d48;
@@ -695,7 +695,7 @@ Rosa muy claro con rojo carmesí intenso. Contraste llamativo dentro de una pale
   --border:      hsl(347 40% 50% / 0.15);
   --text:           #fce8ec;
   --text-secondary: hsl(347 15% 65%);
-  --text-muted:     hsl(347 10% 48%);
+  --text-muted:     #978185;
   --accent:         #fb7185;
   --accent-surface: hsl(351 95% 71% / 0.1);
 }
@@ -793,7 +793,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/public-sans@late
   /* Text */
   --text:           #1a1a1a;
   --text-secondary: hsl(30 10% 35%);
-  --text-muted:     hsl(30 8% 55%);
+  --text-muted:     #716b65;
 
   /* Accent — granate editorial vivo */
   --accent:         #8B2E1F;
@@ -813,7 +813,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/public-sans@late
   --border:      hsl(30 15% 45% / 0.2);
   --text:           #e8e0d0;
   --text-secondary: hsl(35 12% 60%);
-  --text-muted:     hsl(35 8% 45%);
+  --text-muted:     #918a82;
   --accent:         #C44A38;
   --accent-soft:    #D4B08C;
   --accent-surface: hsl(10 55% 50% / 0.1);
@@ -860,7 +860,7 @@ Negro casi puro con verde neón fosforescente. Cyberpunk funcional — no decora
   /* Text */
   --text:           #e8f4e8;
   --text-secondary: hsl(160 15% 60%);
-  --text-muted:     hsl(160 10% 40%);
+  --text-muted:     #73847e;
 
   /* Accent */
   --accent:         #06ffa5;
@@ -879,7 +879,7 @@ Negro casi puro con verde neón fosforescente. Cyberpunk funcional — no decora
   --border:      hsl(160 40% 40% / 0.2);
   --text:           #0a1a12;
   --text-secondary: hsl(160 10% 35%);
-  --text-muted:     hsl(160 8% 55%);
+  --text-muted:     #64716e;
   --accent:         #059669;
   --accent-surface: hsl(161 94% 30% / 0.08);
 }
@@ -925,7 +925,7 @@ Monocromo de terminal. Todo en JetBrains Mono — el código y el texto son el m
   /* Text */
   --text:           #e8e8e8;
   --text-secondary: hsl(120 10% 60%);
-  --text-muted:     hsl(120 8% 40%);
+  --text-muted:     #798779;
 
   /* Accent */
   --accent:         #22c55e;
@@ -944,7 +944,7 @@ Monocromo de terminal. Todo en JetBrains Mono — el código y el texto son el m
   --border:      hsl(120 30% 50% / 0.25);
   --text:           #0a1a0a;
   --text-secondary: hsl(120 10% 35%);
-  --text-muted:     hsl(120 8% 55%);
+  --text-muted:     #657266;
   --accent:         #16a34a;
   --accent-surface: hsl(142 76% 36% / 0.08);
 }
@@ -991,7 +991,7 @@ Blanco absoluto con negro absoluto. La única excepción a la regla anti-negro: 
   /* Text */
   --text:           #1a1a1a;
   --text-secondary: hsl(220 5% 40%);
-  --text-muted:     hsl(220 4% 60%);
+  --text-muted:     #6a6c71;
 
   /* Accent — black, by design */
   --accent:         #0a0a0a;
@@ -1010,7 +1010,7 @@ Blanco absoluto con negro absoluto. La única excepción a la regla anti-negro: 
   --border:      hsl(220 5% 100% / 0.1);
   --text:           #e8e8e8;
   --text-secondary: hsl(220 5% 65%);
-  --text-muted:     hsl(220 4% 45%);
+  --text-muted:     #85888d;
   --accent:         #ffffff;
   --accent-surface: hsl(0 0% 100% / 0.06);
 }
@@ -1083,7 +1083,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
   /* Text */
   --text:           #e8e0d4;
   --text-secondary: hsl(30 12% 62%);
-  --text-muted:     hsl(30 8% 45%);
+  --text-muted:     #99928b;
 
   /* Accent */
   --accent:         #d4a574;
@@ -1102,7 +1102,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
   --border:      hsl(30 25% 60% / 0.25);
   --text:           #1a1a1a;
   --text-secondary: hsl(30 10% 38%);
-  --text-muted:     hsl(30 8% 58%);
+  --text-muted:     #716b66;
   --accent:         #b5793a;
   --accent-surface: hsl(30 52% 47% / 0.08);
 }
@@ -1162,7 +1162,7 @@ section.importante { --accent: #f59e0b; }
   /* Text */
   --text:           #e8e8e8;
   --text-secondary: hsl(220 5% 65%);
-  --text-muted:     hsl(220 5% 45%);
+  --text-muted:     #7c7f86;
 
   /* Accent — default blue; override per section */
   --accent:         #3b82f6;
@@ -1188,7 +1188,7 @@ section.importante { --accent: #f59e0b; }
   --border:      hsl(220 10% 50% / 0.15);
   --text:           #1a1a1a;
   --text-secondary: hsl(220 5% 38%);
-  --text-muted:     hsl(220 5% 58%);
+  --text-muted:     #6b6e74;
   --accent:         #2563eb;
   --accent-surface: hsl(221 83% 53% / 0.08);
 }
@@ -1235,7 +1235,7 @@ Azul marino oscuro y cálido — no frío — con dorado bronce. Equilibrio entr
   /* Text */
   --text:           hsl(40 20% 92%);
   --text-secondary: hsl(35 10% 65%);
-  --text-muted:     hsl(35 8% 45%);
+  --text-muted:     #908980;
 
   /* Accent */
   --accent:         #c9a96e;
@@ -1254,7 +1254,7 @@ Azul marino oscuro y cálido — no frío — con dorado bronce. Equilibrio entr
   --border:      hsl(35 20% 60% / 0.25);
   --text:           #1a1a1a;
   --text-secondary: hsl(35 10% 38%);
-  --text-muted:     hsl(35 8% 58%);
+  --text-muted:     #716c66;
   --accent:         #a07840;
   --accent-surface: hsl(32 45% 44% / 0.08);
 }
@@ -1319,7 +1319,7 @@ Monocromo industrial con un único acento naranja de sistema. Inspirado en inter
   --border:      hsl(0 0% 0% / 0.1);
   --text:           #111111;
   --text-secondary: hsl(30 6% 34%);
-  --text-muted:     hsl(30 5% 54%);
+  --text-muted:     #6b6764;
   --accent:         #cc3d18;
   --accent-surface: hsl(13 79% 45% / 0.08);
 }
@@ -1422,7 +1422,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/jetbrains-mono@l
   /* Text */
   --text:           #0c0a09;
   --text-secondary: hsl(20 10% 30%);
-  --text-muted:     hsl(20 8% 50%);
+  --text-muted:     #7a6e68;
 
   /* Accent — rojo editorial magazine */
   --accent:         #C1272D;
@@ -1448,7 +1448,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/jetbrains-mono@l
   --border:      hsl(30 10% 60% / 0.18);
   --text:           #f5f5f4;
   --text-secondary: hsl(30 8% 72%);
-  --text-muted:     hsl(30 6% 52%);
+  --text-muted:     #99928b;
   --accent:         #E11D48;
   --accent-soft:    #A8A29E;
   --accent-surface: hsl(347 77% 50% / 0.12);
@@ -1579,7 +1579,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/jetbrains-mono@l
   /* Text */
   --text:           #f5f3ea;
   --text-secondary: hsl(220 15% 72%);
-  --text-muted:     hsl(220 10% 52%);
+  --text-muted:     #808998;
 
   /* Accent — amber gold cinemático */
   --accent:         #F59E0B;
@@ -1605,7 +1605,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/jetbrains-mono@l
   --border:      hsl(40 20% 50% / 0.18);
   --text:           #1a1812;
   --text-secondary: hsl(40 12% 28%);
-  --text-muted:     hsl(40 8% 50%);
+  --text-muted:     #6f6a60;
   --accent:         #B45309;
   --accent-soft:    #D97706;
   --accent-surface: hsl(30 80% 45% / 0.08);
@@ -1703,7 +1703,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/jetbrains-mono@l
   /* Text */
   --text:           #1a1410;
   --text-secondary: hsl(25 12% 28%);
-  --text-muted:     hsl(25 10% 50%);
+  --text-muted:     #736760;
 
   /* Accent base — ámbar cálido */
   --accent:         #D97706;
@@ -1734,7 +1734,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/jetbrains-mono@l
   --border:      hsl(35 20% 55% / 0.18);
   --text:           #f5e9d6;
   --text-secondary: hsl(35 15% 72%);
-  --text-muted:     hsl(35 10% 50%);
+  --text-muted:     #918779;
   --accent:         #F59E0B;
   --accent-soft:    #FBBF24;
   --accent-surface: hsl(38 92% 55% / 0.12);
@@ -1832,7 +1832,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
 
   --text:           #1a1a1a;
   --text-secondary: hsl(20 5% 28%);
-  --text-muted:     hsl(20 5% 48%);
+  --text-muted:     #756d69;
 
   --accent:         #1a1a1a;
   --accent-soft:    hsl(20 5% 35%);
@@ -1853,7 +1853,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
   --border:      hsl(30 8% 60% / 0.2);
   --text:           #e8e4d8;
   --text-secondary: hsl(35 8% 72%);
-  --text-muted:     hsl(35 6% 48%);
+  --text-muted:     #8d8880;
   --accent:         #e8e4d8;
 }
 ```
@@ -1936,7 +1936,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
 
   --text:           #000000;
   --text-secondary: hsl(0 0% 25%);
-  --text-muted:     hsl(0 0% 50%);
+  --text-muted:     #6f6f70;
 
   --accent:         #FF3B30;
   --accent-soft:    #FF6B60;
@@ -1957,7 +1957,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
   --border:      hsl(0 0% 100% / 0.14);
   --text:           #ffffff;
   --text-secondary: hsl(0 0% 72%);
-  --text-muted:     hsl(0 0% 50%);
+  --text-muted:     #848484;
   --accent:         #FF3B30;
 }
 ```
@@ -2033,7 +2033,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
 
   --text:           #1d1d1f;
   --text-secondary: hsl(220 4% 28%);
-  --text-muted:     hsl(220 4% 52%);
+  --text-muted:     #6d6f75;
 
   --accent:         #1d1d1f;
   --accent-soft:    #515154;
@@ -2140,7 +2140,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
 
   --text:           hsl(220 10% 18%);
   --text-secondary: hsl(220 8% 40%);
-  --text-muted:     hsl(220 6% 60%);
+  --text-muted:     #6d7077;
 
   --accent:         hsl(220 10% 40%);
   --accent-soft:    hsl(220 8% 60%);
@@ -2161,7 +2161,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
   --border:      hsl(220 8% 30% / 0.5);
   --text:           hsl(220 10% 88%);
   --text-secondary: hsl(220 8% 68%);
-  --text-muted:     hsl(220 6% 48%);
+  --text-muted:     #7e838c;
   --accent:         hsl(220 10% 75%);
   --ambient-gradient: radial-gradient(ellipse at 50% 50%, hsl(220 20% 12%) 0%, transparent 70%);
 }
@@ -2259,7 +2259,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/nunito@latest/fi
 
   --text:           #2d3748;
   --text-secondary: hsl(220 10% 30%);
-  --text-muted:     hsl(220 10% 45%);
+  --text-muted:     #5f6674;
 
   --accent:         #5E72E4;
   --accent-soft:    #7C8DEB;
@@ -2282,7 +2282,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/nunito@latest/fi
   --bg-elevated: #353f52;
   --text:           #e8eaf0;
   --text-secondary: hsl(220 10% 80%);
-  --text-muted:     hsl(220 10% 60%);
+  --text-muted:     #a4aab4;
   --accent:         #7C8DEB;
   --neu-light:  #3c4862;
   --neu-dark:   #1e2430;
@@ -2380,7 +2380,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
 
   --text:           #e8e8e8;
   --text-secondary: hsl(0 0% 72%);
-  --text-muted:     hsl(0 0% 48%);
+  --text-muted:     #858585;
 
   --accent:         #22C55E;
   --accent-soft:    #4ADE80;
@@ -2403,7 +2403,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
   --border:      hsl(140 40% 40% / 0.18);
   --text:           #0a0a0a;
   --text-secondary: hsl(0 0% 28%);
-  --text-muted:     hsl(0 0% 52%);
+  --text-muted:     #6c6c6d;
   --accent:         #16A34A;
 }
 ```
@@ -2503,7 +2503,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
 
   --text:           #1a1a1a;
   --text-secondary: hsl(220 5% 30%);
-  --text-muted:     hsl(220 5% 52%);
+  --text-muted:     #6c7178;
 
   --accent:         #22C55E;
   --accent-soft:    #4ADE80;
@@ -2528,7 +2528,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
   --border:      hsl(220 10% 25%);
   --text:           #e8e8e8;
   --text-secondary: hsl(220 5% 72%);
-  --text-muted:     hsl(220 5% 48%);
+  --text-muted:     #81848c;
   --accent:         #4ADE80;
 }
 ```
@@ -2646,7 +2646,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/jetbrains-mono@l
 
   --text:           #E8E8F0;
   --text-secondary: hsl(240 10% 78%);
-  --text-muted:     hsl(240 8% 52%);
+  --text-muted:     #838395;
 
   --accent:         #6366F1;
   --accent-soft:    #8B5CF6;
@@ -2672,7 +2672,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/jetbrains-mono@l
   --border:      hsl(240 20% 80%);
   --text:           #1a1a2e;
   --text-secondary: hsl(240 10% 30%);
-  --text-muted:     hsl(240 8% 52%);
+  --text-muted:     #6f6f81;
   --accent:         #6366F1;
   --msg-assistant-bg: hsl(240 30% 96%);
 }
@@ -2781,7 +2781,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
 
   --text:           #0a0a0a;
   --text-secondary: hsl(240 5% 26%);
-  --text-muted:     hsl(240 5% 48%);
+  --text-muted:     #6d6d79;
 
   --accent:         #5E6AD2;
   --accent-soft:    #8B93E3;
@@ -2803,7 +2803,7 @@ curl -fsSL -O https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@latest/fil
   --border:      hsl(240 10% 22%);
   --text:           #fafafa;
   --text-secondary: hsl(240 5% 78%);
-  --text-muted:     hsl(240 5% 52%);
+  --text-muted:     #838390;
   --accent:         #8B93E3;
 }
 ```

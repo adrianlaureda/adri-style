@@ -199,7 +199,7 @@
         "weights_body": "400-700",
         "body_default_over_500": false
       },
-      "color": { "bg": "#ffffff", "accent": "#000000" },
+      "color": { "bg": "#ffffff", "accent": "#0a0a0a" },
       "mode_default": "light",
       "estado": "revisión-30d",
       "uso_real": []
@@ -235,7 +235,7 @@
         "weights_body": "400-800",
         "body_default_over_500": false
       },
-      "color": { "bg": "#050505", "accent": "multi-section" },
+      "color": { "bg": "#050505", "accent": "#3b82f6" },
       "mode_default": "dark",
       "estado": "activo",
       "uso_real": ["dashboards-calificaciones", "materiales-clase"]

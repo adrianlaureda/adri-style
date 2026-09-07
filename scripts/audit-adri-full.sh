@@ -3,8 +3,8 @@
 #
 # Combina:
 #   1. audit-adri.sh        — Impeccable + filtros adri (anti-cajas, preset coherente).
-#   2. html-validate        — HTML estructural válido (npx, sin instalación).
-#   3. pa11y                — Accesibilidad WCAG 2.1 AA (npx, sin instalación).
+#   2. html-validate        — HTML estructural válido (binario instalado).
+#   3. pa11y                — Accesibilidad WCAG 2.1 AA (binario instalado).
 #   4. broken-link-checker  — Enlaces internos+externos (opcional, --links).
 #
 # Uso: audit-adri-full.sh <ruta-html> [--links] [--quick]
@@ -14,16 +14,17 @@
 # Exit code:
 #   0 = todo OK (warnings filtrados ok)
 #   1 = al menos una categoría con críticos
+#   2 = infraestructura incompleta
 #   64 = uso incorrecto
 
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(/usr/bin/dirname "$0")"
 readonly AUDIT_BASIC="$SCRIPT_DIR/audit-adri.sh"
-readonly NPX="${NPX:-$(command -v npx || true)}"
-readonly HTML_VALIDATE_PACKAGE="${HTML_VALIDATE_PACKAGE:-html-validate@11.5.6}"
-readonly PA11Y_PACKAGE="${PA11Y_PACKAGE:-pa11y@9.1.1}"
-readonly LINK_CHECKER_PACKAGE="${LINK_CHECKER_PACKAGE:-broken-link-checker@0.7.8}"
+# No descargar ni instalar durante una auditoría.
+readonly HTML_VALIDATE="${HTML_VALIDATE:-$(command -v html-validate || true)}"
+readonly PA11Y="${PA11Y:-$(command -v pa11y || true)}"
+readonly LINK_CHECKER="${LINK_CHECKER:-$(command -v broken-link-checker || true)}"
 
 usage() {
     echo "Uso: $0 <ruta-html> [--links] [--quick]"
@@ -84,18 +85,24 @@ if (( QUICK )); then
     exit $(( fail_basic ))
 fi
 
-[[ -n "$NPX" && -x "$NPX" ]] || {
-    echo "INFRASTRUCTURE_ERROR: npx no encontrado"
+for tool in "$HTML_VALIDATE" "$PA11Y"; do
+    [[ -n "$tool" && -x "$tool" ]] || {
+        echo "INFRASTRUCTURE_ERROR: faltan html-validate o pa11y instalados"
+        exit 2
+    }
+done
+if (( WITH_LINKS )) && [[ -z "$LINK_CHECKER" || ! -x "$LINK_CHECKER" ]]; then
+    echo "INFRASTRUCTURE_ERROR: falta broken-link-checker instalado"
     exit 2
-}
+fi
 
 # ============================================================
-# 2. HTML válido: html-validate via npx (descarga primera vez ~5s)
+# 2. HTML válido: html-validate instalado
 # ============================================================
 separator
 echo "2/$((WITH_LINKS ? 4 : 3)): html-validate (estructura HTML válida)"
 separator
-if "$NPX" --yes "$HTML_VALIDATE_PACKAGE" "$target" 2>&1 | /usr/bin/tail -20; then
+if "$HTML_VALIDATE" "$target" 2>&1 | /usr/bin/tail -20; then
     section_reports+=("✓ html-validate OK")
 else
     fail_html=1
@@ -103,7 +110,7 @@ else
 fi
 
 # ============================================================
-# 3. A11y: pa11y WCAG 2.1 AA (npx)
+# 3. A11y: pa11y WCAG 2.1 AA (binario instalado)
 # ============================================================
 separator
 echo "3/$((WITH_LINKS ? 4 : 3)): pa11y (accesibilidad WCAG 2.1 AA)"
@@ -113,7 +120,7 @@ pa11y_target="$target"
 if [[ ! "$target" =~ ^https?:// ]]; then
     pa11y_target="file://$(/usr/bin/realpath "$target" 2>/dev/null || echo "$target")"
 fi
-if "$NPX" --yes "$PA11Y_PACKAGE" --standard WCAG2AA "$pa11y_target" 2>&1 | /usr/bin/tail -30; then
+if "$PA11Y" --standard WCAG2AA "$pa11y_target" 2>&1 | /usr/bin/tail -30; then
     section_reports+=("✓ pa11y OK")
 else
     fail_a11y=1
@@ -128,7 +135,7 @@ if (( WITH_LINKS )); then
     echo "4/4: broken-link-checker"
     separator
     if [[ "$target" =~ ^https?:// ]]; then
-        if "$NPX" --yes "$LINK_CHECKER_PACKAGE" "$target" --recursive=false --get 2>&1 | /usr/bin/tail -10; then
+        if "$LINK_CHECKER" "$target" --recursive=false --get 2>&1 | /usr/bin/tail -10; then
             section_reports+=("✓ links OK")
         else
             fail_links=1

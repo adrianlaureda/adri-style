@@ -127,14 +127,11 @@ class ContractValidatorTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc.stderr)
         self.assertIn("| 2026-07-18 | 2 | 1 | 50% |", proc.stdout)
 
-    def test_auditoria_completa_fija_versiones_npx(self) -> None:
-        script = (ROOT / "scripts" / "audit-adri-full.sh").read_text(
-            encoding="utf-8"
-        )
-        self.assertNotIn("@latest", script)
-        self.assertIn("html-validate@11.5.6", script)
-        self.assertIn("pa11y@9.1.1", script)
-        self.assertIn("broken-link-checker@0.7.8", script)
+    def test_auditoria_completa_no_instala_dependencias(self) -> None:
+        script = (ROOT / "scripts" / "audit-adri-full.sh").read_text()
+        self.assertNotIn('"$NPX"', script)
+        self.assertNotIn('--yes', script)
+        self.assertIn('INFRASTRUCTURE_ERROR', script)
 
     def test_auditoria_completa_propaga_error_de_infraestructura(self) -> None:
         env = os.environ.copy()
