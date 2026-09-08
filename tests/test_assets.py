@@ -1,5 +1,6 @@
 """Coherencia del contenido generado y contraste de los tokens documentados."""
 import re
+import copy
 import subprocess
 import sys
 import unittest
@@ -8,6 +9,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from validate_contract import load_catalog, validate_html
+from generate_docs import validate_css
 from preset_assets import contrast, rgb, font_stylesheets, preview_tokens
 from export import list_presets, extract_preset, enrich_preset, build_design_md, parse_color, VAR_LINE_RE
 
@@ -23,9 +25,27 @@ class AssetsTests(unittest.TestCase):
                     self.assertGreaterEqual(contrast(foreground,background),4.5)
                 self.assertTrue(font_stylesheets(p))
 
+    def test_console_conserva_identidad_y_fuentes_locales(self):
+        p=load_catalog()['28-adri-console']
+        self.assertEqual(p['fonts']['display'],'Barlow')
+        self.assertEqual(preview_tokens(p)['display_weight'],500)
+        self.assertEqual(preview_tokens(p)['body_weight'],400)
+        self.assertIn('radial-gradient',p['color']['background_image'])
+        self.assertEqual(font_stylesheets(p),['../assets/fonts/barlow/fonts.css'])
+        css=ROOT/p['fonts']['local_stylesheet']
+        self.assertTrue(css.is_file())
+        for asset in re.findall(r'url\([\"\']?([^\)\"\']+)',css.read_text()):
+            self.assertTrue((css.parent/asset).is_file(),asset)
+
+    def test_detecta_drift_del_gradiente_console(self):
+        catalog=copy.deepcopy(load_catalog())
+        catalog['28-adri-console']['color']['background_image']='none'
+        self.assertTrue(any('gradiente' in error for error in validate_css(
+            (ROOT/'references/style-presets.md').read_text(),catalog)))
+
     def test_todas_las_muestras_cumplen_contrato(self):
         catalog=load_catalog()
-        paths=[ROOT/'templates/bootstrap-adri.html',*list((ROOT/'tests/fixtures/surfaces').glob('*.html'))]
+        paths=[ROOT/'templates/bootstrap-adri.html',ROOT/'templates/adri-console.html',*list((ROOT/'tests/fixtures/surfaces').glob('*.html'))]
         for path in paths:
             with self.subTest(path=path):
                 result=validate_html(path,catalog)

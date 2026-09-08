@@ -21,13 +21,13 @@ class ExportTests(unittest.TestCase):
             "bold-signal",
         )
 
-    def test_extrae_los_27_presets(self) -> None:
+    def test_extrae_los_28_presets(self) -> None:
         content = (ROOT / "references" / "style-presets.md").read_text(
             encoding="utf-8"
         )
         presets = EXPORT.list_presets(content)
 
-        self.assertEqual(len(presets), 27)
+        self.assertEqual(len(presets), 28)
         self.assertIn((1, "Bold Signal ★ (Default Adri)", "bold-signal"), presets)
         self.assertIsNotNone(EXPORT.extract_preset(content, "bold-signal"))
 

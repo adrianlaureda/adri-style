@@ -55,14 +55,14 @@ class ContractValidatorTests(unittest.TestCase):
     def test_acepta_single_font_justificado(self) -> None:
         self.assertTrue(self.validate_fixture("valid-terminal-green.html").ok)
 
-    def test_json_tiene_27_ids_contiguos_y_version_58(self) -> None:
+    def test_json_tiene_28_ids_contiguos_y_version_58(self) -> None:
         raw = json.loads(
             (ROOT / "references" / "presets.json").read_text(encoding="utf-8")
         )
         presets = raw["presets"]
         self.assertEqual(raw["adri_style_version"], "5.8")
-        self.assertEqual([item["n"] for item in presets], list(range(1, 28)))
-        self.assertEqual(len({item["id"] for item in presets}), 27)
+        self.assertEqual([item["n"] for item in presets], list(range(1, 29)))
+        self.assertEqual(len({item["id"] for item in presets}), 28)
         for item in presets:
             self.assertEqual(
                 item["fonts"]["single_font"],

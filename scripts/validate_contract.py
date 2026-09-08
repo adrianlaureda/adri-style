@@ -108,6 +108,10 @@ def load_catalog(path: Path = DEFAULT_CATALOG) -> dict[str,dict]:
             raise ContractConfigError(f'{pid}: single_font sin justificación')
         for role in ('display','body'):
             font_weights(fonts[f'weights_{role}'])
+        if 'local_stylesheet' in fonts:
+            stylesheet = ROOT / fonts['local_stylesheet']
+            if not stylesheet.is_file():
+                raise ContractConfigError(f'{pid}: hoja tipográfica local ausente')
         catalog[pid] = preset
     if sum(p.get('default',False) for p in catalog.values()) != 1:
         raise ContractConfigError('Debe existir exactamente un preset default')

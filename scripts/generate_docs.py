@@ -47,6 +47,11 @@ def validate_css(content,catalog):
             expected=parse_color(p['color'][token])
             if not actual or not expected or actual.hex!=expected.hex:
                 errors.append(f'{p["id"]}: CSS {token} no coincide con JSON')
+        if 'background_image' in p['color']:
+            actual=preset.vars.get('background-image','')
+            actual=re.sub(r'var\(--([a-z-]+)\)',lambda match:preset.vars.get(match[1],''),actual)
+            if re.sub(r'\s+','',actual)!=re.sub(r'\s+','',p['color']['background_image']):
+                errors.append(f'{p["id"]}: gradiente CSS no coincide con JSON')
         for role in ('display','body'):
             actual=preset.vars.get('font-'+role,'').split(',')[0].strip(" '\"")
             if actual!=p['fonts'][role]:

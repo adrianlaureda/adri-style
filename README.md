@@ -1,6 +1,6 @@
 # adri-style v5.8
 
-Sistema de diseño personal con 27 presets, tokens reutilizables, plantillas y validadores para agentes que generan HTML, dashboards, presentaciones y materiales educativos.
+Sistema de diseño personal con 28 presets, tokens reutilizables, plantillas y validadores para agentes que generan HTML, dashboards, presentaciones y materiales educativos.
 
 Este repo es la fuente versionada. La instalación local en `~/.dotfiles/ai/skills/adri-style/` debe derivarse del repo, no al revés.
 
@@ -11,7 +11,7 @@ SKILL.md                         # Contrato operativo del sistema
 templates/
   bootstrap-adri.html            # Punto de partida canónico
 references/
-  style-presets.md               # Catálogo humano de 27 presets
+  style-presets.md               # Catálogo humano de 28 presets
   presets.json                   # Contrato estructurado canónico
   presets.schema.json            # Esquema documentado del contrato
   identity-adri.md               # Identidad Bold Signal
@@ -66,7 +66,7 @@ node tests/run-browser.mjs
 ```
 
 La batería de navegador requiere Node 22+ y Chrome ya instalados. Se puede
-indicar `CHROME_BIN`. Comprueba 27 presets, cuatro superficies, comparación,
+indicar `CHROME_BIN`. Comprueba 28 presets, cuatro superficies, comparación,
 tema, anchos 320/375/768/1440 e impresión. CI ejecuta las mismas pruebas.
 La carga real de fuentes externas requiere red y se revisa visualmente;
 los checks de estructura no confunden fallback con una fuente descargada.
@@ -77,7 +77,7 @@ Tras editar `presets.json`, ejecutar `python3 scripts/generate_catalog.py` y
 Los tests detectan drift de tablas, bloques CSS, catálogo y exports.
 
 Ver [contrato de inyección y consumidores](references/injection-contract.md).
-Se mantienen los 27 IDs y fuentes; los alias sin número se normalizan. La base
+Se mantienen los 27 IDs originales y fuentes; los alias sin número se normalizan. La base
 inyectable permanece; `global.css` se ha retirado por duplicación. No combinar
 `base.css` con el reset autocontenido del bootstrap.
 
@@ -88,6 +88,17 @@ adicional, separada de los tests reproducibles del repositorio.
 ## OpenClaw
 
 `OPENCLAW.md` contiene el paquete complementario. `setup-cora.sh` clona este repo en el workspace de Cora.
+
+## Adri Console
+
+`28-adri-console` conserva Barlow local (OFL), títulos 500, cuerpo 400 y el
+fondo gris con gradiente sutil de `app-adri-console/app/src/index.css`. Se admite
+este gradiente contextual; se evitan transiciones muy marcadas y ornamentación
+que parezca generada por plantilla. No traslada la navegación de la aplicación.
+Muestra reutilizable: [templates/adri-console.html](templates/adri-console.html).
+Export: [exports/adri-console.design.md](exports/adri-console.design.md).
+El CSS local se distribuye junto a `assets/fonts/barlow/`; sus rutas son relativas
+al catálogo en `assets/` y deben ajustarse al copiarlo a otro documento.
 
 ## Licencia
 

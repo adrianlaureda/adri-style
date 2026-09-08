@@ -173,6 +173,8 @@ def enrich_preset(preset: Preset, metadata: dict[int, dict]) -> Preset:
     preset.weights_body = fonts["weights_body"]
     preset.vars['bg'] = item['color']['bg']
     preset.vars['accent'] = item['color']['accent']
+    if 'background_image' in item['color']:
+        preset.vars['background-image'] = item['color']['background_image']
     for role in ('display', 'body'):
         current = preset.vars.get(f'font-{role}', '')
         fallback = current.split(',', 1)[1] if ',' in current else ' sans-serif'
@@ -382,6 +384,7 @@ def build_sections(preset: Preset) -> str:
         else "pareja display/body canónica"
     )
 
+    background_note = ("\n- Fondo contextual: `" + v["background-image"] + "`.\n" if "background-image" in v else "")
     sections = f"""\
 ## Overview
 
@@ -434,7 +437,7 @@ Ver `references/layout.md` y `references/composition.md`.
 - El preset y la superficie deciden si usan bordes, sombras o gradientes.
 - EAR elimina contenedores sin función.
 - Los tokens `--bg`, `--bg-surface` y `--bg-elevated` están disponibles sin
-  obligar a crear tres planos.
+  obligar a crear tres planos.{background_note}
 
 ## Shapes
 

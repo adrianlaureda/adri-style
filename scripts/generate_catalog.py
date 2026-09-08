@@ -112,7 +112,7 @@ def render_catalog(contract: dict) -> str:
     }}
     .controls button[aria-pressed="true"]{{background:var(--text);color:var(--shell);border-color:var(--text)}}
     .preview{{
-      min-height:540px;background:var(--preview-bg);color:var(--preview-text);
+      min-height:540px;background:var(--preview-bg);background-image:var(--preview-background-image,none);color:var(--preview-text);
       border-radius:14px;overflow:hidden;box-shadow:0 24px 80px #0008;
       font-family:var(--body);font-weight:var(--body-weight)
     }}
@@ -202,7 +202,7 @@ def render_catalog(contract: dict) -> str:
     <aside class="sidebar" aria-label="Presets disponibles">
       <div class="brand">
         <strong>adri-style v5.8</strong>
-        <span>27 contratos · fuente: presets.json</span>
+        <span>{len(presets)} contratos · fuente: presets.json</span>
       </div>
       <nav class="preset-list">
 {options}
@@ -234,8 +234,8 @@ def render_catalog(contract: dict) -> str:
         </section>
         <section class="surface metric-grid" data-surface="dashboard">
           <div class="dashboard-head"><div><h2>Auditoría PRO-211</h2><p>Contrato estructurado</p></div><p>18 JUL 2026</p></div>
-          <div class="metrics"><div class="metric"><strong>27</strong><span>presets válidos</span></div><div class="metric"><strong>4</strong><span>superficies</span></div><div class="metric"><strong>0</strong><span>reglas decorativas</span></div></div>
-          <div class="chart" aria-label="Cobertura creciente: 25, 25, 26, 27"><i style="--h:58%"></i><i style="--h:58%"></i><i style="--h:72%"></i><i style="--h:92%"></i></div>
+          <div class="metrics"><div class="metric"><strong>{len(presets)}</strong><span>presets válidos</span></div><div class="metric"><strong>4</strong><span>superficies</span></div><div class="metric"><strong>0</strong><span>reglas decorativas</span></div></div>
+          <div class="chart" aria-label="Cobertura creciente: 25, 25, 26, {len(presets)}"><i style="--h:58%"></i><i style="--h:58%"></i><i style="--h:72%"></i><i style="--h:92%"></i></div>
         </section>
         <section class="surface slide-stage" data-surface="presentation">
           <div><h2>Identidad no es plantilla.</h2><p>La presentación amplifica una idea. El dashboard compara datos. El preset puede ser el mismo.</p></div><span class="slide-count">01 / 04</span>
@@ -291,6 +291,7 @@ def render_catalog(contract: dict) -> str:
         selected = preset;
         const root = document.documentElement;
         root.style.setProperty("--preview-bg", preset.color.bg);
+        root.style.setProperty("--preview-background-image", preset.color.background_image || "none");
         root.style.setProperty("--preview-accent", preset.color.accent);
         root.style.setProperty("--preview-text", preset.preview.text);
         root.style.setProperty("--preview-accent-ink", preset.preview.accent_ink);

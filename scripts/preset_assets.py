@@ -45,6 +45,8 @@ def readable_accent(accent,background):
 
 
 def font_stylesheets(preset):
+    if "local_stylesheet" in preset["fonts"]:
+        return ["../" + preset["fonts"]["local_stylesheet"]]
     families = {}
     for role in ('display','body'):
         name = preset['fonts'][role]

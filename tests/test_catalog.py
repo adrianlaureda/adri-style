@@ -10,10 +10,10 @@ SCHEMA = ROOT / "references" / "presets.schema.json"
 
 
 class CatalogTests(unittest.TestCase):
-    def test_catalogo_se_genera_desde_los_27_presets(self) -> None:
+    def test_catalogo_se_genera_desde_los_28_presets(self) -> None:
         html = CATALOG.read_text(encoding="utf-8")
         self.assertIn("adri-style v5.8", html)
-        self.assertEqual(html.count('class="preset-option"'), 27)
+        self.assertEqual(html.count('class="preset-option"'), 28)
         self.assertIn('data-preset-id="06-pastel-geometry"', html)
         self.assertIn('data-preset-id="07-split-pastel"', html)
         for surface in ("console", "gallery", "dashboard", "presentation"):
@@ -36,8 +36,8 @@ class CatalogTests(unittest.TestCase):
     def test_existe_schema_del_contrato(self) -> None:
         schema = SCHEMA.read_text(encoding="utf-8")
         self.assertIn('"const": "5.8"', schema)
-        self.assertIn('"minItems": 27', schema)
-        self.assertIn('"maxItems": 27', schema)
+        self.assertIn('"minItems": 28', schema)
+        self.assertIn('"maxItems": 28', schema)
         self.assertIn('"single_font"', schema)
 
 
