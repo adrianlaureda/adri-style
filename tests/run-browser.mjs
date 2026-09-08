@@ -58,7 +58,7 @@ try {
   };
   await command('Page.enable');
   const checks = await readFile(join(root,'tests/browser-checks.js'),'utf8');
-  const paths = ['assets/preset-catalog.html','templates/bootstrap-adri.html',
+  const paths = ['assets/preset-catalog.html','templates/bootstrap-adri.html','templates/adri-console.html',
     ...['console','gallery','dashboard','presentation'].map(name=>`tests/fixtures/surfaces/${name}.html`)];
   let assertions = 0;
   const failures = [];

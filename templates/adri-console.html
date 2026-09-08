@@ -1,0 +1,357 @@
+<!doctype html>
+<!--
+  adri-console.html · muestra estática del preset 28.
+  Datos ficticios: la plantilla no representa a una persona real.
+-->
+<html lang="es" data-theme="dark" data-preset="28-adri-console">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adri Console · preset28</title>
+  <link rel="stylesheet" href="../assets/fonts/barlow/fonts.css">
+  <style>
+    /* Tokens exactos de preset28; la muestra no requiere dependencias externas. */
+    :root {
+      color-scheme: dark;
+      --font-display: 'Barlow', system-ui, sans-serif;
+      --font-body: 'Barlow', system-ui, sans-serif;
+      --font-weight-display: 500;
+      --font-weight-body: 400;
+
+      --bg: #111315;
+      --bg-top: #2a2e31;
+      --bg-mid: #191c1f;
+      --bg-bottom: #0e1012;
+      --bg-surface: #191c1f;
+      --bg-card: #191c1f;
+      --bg-card-2: #24282b;
+      --bg-hover: #292e32;
+
+      --text: #f2f1ee;
+      --text-muted: #aaaead;
+      --border: rgba(235, 239, 242, .20);
+      --border-soft: rgba(235, 239, 242, .11);
+      --accent: #8aaec3;
+      --accent-soft: rgba(138, 174, 195, .12);
+      --on-accent: #08111b;
+      --background-image:
+        radial-gradient(110% 55% at 20% -8%, rgba(255, 255, 255, .075), transparent 58%),
+        radial-gradient(70% 42% at 78% 28%, rgba(255, 255, 255, .025), transparent 64%),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 34%, var(--bg-bottom) 100%);
+
+      --radius: 10px;
+      --radius-small: 7px;
+      --shadow: none;
+      --space-1: .5rem;
+      --space-2: .75rem;
+      --space-3: 1rem;
+      --space-4: 1.5rem;
+      --space-5: 2rem;
+      --space-6: 3rem;
+    }
+
+    [data-theme="light"] {
+      color-scheme: light;
+      --bg: #eef0f1;
+      --bg-top: #ffffff;
+      --bg-mid: #f3f4f5;
+      --bg-bottom: #e7e9ea;
+      --bg-surface: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-2: #e9ebec;
+      --bg-hover: #e2e5e7;
+      --text: #111923;
+      --text-muted: #4e5e70;
+      --border: rgba(18, 28, 42, .18);
+      --border-soft: rgba(18, 28, 42, .10);
+      --accent: #35689b;
+      --accent-soft: rgba(53, 104, 155, .10);
+      --on-accent: #ffffff;
+      --shadow: none;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: var(--bg-bottom); }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background-image: var(--background-image);
+      background-attachment: fixed;
+      background-color: var(--bg-bottom);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: var(--font-weight-body);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    button { font: inherit; }
+    svg { display: block; }
+    .shell { width: min(100% - 2rem, 72rem); margin-inline: auto; }
+
+    .topbar {
+      border-bottom: 1px solid var(--border-soft);
+      background: color-mix(in srgb, var(--bg) 78%, transparent);
+    }
+    .topbar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 4.5rem;
+      gap: var(--space-4);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      font-family: var(--font-display);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .brand__node {
+      width: .7rem;
+      height: .7rem;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px var(--accent-soft);
+    }
+    .topbar__actions { display: flex; align-items: center; gap: var(--space-3); }
+    .nav {
+      display: flex;
+      gap: var(--space-3);
+      color: var(--text-muted);
+      font-size: .85rem;
+    }
+    .nav a { color: inherit; text-decoration: none; }
+    .nav a:first-child, .nav a:hover { color: var(--text); }
+    .theme-toggle {
+      display: inline-grid;
+      place-items: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--accent);
+      background: var(--accent-soft);
+      cursor: pointer;
+    }
+    .theme-toggle:hover { background: var(--bg-hover); }
+    .theme-toggle svg { width: 1rem; height: 1rem; }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+    [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+
+    main { padding-block: var(--space-6); }
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: var(--space-5);
+      margin-bottom: var(--space-5);
+    }
+    .eyebrow {
+      margin: 0 0 .55rem;
+      color: var(--text-muted);
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, .display {
+      margin: 0;
+      font-family: var(--font-display);
+      font-weight: var(--font-weight-display);
+      letter-spacing: -.018em;
+    }
+    h1 { max-width: 16ch; font-size: clamp(2.1rem, 5vw, 4.25rem); line-height: .98; }
+    .intro__note { max-width: 25ch; margin: 0; color: var(--text-muted); text-align: right; }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+    .panel {
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      box-shadow: var(--shadow);
+    }
+    .metric {
+      min-height: 12rem;
+      padding: var(--space-4);
+    }
+    .metric__head, .panel__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+    }
+    .metric__label, .panel__label {
+      color: var(--text-muted);
+      font-size: .78rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .metric__icon {
+      width: 1.1rem;
+      height: 1.1rem;
+      color: var(--accent);
+    }
+    .metric__value {
+      display: block;
+      margin-top: var(--space-4);
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      font-weight: var(--font-weight-display);
+      letter-spacing: -.04em;
+      line-height: .9;
+    }
+    .metric__unit { margin-left: .2rem; color: var(--text-muted); font-size: 1rem; letter-spacing: 0; }
+    .metric__foot { display: flex; justify-content: space-between; gap: var(--space-2); margin-top: var(--space-4); color: var(--text-muted); font-size: .8rem; }
+    .metric__signal { color: var(--accent); }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(16rem, .6fr);
+      gap: var(--space-3);
+    }
+    .panel__body { padding: var(--space-4); }
+    .trend { min-height: 20rem; }
+    .trend__chart {
+      width: 100%;
+      height: 12rem;
+      margin-top: var(--space-5);
+      overflow: visible;
+    }
+    .trend__grid { stroke: var(--border-soft); stroke-width: 1; }
+    .trend__line { fill: none; stroke: var(--accent); stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
+    .trend__point { fill: var(--bg-card); stroke: var(--accent); stroke-width: 2; }
+    .chart-axis { display: flex; justify-content: space-between; color: var(--text-muted); font-size: .72rem; }
+    .notes { min-height: 20rem; }
+    .notes__list { display: grid; gap: var(--space-3); margin: var(--space-5) 0 0; padding: 0; list-style: none; }
+    .notes__item { display: grid; grid-template-columns: 1.5rem 1fr; gap: .75rem; align-items: start; color: var(--text-muted); font-size: .9rem; }
+    .notes__item svg { width: 1.05rem; height: 1.05rem; margin-top: .15rem; color: var(--accent); }
+    .notes__item strong { display: block; margin-bottom: .2rem; color: var(--text); font-weight: 500; }
+    .footer-note { margin-top: var(--space-4); color: var(--text-muted); font-size: .76rem; }
+
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 1.25rem, 42rem); }
+      .topbar__inner { min-height: 4rem; }
+      .nav { display: none; }
+      main { padding-block: var(--space-5); }
+      .intro { grid-template-columns: 1fr; gap: var(--space-3); }
+      .intro__note { text-align: left; }
+      .metric-grid, .detail-grid { grid-template-columns: 1fr; }
+      .metric { min-height: auto; }
+    }
+
+    @media print {
+      :root, [data-theme="light"], [data-theme="dark"] {
+        color-scheme: light;
+        --bg: #ffffff;
+        --bg-top: #ffffff;
+        --bg-mid: #ffffff;
+        --bg-bottom: #ffffff;
+        --bg-surface: #ffffff;
+        --bg-card: #ffffff;
+        --text: #111923;
+        --text-muted: #4e5e70;
+        --border: rgba(18, 28, 42, .18);
+        --border-soft: rgba(18, 28, 42, .10);
+        --accent: #35689b;
+        --accent-soft: rgba(53, 104, 155, .10);
+      }
+      html, body { background: #ffffff !important; }
+      body { background-image: none !important; }
+      .topbar { background: #ffffff; }
+      .theme-toggle { display: none; }
+      .panel { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar__inner">
+      <div class="brand"><span class="brand__node" aria-hidden="true"></span>Adri Console</div>
+      <div class="topbar__actions">
+        <nav class="nav" aria-label="Secciones de muestra">
+          <a href="#resumen">Resumen</a>
+          <a href="#tendencia">Tendencia</a>
+          <a href="#notas">Notas</a>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="Cambiar a modo claro" aria-pressed="false">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="resumen" class="shell">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Resumen · datos de muestra</p>
+        <h1 id="page-title">Tu semana, de un vistazo.</h1>
+      </div>
+      <p class="intro__note">Una lectura compacta de la semana para decidir qué merece tu atención.</p>
+    </section>
+
+    <section class="metric-grid" aria-label="Métricas de muestra">
+      <article class="panel metric">
+        <div class="metric__head"><span class="metric__label">Ritmo</span><svg class="metric__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+        <span class="metric__value">72<span class="metric__unit">/100</span></span>
+        <div class="metric__foot"><span>últimas 24 h</span><span class="metric__signal">estable</span></div>
+      </article>
+      <article class="panel metric">
+        <div class="metric__head"><span class="metric__label">Recuperación</span><svg class="metric__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"></path></svg></div>
+        <span class="metric__value">84<span class="metric__unit">%</span></span>
+        <div class="metric__foot"><span>promedio semanal</span><span class="metric__signal">regular</span></div>
+      </article>
+      <article class="panel metric">
+        <div class="metric__head"><span class="metric__label">Actividad</span><svg class="metric__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg></div>
+        <span class="metric__value">6.4<span class="metric__unit">h</span></span>
+        <div class="metric__foot"><span>tiempo activo</span><span class="metric__signal">en rango</span></div>
+      </article>
+    </section>
+
+    <section class="detail-grid">
+      <article id="tendencia" class="panel trend">
+        <div class="panel__body">
+          <div class="panel__head"><span class="panel__label">Tendencia de ritmo</span><span class="metric__signal">7 días</span></div>
+          <svg class="trend__chart" viewBox="0 0 720 190" role="img" aria-label="Gráfico ficticio de tendencia estable durante siete días">
+            <line class="trend__grid" x1="0" y1="25" x2="720" y2="25"></line><line class="trend__grid" x1="0" y1="95" x2="720" y2="95"></line><line class="trend__grid" x1="0" y1="165" x2="720" y2="165"></line>
+            <polyline class="trend__line" points="0,135 120,118 240,126 360,78 480,96 600,72 720,57"></polyline>
+            <circle class="trend__point" cx="0" cy="135" r="5"></circle><circle class="trend__point" cx="120" cy="118" r="5"></circle><circle class="trend__point" cx="240" cy="126" r="5"></circle><circle class="trend__point" cx="360" cy="78" r="5"></circle><circle class="trend__point" cx="480" cy="96" r="5"></circle><circle class="trend__point" cx="600" cy="72" r="5"></circle><circle class="trend__point" cx="720" cy="57" r="5"></circle>
+          </svg>
+          <div class="chart-axis"><span>lun</span><span>mar</span><span>mié</span><span>jue</span><span>vie</span><span>sáb</span><span>dom</span></div>
+          <p class="footer-note">Lectura ficticia para mostrar escala, contraste y densidad del preset.</p>
+        </div>
+      </article>
+
+      <aside id="notas" class="panel notes" aria-labelledby="notes-title">
+        <div class="panel__body">
+          <div class="panel__head"><h2 id="notes-title" class="panel__label">Notas suaves</h2><span class="metric__signal">03</span></div>
+          <ul class="notes__list">
+            <li class="notes__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V10"></path><path d="m18 14-6-6-6 6"></path></svg><span><strong>La mañana gana espacio</strong>El bloque más constante aparece antes de las diez.</span></li>
+            <li class="notes__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg><span><strong>Ritmo sostenido</strong>La variación diaria se mantiene pequeña.</span></li>
+            <li class="notes__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span><strong>Una pausa útil</strong>El miércoles deja margen para recuperar.</span></li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const root = document.documentElement;
+    const toggle = document.querySelector('.theme-toggle');
+    toggle.addEventListener('click', () => {
+      const isLight = root.dataset.theme === 'light';
+      root.dataset.theme = isLight ? 'dark' : 'light';
+      toggle.setAttribute('aria-pressed', String(!isLight));
+      toggle.setAttribute('aria-label', isLight ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+    });
+  </script>
+</body>
+</html>

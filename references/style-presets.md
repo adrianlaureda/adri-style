@@ -1,6 +1,6 @@
 # Style Presets — Visual Reference for Web Projects
 
-27 ready-to-use visual presets. Each includes a complete `:root` CSS variables block, font pairing, and `<link>` tags. Designed for copy-paste by AI subagents building web pages, dashboards, and educational tools.
+28 ready-to-use visual presets. Each includes a complete `:root` CSS variables block, font pairing, and `<link>` tags. Designed for copy-paste by AI subagents building web pages, dashboards, and educational tools.
 
 **v5.2 (2026-04-14):** 10 new presets added after the moodboard pre-selection workflow (#18–#27). Animation rules relaxed in `SKILL.md` — physical-property animations and longer durations are now allowed when the preset explicitly documents them. A **Modifiers** section at the end of this file documents overlays that can be applied on top of any preset.
 
@@ -44,6 +44,7 @@ artefactos derivados.
 | 25 | Micro-interactions | Feedback sutil | `#FFFFFF` | `#22C55E` | Inter | Inter |
 | 26 | AI-Native UI | Chat-first conversacional | `#0A0A0F` | `#6366F1` | Inter | Inter |
 | 27 | Interactive Cursor | Cursor-centric portfolio | `#FAFAFA` | `#5E6AD2` | Inter | Inter |
+| 28 | Adri Console | Oura × WHOOP, consola personal | `#111315` | `#8aaec3` | Barlow | Barlow |
 
 ---
 
@@ -89,6 +90,7 @@ Tablas generadas desde `presets.json` por `scripts/generate_docs.py`; editar el 
 | 25 | Micro-interactions | Inter | Inter | 700 | 400-600 | Sí: Linear/Notion-style, sistema único. | Sí: Default 600 en .btn (interacción) — body texto sigue 400. | light | quizzes-feedback-inmediato | activo |
 | 26 | AI-Native UI | Inter | Inter | 700 | 400-500 | Sí: Claude/ChatGPT/Perplexity usan Inter Display + Inter Text; coherente con producto chat. | No | dark | tutor-ia-planificado | activo-frágil |
 | 27 | Interactive Cursor | Inter | Inter | 800 (Black) | 400-500 | Sí: Portfolio premium tipo Linear/Vercel. | No | light | Sin uso verificado | revisión-30d |
+| 28 | Adri Console | Barlow | Barlow | 500 | 400,500,600 | Sí: Identidad de Adri Console: jerarquía por escala y peso con Barlow no condensada. | No | dark | app-adri-console | activo |
 
 **Lectura de la tabla:**
 
@@ -2877,6 +2879,89 @@ document.querySelectorAll('a, button, [data-cursor="hover"]').forEach(el => {
 ```
 
 **Animation policy (excepción documentada):** `requestAnimationFrame` loop de trail activo mientras el puntero se mueve. Fallback obligatorio en touch y reduced-motion. Nunca usar como único medio de interacción (el cursor es *enhance*, no replace).
+
+---
+
+## 28. Adri Console
+
+Sistema visual de consola personal inspirado en Oura × WHOOP: escala gris oscura, gradiente ambiental muy sutil y azul acero como acento. Barlow local comparte familia entre display y body; display usa 500 y body 400 por defecto. El preset define tokens y tipografía, sin imponer layout.
+
+**Ideal for:**
+- Consolas personales y dashboards de hábitos, salud o actividad
+- Herramientas locales con modo oscuro y modo claro
+- Interfaces densas que necesitan jerarquía tipográfica sobria
+
+**Proveniencia:** tokens, pesos y gradiente adaptados de `/Users/adrianlauredaleon/Proyectos/Claude/apps/app-adri-console/app/src/index.css`. Las fuentes y `OFL.txt` proceden de `/Users/adrianlauredaleon/Proyectos/Claude/apps/app-adri-console/app/public/fonts/` y están incluidas en `assets/fonts/barlow/`.
+
+**Carga local:** la ruta es relativa a la página que enlaza la hoja; ajústala si cambia la ubicación del HTML.
+
+```html
+<link rel="stylesheet" href="assets/fonts/barlow/fonts.css">
+```
+
+**CSS variables:**
+
+```css
+:root {
+  --font-display: 'Barlow', system-ui, sans-serif;
+  --font-body:    'Barlow', system-ui, sans-serif;
+  --font-weight-display: 500;
+  --font-weight-body:    400;
+
+  --bg:          #111315;
+  --bg-top:      #2a2e31;
+  --bg-mid:      #191c1f;
+  --bg-bottom:   #0e1012;
+  --bg-surface:  #191c1f;
+
+  --text:        #f2f1ee;
+  --text-muted:  #aaaead;
+  --text-dim:    #aaaead;
+  --border:      rgba(235, 239, 242, .20);
+  --border-soft: rgba(235, 239, 242, .11);
+
+  --accent:      #8aaec3;
+  --accent-soft: rgba(138, 174, 195, .12);
+  --on-accent:   #08111b;
+
+  --background-image:
+    radial-gradient(110% 55% at 20% -8%, rgba(255, 255, 255, .075), transparent 58%),
+    radial-gradient(70% 42% at 78% 28%, rgba(255, 255, 255, .025), transparent 64%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 34%, var(--bg-bottom) 100%);
+}
+
+[data-theme="light"] {
+  --bg:          #eef0f1;
+  --bg-top:      #ffffff;
+  --bg-mid:      #f3f4f5;
+  --bg-bottom:   #e7e9ea;
+  --bg-surface:  #ffffff;
+  --text:        #111923;
+  --text-muted:  #4e5e70;
+  --text-dim:    #4e5e70;
+  --border:      rgba(18, 28, 42, .18);
+  --border-soft: rgba(18, 28, 42, .10);
+  --accent:      #35689b;
+  --accent-soft: rgba(53, 104, 155, .10);
+  --on-accent:   #ffffff;
+}
+
+body {
+  background-image: var(--background-image);
+  background-attachment: fixed;
+  background-color: var(--bg-bottom);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-body);
+  line-height: 1.5;
+}
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.018em;
+}
+```
 
 ---
 

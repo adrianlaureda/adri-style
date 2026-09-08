@@ -1,7 +1,7 @@
 {
   "$schema_version": "1.0",
   "adri_style_version": "5.8",
-  "generated_at": "2026-07-18",
+  "generated_at": "2026-09-08",
   "source_canonical": "references/presets.json",
   "warning_for_humans": "Fuente estructurada canónica para ids, tokens, fuentes, modos y estado. Los artefactos humanos y visuales deben generarse o validarse contra este JSON.",
   "presets": [
@@ -493,6 +493,31 @@
       "mode_default": "light",
       "estado": "revisión-30d",
       "uso_real": []
+    },
+    {
+      "id": "28-adri-console",
+      "n": 28,
+      "name": "Adri Console",
+      "fonts": {
+        "display": "Barlow",
+        "body": "Barlow",
+        "single_font": true,
+        "single_font_justified": "Identidad de Adri Console: jerarquía por escala y peso con Barlow no condensada.",
+        "weights_display": "500",
+        "weights_body": "400,500,600",
+        "body_default_over_500": false,
+        "local_stylesheet": "assets/fonts/barlow/fonts.css"
+      },
+      "color": {
+        "bg": "#111315",
+        "accent": "#8aaec3",
+        "background_image": "radial-gradient(110% 55% at 20% -8%, rgba(255,255,255,.075), transparent 58%), radial-gradient(70% 42% at 78% 28%, rgba(255,255,255,.025), transparent 64%), linear-gradient(180deg, #2a2e31 0%, #191c1f 34%, #0e1012 100%)"
+      },
+      "mode_default": "dark",
+      "estado": "activo",
+      "uso_real": [
+        "app-adri-console"
+      ]
     }
   ]
 }

@@ -4,10 +4,10 @@ description: >
   Sistema de diseño inyectable (NO invocar directamente). Otros skills (presentacion-html,
   dashboard-educativo, frontend-design) lo importan automáticamente. Solo invocar si el
   usuario pide explícitamente cambiar preset, tema, paleta de colores, o consultar los
-  27 presets disponibles.
+  28 presets disponibles.
 ---
 
-<!-- PRESCRIPTIVE-PATTERN id=adri-style-preset-fonts version=1 date=2026-05-28 rationale=Modelos medios olvidan declarar data-preset y cargan single-font Inter (ai-slop), saltándose el catálogo canónico de 27 presets y la regla Bold Signal por defecto. -->
+<!-- PRESCRIPTIVE-PATTERN id=adri-style-preset-fonts version=1 date=2026-05-28 rationale=Modelos medios olvidan declarar data-preset y cargan single-font Inter (ai-slop), saltándose el catálogo canónico de 28 presets y la regla Bold Signal por defecto. -->
 
 ## Reglas duras: invariantes de salida adri-style
 
@@ -44,7 +44,7 @@ generarse contra ella.
 
 # Adri Style v5.8 - Sistema de Diseño Personal
 
-Sistema de diseño con 27 presets visuales, tipografia fluida y layouts expresivos.
+Sistema de diseño con 28 presets visuales, tipografia fluida y layouts expresivos.
 Referencia: [adri-app.com](https://adri-app.com).
 Fuentes: Butterick (tipografia), Utopia (escala fluida), Vercel Geist (tokens), Emil Kowalski (animaciones), Linear/Vercel (dark mode profundidad), Refactoring UI (tinted grays), Impeccable (anti-patterns AI-tell).
 
@@ -64,7 +64,7 @@ necesita.
 
 ## Auditoría de septiembre de 2026
 
-El contrato de inyección, los 27 presets y las superficies conservan sus IDs.
+El contrato de inyección, los 28 presets y las superficies conservan sus IDs.
 `validate_contract.py` es el validador único de catálogo y fuentes; catálogo,
 exports y tablas humanas se comprueban en CI. `references/injection-contract.md`
 detalla contenedores, alias, CSS local y límites de la validación estática.
@@ -250,7 +250,7 @@ Antes de escribir CSS, elegir un preset de `references/style-presets.md`.
 
 | Propiedad | Valor |
 |-----------|-------|
-| Presets | 27 estilos en `references/style-presets.md` |
+| Presets | 28 estilos en `references/style-presets.md` |
 | Font display | Segun preset (Cabinet Grotesk, Space Grotesk, Instrument Serif, etc.) |
 | Font body | Segun preset (Inter, DM Sans, Satoshi, Lora, etc.) |
 | Font mono | Geist Mono / JetBrains Mono |
@@ -280,7 +280,7 @@ Antes de escribir CSS, elegir un preset de `references/style-presets.md`.
 
 ## Referencias
 
-- `references/style-presets.md` — **27 presets visuales** con CSS variables completas (v5.2; 10 presets nuevos + sección Modifiers + reglas animation relajadas, 2026-04-14)
+- `references/style-presets.md` — **28 presets visuales** con CSS variables completas (v5.2; 10 presets nuevos + sección Modifiers + reglas animation relajadas, 2026-04-14)
 - `references/ux-guidelines.md` — **99 reglas UX transversales** importadas de UI UX Pro Max (2026-04-13). Consultar antes de finalizar una página
 - `references/typography.md` — Sistema tipografico fluido, font pairing, escala Utopia, tipografia premium dark
 - `references/composition.md` — Composicion dinamica: posicion de texto segun contenido visual
